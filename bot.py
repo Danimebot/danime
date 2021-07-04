@@ -16,7 +16,7 @@ import json
 
 with open('config.json') as jsonfile:
     obj = json.load(jsonfile)
-    # token = obj['data']['token']
+    token = obj['data']['token']
     db1_token = obj['data']['db1']
     db2_token = obj['data']['db2']
     api_url = obj['data']['api_url']
@@ -28,12 +28,12 @@ with open('config.json') as jsonfile:
 jsonfile.close()
 
     
-prefix = "&"
-# prefix = "dh "
+# prefix = "&"
+prefix = "dh "
 vein_id  = 427436602403323905
 intents = discord.Intents.all()
-bot = commands.AutoShardedBot(command_prefix=prefix, case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
-# bot = commands.AutoShardedBot(command_prefix=["dh ", "Dh "], case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
+# bot = commands.AutoShardedBot(command_prefix=prefix, case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
+bot = commands.AutoShardedBot(command_prefix=["dh ", "Dh "], case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
 
 bot.DEFAULT_PREFIX = prefix
 bot.remove_command("help")
