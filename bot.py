@@ -14,7 +14,7 @@ import certifi
 from misc import emoji
 import json
 
-with open('config.json') as jsonfile:
+with open('configs.json') as jsonfile:
     obj = json.load(jsonfile)
     token = obj['data']['token']
     db1_token = obj['data']['db1']
