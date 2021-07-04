@@ -1,2 +1,0 @@
-# danime
-Cool bot
