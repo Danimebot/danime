@@ -40,7 +40,8 @@ bot.remove_command("help")
 bot.color = 0xa100f2
 bot.vein_id = vein_id
 bot.guild_id = 802529391808086066
-bot.github = "https://github.com/Vein05/Abode"
+bot.github = "https://github.com/Vein05/danime"
+bot.website_link = "https://danime.netlify.app/"
 bot.cupped_fist = "<:Cuppedfist:757112296094040104>"
 bot.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
 bot.support = "https://discord.com/invite/aTzduKANKh"
@@ -61,7 +62,7 @@ bot.tips  = [
     'Introduce danime to your friends and share together!',
     'Like to submit pics? Join the support server',
     'You can use the autonsfw command to get nsfw pics every minute',
-    'The DanimeAPI has 30k+ image data and is still growing!!'
+    'The DanimeAPI has 35k+ image data and is still growing!!'
 ]
 
 @bot.event
@@ -124,7 +125,7 @@ async def stats(ctx):
 
     invite_link = f"[Invite link]({bot.invite})"
     vote = "Soon"
-    website_link = "https://man359905.gitbook.io/danime/"
+    
     cpu = str(psutil.cpu_percent())
     boot_time = str(psutil.boot_time() / 100000000)
     boot_time_round = boot_time[:4]
@@ -145,7 +146,7 @@ async def stats(ctx):
     embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 1.2\n```")
     embed.add_field(name=f"System", inline=True, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
     embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: {owner.name}#{owner.discriminator} [{owner.id}]```")
-    embed.add_field(name=f"Links", inline=False, value=f'[Invite]({bot.invite}) |  [Support Server]({bot.support}) |  [Github]({bot.github}) |  [Website]({website_link}) |  [Vote]({vote})')
+    embed.add_field(name=f"Links", inline=False, value=f'[Invite]({bot.invite}) |  [Support Server]({bot.support}) |  [Github]({bot.github}) |  [Website]({bot.website_link}) |  [Vote]({vote})')
     embed.set_footer(text=f"Last restart",icon_url=ctx.me.avatar_url)
 
     await ctx.send(embed=embed)
@@ -162,7 +163,7 @@ async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
             embed = discord.Embed(color = 0xff4042)
-            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({self.Bot.support}) if needed."
+            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({Bot.support}) if needed."
         break
 
 @bot.event
