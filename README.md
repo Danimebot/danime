@@ -4,7 +4,7 @@
 <br />
 
 <p align="center">
-  <a href="">
+  <a href="https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot">
     <img src="https://media.discordapp.net/attachments/856616125857005658/861454332939862029/danime.png?width=656&height=656" alt="Logo" width="80" height="80" style="border-radius: 50%">
   </a>
 
@@ -18,7 +18,7 @@
     <br />
     <a href="https://discord.com/invite/aTzduKANKh">Discord Server</a>
     ·
-    <a href="https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bott">Invite Danime</a>
+    <a href="https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot">Invite Danime</a>
   </p>
 
 </p>
