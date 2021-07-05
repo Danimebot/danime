@@ -24,6 +24,7 @@ class vein9(commands.Cog, name='Help'):
     @commands.command(aliases=['commands', 'h'])
     @commands.guild_only()
     async def help(self, ctx, *, entity=None):
+        check = ['1', '2', '2.5' , '3', '4', '5']
 
         if entity == None:
             em =  discord.Embed(color = random.choice(self.Bot.color_list))
@@ -82,7 +83,7 @@ class vein9(commands.Cog, name='Help'):
         elif entity == "3":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.description = f"The following contains SFW commands of the bot. "
-            em.add_field(name = "[Specific/Tags]", value=f"`sfwswimsuit`,`waifu`, `megumin`, `animememes` , `animefood`, ", inline=False)
+            em.add_field(name = "[Specific/Tags]", value=f"`sfwneko` ,`sfwswimsuit`,`waifu`, `megumin`, `animememes` , `animefood`, ", inline=False)
             em.add_field(name=f"[Action]", value=
                                        f"`sex`, `tickle`, `baka`, `lewd`, `bully`,`cuddle`, `kiss`, `smug`, `bonk`, `slap`,`kill` ,`cringe`, `blush`, `headpat`, `facepalm`, `wink` ,`hug`" )            
             await ctx.send(embed=em)     
