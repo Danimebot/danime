@@ -27,7 +27,7 @@ This repo is solely made for authenticity, credibility and provenance of the dis
 
 # Contribute
 
-You are free to contribute to this repo if interested. Altough it's a better option to join the [Support Server](https://discord.com/invite/aTzduKANKh) and get in touch with Vein#8177.
+You are free to contribute to this repo if interested. Altough it's a better option to join the [Support Server](https://discord.com/invite/aTzduKANKh) and get in touch with the devs.
 
 
 
