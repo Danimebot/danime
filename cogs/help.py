@@ -58,7 +58,7 @@ class vein9(commands.Cog, name='Help'):
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
             em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `orgy`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl` ,`femdom`, `futanari`, `trap`, `furry`", inline=False)
             em1.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
-            em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`")
+            em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
 
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
                                                     "**enable** \n  dh `autonsfw enable tag time`    Enables the feature, tag and time are optional, time will be in minutes and tags are all the commands listed above.\n\n"
@@ -83,7 +83,7 @@ class vein9(commands.Cog, name='Help'):
         elif entity == "3":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.description = f"The following contains SFW commands of the bot. "
-            em.add_field(name = "[Specific/Tags]", value=f"`sfwneko` ,`sfwswimsuit`,`waifu`, `megumin`, `animememes` , `animefood`, ", inline=False)
+            em.add_field(name = "[Specific/Tags]", value=f"`sfwneko`,`sfwoppai` ,`sfwswimsuit`,`waifu`, `megumin`, `animememes` , `animefood`, ", inline=False)
             em.add_field(name=f"[Action]", value=
                                        f"`sex`, `tickle`, `baka`, `lewd`, `bully`,`cuddle`, `kiss`, `smug`, `bonk`, `slap`,`kill` ,`cringe`, `blush`, `headpat`, `facepalm`, `wink` ,`hug`" )            
             await ctx.send(embed=em)     
