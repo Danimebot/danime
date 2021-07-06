@@ -143,7 +143,7 @@ async def stats(ctx):
         )
     embed.set_author(name=f"Danime's Information")
     embed.add_field(name=f"General ", inline=True, value=f"```asciidoc\nBoot Time: {boot_time_round}s\nUsers: {users}\nServer: {guilds}```\n")
-    embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 1.2\n```")
+    embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 1.3\n```")
     embed.add_field(name=f"System", inline=True, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
     embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: {owner.name}#{owner.discriminator} [{owner.id}]```")
     embed.add_field(name=f"Links", inline=False, value=f'[Invite]({bot.invite}) |  [Support Server]({bot.support}) |  [Github]({bot.github}) |  [Website]({bot.website_link}) |  [Vote]({vote})')
