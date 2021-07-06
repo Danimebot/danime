@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-
+import requests
 import pymongo
 from pymongo import MongoClient
 
@@ -41,13 +41,47 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		db = self.Bot.db2['AbodeDB']
 		collection = db [f'{collection}']
 		for url in urls:
+			print(url)
 			try:
-				query = {"_id":url}
-				collection.delete_one(query)
+				query = {"_id": url}
+				collection.remove(query)
 
 				await ctx.send(f"Removed.")
 			except:
 				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
+	
+	@commands.command()
+	@commands.is_owner()
+	async def linkstatus(self, ctx, link:str):
+		db = self.Bot.db2['AbodeDB']
+		collections = db.list_collection_names()
+		matches = []
+		for collection in collections:
+			activeCollection = db[f'{collection}']
+			query = {"_id" : link}
+			search = activeCollection.find_one(query)
+			if search != None:
+				collection = collection
+				matches.append(collection)
+			else:
+				continue
+		
+		try:
+			r = requests.get(link).content
+			status = 200
+		except:
+			status = r.status_code
+		try:
+			embed = discord.Embed()
+			embed.description = f"Link status  || [Link]({link})"
+			embed.add_field(name = "Collections", value = f", ".join(matches))
+			embed.add_field(name = "Status Code", value= status)
+			embed.add_field(name = "Remove it?", value= f"`dh removeimage <collection> {link}`", inline=False)
+			await ctx.send(embed=embed)
+		except:
+			return await ctx.send("Something went wrong.")
+			
+
 	@commands.command()
 	@commands.is_owner()
 	@commands.guild_only()
