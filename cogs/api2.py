@@ -235,7 +235,17 @@ class api2(commands.Cog, name="api2"):
 		url = await self.danimeapi(tag="bunnygirl")
 		await self.waifu_embed(ctx=ctx, link=url)
 
-
+	@commands.command(usage = "dh quintuplets 5", aliases=['gotobun']
+		, description="Gives out images from the anime The Quintessential Quintuplets.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def quintuplets(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "quintuplets", amount)			
+		url = await self.danimeapi(tag="quintuplets")
+		await self.waifu_embed(ctx=ctx, link=url)
 
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
