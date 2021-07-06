@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
-
+import requests
+import random
+from random import randint
 
 
 class safe(commands.Cog, name = "safe"):
@@ -54,7 +56,8 @@ class safe(commands.Cog, name = "safe"):
 
 
 	# No, the double s is not a type, s stands for safe image.
-	@commands.command(aliases=['swimsuit'], usage= "dh swimsuit 4")
+	@commands.command(aliases=['swimsuit'], usage= "dh swimsuit 4",
+		description="Get safe swimsuit boi")
 	@commands.cooldown(1, 5, commands.BucketType.user)
 	async def sfwswimsuit(self, ctx, amount:int=0):
 		if  amount != 0:
@@ -63,6 +66,26 @@ class safe(commands.Cog, name = "safe"):
 		url = await self.danimeapi(tag = "sswimsuit")
 		await self.waifu_embed(ctx=ctx, link =url)
 
+	@commands.command(aliases=['sneko'], usage= "dh sneko 4",
+		description= "Get cute nekos ofc SFW!")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def sfwneko(self, ctx, amount:int=0):
+		if  amount != 0:
+			return await self.send_image(ctx, "sneko", amount)		
+
+		url = await self.danimeapi(tag = "sneko")
+		await self.waifu_embed(ctx=ctx, link =url)
+
+
+	@commands.command(aliases=['soppai'], usage= "dh soppai 4",
+		description= "Get SFW oppai images ;)")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def sfwoppai(self, ctx, amount:int=0):
+		if  amount != 0:
+			return await self.send_image(ctx, "soppai", amount)		
+
+		url = await self.danimeapi(tag = "soppai")
+		await self.waifu_embed(ctx=ctx, link =url)
 def setup(Bot):
 	Bot.add_cog(safe(Bot))
 	print("Safe cog is working.")
