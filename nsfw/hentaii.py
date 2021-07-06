@@ -214,7 +214,10 @@ class hentaii(commands.Cog, name="hentaii"):
 						a = 0 
 						b = 5
 						while len(doujin.image_urls) >= a:
-							await ctx.send("\n".join(doujin.image_urls[a:b]))
+							try:
+								await ctx.send("\n".join(doujin.image_urls[a:b]))
+							except Exception:
+								break
 							a += 5
 							b += 5
 							
