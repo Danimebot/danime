@@ -91,6 +91,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 		z = await ctx.send("Working on it!!")
 		db = self.Bot.db2['AbodeDB']
+		check = db.list_collection_names()
+
+		if not collection in check:
+			check = " , ".join(check)
+			return await ctx.send(f"DB not found for the given query. Available queries {check}. **NOTE EVERYTHING IS CASE SENSETIVE**")
+		
 		collection= db[f'{collection}']
 		firstList = []
 		secondList = []
