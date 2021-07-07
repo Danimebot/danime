@@ -10,6 +10,26 @@ class logs(commands.Cog, name="logs"):
 
 
 	@commands.Cog.listener()
+	async def on_guild_join(self, guild):
+		if self.Bot.DEFAULT_PREFIX == "&":
+			return
+		channel = self.Bot.get_channel(856785981575659530)
+		embed = discord.Embed()
+		embed.description = f"Joined `{guild.name} | {guild.id}` with `{guild.member_count}` members."
+		embed.set_thumbnail(url = guild.icon_url)
+		await channel.send(embed=embed)
+
+	@commands.Cog.listener()
+	async def on_guild_remove(self, guild):
+		if self.Bot.DEFAULT_PREFIX == "&":
+			return
+		channel = self.Bot.get_channel(856786043834335232)
+		embed = discord.Embed()
+		embed.description = f"Left `{guild.name} | {guild.id}` with `{guild.member_count}` members."
+		embed.set_thumbnail(url = guild.icon_url)
+		await channel.send(embed=embed)
+
+	@commands.Cog.listener()
 	async def on_command_completion(self, ctx):
 		
 		if self.Bot.DEFAULT_PREFIX == "&":
