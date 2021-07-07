@@ -7,6 +7,22 @@ from syncer import sync
 import cfscrape
 import regex as re
 import random
+import json
+
+path = "/home/ubuntu/danime/configs.json"
+
+if not os.path.exists(path):
+	path = "/home/vein/Documents/danime/configs.json"
+
+with open(path) as jsonfile:
+    obj = json.load(jsonfile)
+    gelbooru_token = obj['data']['gelbooru_token']
+    danbooru_token = obj['data']['danbooru_token']
+    booru_username = obj['data']['booru_username']
+    booru_password = obj['data']['booru_password']
+   
+jsonfile.close()
+
 
 #If multiple tags, add them with +, same things with ratings
 
@@ -14,12 +30,12 @@ def yandere(url):
 	urls = []
 
 	payload = {
-	'inUserName': 'vein05',
-	'inUserPass': 'vein6969'
+	'inUserName': f'{booru_username}',
+	'inUserPass': f'{booru_password}'
 	}
 	headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0',
-	'From': 'man359905@gmail.com' 
+	
 	}
 	with requests.Session() as s:
 		p = s.post('https://yande.re/user/login', data=payload, headers=headers)
@@ -65,12 +81,11 @@ def konachan(url):
 	urls = []
 
 	payload = {
-	'inUserName': 'vein05',
-	'inUserPass': 'vein6969'
+	'inUserName': f'{booru_username}',
+	'inUserPass': f'{booru_password}'
 	}
 	headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0',
-	'From': 'man359905@gmail.com' 
 	}
 	with requests.Session() as s:
 		p = s.post('https://konachan.com/user/login', data=payload, headers= headers)
@@ -107,7 +122,7 @@ def danbooru(tags = None, page = None):
 	tags = tags.replace(";", "_")
 	tags = tags.replace("+", " ")
 	urls = []
-	client = Danbooru('danbooru', username='vein05', api_key='eq2Fpf3UAUC2K796k82pXEsm')
+	client = Danbooru('danbooru', username='vein05', api_key=f'{danbooru_token}')
 	posts = client.post_list(tags=tags, page = page, limit = 100)
 	if page == None:
 		page = 1
@@ -128,35 +143,11 @@ def danbooru(tags = None, page = None):
 	return urls
 
 
-# def _3dbooru(tag=None, page= None):
-# 			tags = tag.replace("+", " ")
-# 			headers = {
-# 			'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0',
-# 			'From': 'man359905@gmail.com' 
-# 			}
-# 	# if page == None:
-# 		# try:
-# 			page = random.randint(1, 50)
-# 			url = f"http://behoimi.org/post/index.json?page={page}?tags={tags}"
-
-# 			r = requests.get(url=url, headers= headers).json()
-# 			n = 0
-# 			for value in r:
-# 				url = r[n]
-# 				print(url)
-# 				n += 1
-# 				break
-# 		# except:
-# 		# 	url = f"http://behoimi.org/post/index.json?tags={tags}"
-# 		# 	r =requests.get(url).json()
-# 		# 	print(r)
-# 	# else:
-# 	# 	pass
 
 def safebooru(tags= None, page= None):
 	tags = tags.replace(";", "_")
 	tags = tags.replace("+", " ")	
-	client= Danbooru('safebooru', username='vein05', api_key='eq2Fpf3UAUC2K796k82pXEsm')
+	client= Danbooru('safebooru', username='vein05', api_key=f'{danbooru_token}')
 	if page == None:
 		page = 1
 	posts = client.post_list(tags=tags, page=page, limit =100)
