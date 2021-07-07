@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from nsfw import imgdl
+import nsfw.imgdl as imgdl
 import rule34
 import aiohttp
 from pygelbooru import Gelbooru

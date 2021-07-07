@@ -163,7 +163,7 @@ async def on_guild_join(guild):
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
             embed = discord.Embed(color = 0xff4042)
-            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({Bot.support}) if needed."
+            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({bot.support}) if needed."
         break
 
 @bot.event
@@ -205,7 +205,8 @@ extensions = [
     'cogs.autonsfw',
     'cogs.api2',
     'nsfw.booru',
-    "sfw.safe"
+    "sfw.safe",
+    "cogs.stealemoji"
 
 
 ]
