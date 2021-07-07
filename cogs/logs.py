@@ -19,7 +19,9 @@ class logs(commands.Cog, name="logs"):
 			embed = discord.Embed()
 			lists = [f"Like the bot? Why not [invite]({self.Bot.invite}) it to more servers?"]
 			embed.description = random.choice(lists)
+			embed.set_image(url = "https://media.discordapp.net/attachments/856616125857005658/861922663966441472/imonceagain.jpg")
 			await ctx.send(embed = embed)
+			
 		if ctx.author.id == self.Bot.vein_id:
 			return
 		channel = self.Bot.get_guild(self.Bot.guild_id).get_channel(856616128347111444)

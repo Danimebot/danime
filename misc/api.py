@@ -83,9 +83,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			
 
 	@commands.command()
-	@commands.is_owner()
 	@commands.guild_only()
 	async def getallimages(self, ctx, id_:int,collection:str, amount:int=3000):
+		access = [self.Bot.vein_id, 811823086193999892, 814953152640974869]
+		if not ctx.author.id in access:
+			return await ctx.send("NO perms!")
+
 		z = await ctx.send("Working on it!!")
 		db = self.Bot.db2['AbodeDB']
 		collection= db[f'{collection}']
