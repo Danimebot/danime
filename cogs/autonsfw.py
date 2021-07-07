@@ -50,9 +50,14 @@ class auto(commands.Cog, name="auto"):
 			##It's checking the tag if it exists or not, if not backs away
 			if tag != None:
 				try:
+					tag = self.tagdict(tag)
+				except :
+					tag = tag
+				
+				try:
 					checkUrl = f"{self.Bot.api_url}{tag}"
-					r = requests.get(f"{checkUrl}").json()
-				except:
+					r = requests.get(f"{checkUrl}").json()['url']
+				except TypeError:
 					return await ctx.send("Please provide a valid tag, you can see the tags from the help command.")
 			
 			channel = ctx.message.channel
@@ -85,6 +90,13 @@ class auto(commands.Cog, name="auto"):
 		except:
 			await ctx.send("I may not have enough permissions to complete the follow operation, make sure I have manage_webhooks and manage_channel permissions available. Also be sure the tags are available on the bot.")
 
+	def tagdict(self, tag:str):
+		dict = {
+			"sfwneko" : "sneko",
+			"sfwoppai" : "soppai",
+			"sfwswimsuit" : "sswimsuit", 
+		}
+		return dict[f"{tag}"]
 	@autonsfw.command()
 	@commands.has_permissions(manage_webhooks=True)    
 	@commands.bot_has_permissions(send_messages=True)
@@ -140,6 +152,8 @@ class auto(commands.Cog, name="auto"):
 						except discord.HTTPException:
 							print(image)
 							continue
+						except:
+							continue
 
 
 						
@@ -160,6 +174,8 @@ class auto(commands.Cog, name="auto"):
 								url = f"{setTag} tag, url : {image} "
 								print(url)
 								continue
+							except:
+								continue
 
 					if setTime != "None" and setTag !=  "None":
 						if  (self.Bot.counter % setTime) == 0:
@@ -177,6 +193,8 @@ class auto(commands.Cog, name="auto"):
 							except discord.HTTPException:
 								url = f"{setTag} tag, url : {image} "
 								print(url)
+							except:
+								continue
 			
 				
 			
