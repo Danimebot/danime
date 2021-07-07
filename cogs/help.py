@@ -37,7 +37,7 @@ class vein9(commands.Cog, name='Help'):
                         f"{emoji.yay} nsfw2 : `dh help 2.5` \n"
                         f"{emoji.approved}SFW : `dh help 3`\n"
                         f"{emoji.hmmm} Settings : `dh help 4`\n"
-                        f"{emoji.gun} Handy : `dh help 5`\n",
+                        f"{emoji.gun} Handy/Usefull : `dh help 5`\n",
                 inline = False
                 )
             await ctx.send(embed = em)
@@ -96,7 +96,7 @@ class vein9(commands.Cog, name='Help'):
             await ctx.send(embed=em)
         elif entity =="5":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
-            em.add_field(name=f"__Handy commands__", value=f"`reddit` `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, ", inline=False)
+            em.add_field(name=f"__Handy commands__", value=f"`reddit`,`addemoji`, `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, ", inline=False)
             em.add_field(name=f"__Fact commands__", value=f"`dogfact`, `catfact`, `pandafact`, `numberfact`, `yearfact`, `aquote`")
             await ctx.send(embed=em)
         
@@ -145,4 +145,4 @@ class vein9(commands.Cog, name='Help'):
         await ctx.send(embed=embed)
 def setup(Bot): 
     Bot.add_cog(vein9(Bot))
-    print("Mod cog is working.")
+    print("Help cog is working.")
