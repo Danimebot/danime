@@ -142,7 +142,7 @@ class auto(commands.Cog, name="auto"):
 							
 							embed =  discord.Embed(color =  random.choice(self.Bot.color_list))
 							embed.set_image(url=f"{image}")
-							embed.description(f"Images powered by [Danime]({self.Bot.invite})")
+							embed.description = f"Images powered by [Danime]({self.Bot.invite})"
 							hook.send(embed=embed,
 								avatar_url= f"{bot_avatar}"
 								)
@@ -166,7 +166,7 @@ class auto(commands.Cog, name="auto"):
 								hook = discord.Webhook.from_url(webhook_url,adapter=discord.RequestsWebhookAdapter())
 								embed =  discord.Embed(color =  random.choice(self.Bot.color_list))
 								embed.set_image(url=f"{image}")
-								embed.description(f"Images powered by [Danime]({self.Bot.invite})")
+								embed.description = f"Images powered by [Danime]({self.Bot.invite})"
 								hook.send(embed=embed, avatar_url= f"{bot_avatar}")
 								continue
 							except discord.NotFound:
@@ -187,7 +187,7 @@ class auto(commands.Cog, name="auto"):
 								hook = discord.Webhook.from_url(webhook_url,adapter=discord.RequestsWebhookAdapter())
 								embed =  discord.Embed(color =  random.choice(self.Bot.color_list))
 								embed.set_image(url=f"{image}")
-								embed.description(f"Images powered by [Danime]({self.Bot.invite})")
+								embed.description = f"Images powered by [Danime]({self.Bot.invite})"
 								hook.send(embed=embed, avatar_url= f"{bot_avatar}")
 								continue
 							except discord.NotFound:
