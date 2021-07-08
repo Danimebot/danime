@@ -66,8 +66,8 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			else:
 				continue
 		
+		r = requests.get(link).content
 		try:
-			r = requests.get(link).content
 			status = 200
 		except:
 			status = r.status_code
