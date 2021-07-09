@@ -25,7 +25,8 @@ class auto(commands.Cog, name="auto"):
 			await ctx.send_help(helper)
 
 
-	@autonsfw.command(pass_context=True)
+	@autonsfw.command(pass_context=True, usage = "dh autonsfw enable yuri 5",
+		description = "Cool feature that allows you to receive hentai automatically.")
 	@commands.has_permissions(manage_webhooks=True)
 	@commands.bot_has_permissions(manage_webhooks=True)
 	async def enable(self,ctx,tag=None, time=None):
@@ -97,7 +98,7 @@ class auto(commands.Cog, name="auto"):
 			"sfwswimsuit" : "sswimsuit", 
 		}
 		return dict[f"{tag}"]
-	@autonsfw.command()
+	@autonsfw.command(usage = "dh autonsfw disable", description="Disables autonsfw for the channel the command was used on.")
 	@commands.has_permissions(manage_webhooks=True)    
 	@commands.bot_has_permissions(send_messages=True)
 	async def disable(self,ctx):
