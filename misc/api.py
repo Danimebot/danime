@@ -12,9 +12,14 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		self.Bot = Bot
 
 
+	def is_dev(ctx):
+		access = [427436602403323905, 811823086193999892, 814953152640974869, 360087319992074251] 
+		if ctx.author.id in access:
+			return True
+		return False
 
 	@commands.command()
-	@commands.is_owner()
+	@commands.check(is_dev)
 	@commands.guild_only()
 	async def addimage(self, ctx, collection:str, url:str):
 		if url == None:
@@ -31,7 +36,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			return await ctx.send("Added a new image.")
 
 	@commands.command()
-	@commands.is_owner()
+	@commands.check(is_dev)
 	@commands.guild_only()
 	async def removeimage(self, ctx, collection:str, url:str):
 		if url == None:
@@ -51,7 +56,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
 	
 	@commands.command()
-	@commands.is_owner()
+	@commands.check(is_dev)
 	async def linkstatus(self, ctx, link:str):
 		db = self.Bot.db2['AbodeDB']
 		collections = db.list_collection_names()
@@ -84,11 +89,8 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.check(is_dev)
 	async def getallimages(self, ctx, id_:int,collection:str, amount:int=3000):
-		access = [self.Bot.vein_id, 811823086193999892, 814953152640974869]
-		if not ctx.author.id in access:
-			return await ctx.send("NO perms!")
-
 		z = await ctx.send("Working on it!!")
 		db = self.Bot.db2['AbodeDB']
 		check = db.list_collection_names()
