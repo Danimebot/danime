@@ -7,6 +7,7 @@ from discord.ext import commands
 # import PIL.ImageFont
 # import PIL.ImageFilter
 from io import BytesIO
+import asyncio
 import random
 from pygelbooru import Gelbooru
 starttime = datetime.utcnow()
@@ -154,6 +155,18 @@ class owner(commands.Cog, name='owner'):
         embed.set_footer(text=f"I don't own some of the resources for few commands so all the credit goes to the original creators!")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    @commands.is_owner()
+    async def get_invites(self, ctx, id:int):
+        guild = self.Bot.get_guild(id)
+        try:
+            for invite in await guild.invites():
+                if invite.uses == 0:
+                    continue
+                message = f"Invite : `{invite.url}` from `{invite.inviter}` with `{invite.uses}` usages."
+                await ctx.send(message)
+        except discord.Forbidden:
+            await ctx.send("No permissions.")
 
     @commands.command()
     @commands.guild_only()

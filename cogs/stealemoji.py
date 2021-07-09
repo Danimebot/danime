@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import os
 import requests
-
+from typing import Union
 class stealemoji(commands.Cog):
 	def __init__(self, Bot):
 		self.Bot = Bot
@@ -10,9 +10,9 @@ class stealemoji(commands.Cog):
 
 	@commands.command(aliases= ['stealemoji', 'steal'], description="You can use this command to add an emoji to your server. Does require you to have nitro.", usage="dh addemoji <emoji> <name|optional>")
 	@commands.has_permissions(manage_emojis= True)
-	async def addemoji(self, ctx, emoji:discord.Emoji, setname:str=None):
+	async def addemoji(self, ctx, emoji: Union[discord.Emoji, discord.PartialEmoji], setname:str=None):
 
-		if isinstance(emoji, discord.Emoji):
+		if type(emoji) in [discord.PartialEmoji, discord.Emoji]:
 			send = await ctx.send("Emoji detected! Adding it to the guild..")
 			emojiUrl = emoji.url
 			if setname == None:

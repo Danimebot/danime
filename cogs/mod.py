@@ -16,13 +16,14 @@ class vein(commands.Cog, name="moderation"):
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
-        # if self.Bot.DEFAULT_PREFIX == "&":
-        #     return
+        if self.Bot.DEFAULT_PREFIX == "&":
+            return
         
-        if ctx.content.startswith("<@!797456198932103189>"):
+        if ctx.content.startswith("<@!861117247174082610>"):
             embed = discord.Embed()
-            embed.description = f"Hello, my prefix is `dh ` you can [invite me]({self.Bot.invite}) or join the [support]({self.Bot.support}) server."
+            embed.description = f"Hello, my prefix is `dh ` you can [invite me]({self.Bot.invite}) from here or join the [support]({self.Bot.support}) server."
             await ctx.channel.send(embed= embed)
+
     @commands.command()
     @commands.has_permissions(manage_roles=True)
     @commands.guild_only()

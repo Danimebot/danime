@@ -34,7 +34,7 @@ class vein9(commands.Cog, name='Help'):
             em.add_field(name="__Available categories__",
                 value = f"{emoji.love} Anime : `dh help 1`\n"
                         f"{emoji.think} NSFW : `dh help 2`\n"
-                        f"{emoji.yay} nsfw2 : `dh help 2.5` \n"
+                        f"{emoji.yay} NSFW2 : `dh help 2.5` \n"
                         f"{emoji.approved}SFW : `dh help 3`\n"
                         f"{emoji.hmmm} Settings : `dh help 4`\n"
                         f"{emoji.gun} Handy/Usefull : `dh help 5`\n",
@@ -47,7 +47,7 @@ class vein9(commands.Cog, name='Help'):
             em.description = "Anime related commands. Remove the <> during usage."
             # em.description =f"The embed is in the order of : \nCommandName Synatx Description"
             em.add_field(name="Anime", value=f"Description : You can search anime. \nUasge : `dh anime <your anime name>`", inline=False)
-            em.add_field(name="Doujin", value=f"Description : You can search, read, download doujin from nhentai.net. \nUasge : `dh doujin <nhentai_id>`")
+            em.add_field(name="Doujin", value=f"Description : You can search, read, download doujin from nhentai.net. \nUsage : `dh doujin <nhentai_id>`")
             em.add_field(name=f"Manga", value=f"Description: You can search any manga. \nUsage: `dh manga <your manga name>`", inline= False)
             em.add_field(name = f"Character", value = "You can search most of the characters. \nUsage : `dh character <your favourite character>`")
             await ctx.send(embed = em)
