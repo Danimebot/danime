@@ -62,7 +62,7 @@ bot.tips  = [
     'Introduce danime to your friends and share together!',
     'Like to submit pics? Join the support server',
     'You can use the autonsfw command to get nsfw pics every minute',
-    'The DanimeAPI has 35k+ image data and is still growing!!'
+    'The DanimeAPI has 50k+ image data and is still growing!!'
 ]
 
 @bot.event
@@ -161,9 +161,14 @@ async def on_guild_join(guild):
 
     await vein.send(f"Joined {guild.name} which has ``{guild.member_count}`` members.")
     for channel in guild.text_channels:
-        if channel.permissions_for(guild.me).send_messages:
+        if channel.permissions_for(guild.me).embed_links:
+
             embed = discord.Embed(color = 0xff4042)
-            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({bot.support}) if needed."
+            embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({bot.support}) if needed. Also check out our affiliations."
+            embed.add_field(name="Affiliations", value=f"[HanimeHaven](https://discord.gg/U7AJBVaFVg)\n"
+                                                    f"[HentaiDelight](https://discord.gg/9VbqMyVvP3)\n"
+                                                    f"[Gradient](discord.gg/EWfcVq7KvV)\n")
+            await channel.send(embed=embed)
         break
 
 @bot.event
