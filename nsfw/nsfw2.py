@@ -1,4 +1,4 @@
-from cogs import api
+from nsfw import nsfw
 import discord
 import random
 from random import randint
@@ -213,7 +213,7 @@ class api2(commands.Cog, name="api2"):
 		url = await self.danimeapi(tag="pantyhose")
 		await self.waifu_embed(ctx=ctx, link=url)
 
-	@commands.command(usage = "dh stockings 5")
+	@commands.command(usage = "dh stockings 5", description="Damm them stockings")
 	@commands.cooldown(1, 5, commands.BucketType.user)
 	async def stockings(self, ctx, amount:int=0):
 		if not ctx.channel.is_nsfw():
@@ -245,6 +245,18 @@ class api2(commands.Cog, name="api2"):
 		if  amount != 0:
 			return await self.send_image(ctx, "quintuplets", amount)			
 		url = await self.danimeapi(tag="quintuplets")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh hairy 5", aliases=['hairy']
+		, description="Bush? Please don't trim them :pleading_face:")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def bush(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "bush", amount)			
+		url = await self.danimeapi(tag="bush")
 		await self.waifu_embed(ctx=ctx, link=url)
 
 def setup (Bot):
