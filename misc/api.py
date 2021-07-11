@@ -46,11 +46,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		db = self.Bot.db2['AbodeDB']
 		collection = db [f'{collection}']
 		for url in urls:
-			print(url)
 			try:
 				query = {"_id": url}
-				collection.remove(query)
-
+				search = collection.find_one(query)
+				if search == None:
+					return await ctx.send("Nothing found.")
+				collection.delete_one(query)
 				await ctx.send(f"Removed.")
 			except:
 				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
