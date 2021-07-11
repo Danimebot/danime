@@ -95,7 +95,8 @@ class auto(commands.Cog, name="auto"):
 		dict = {
 			"sfwneko" : "sneko",
 			"sfwoppai" : "soppai",
-			"sfwswimsuit" : "sswimsuit", 
+			"sfwswimsuit" : "sswimsuit",
+			"hairy" : "bush"
 		}
 		return dict[f"{tag}"]
 	@autonsfw.command(usage = "dh autonsfw disable", description="Disables autonsfw for the channel the command was used on.")
