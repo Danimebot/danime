@@ -193,7 +193,6 @@ extensions = [
 	'cogs.owner',
 	'nsfw.hentaii',
 	'cogs.help',
-	'cogs.api',
 	'cogs.mod',
 	'cogs.games',
 	'cogs.fun',
@@ -208,8 +207,9 @@ extensions = [
     'cogs.sauce',
     'misc.api',
     'cogs.autonsfw',
-    'cogs.api2',
     'nsfw.booru',
+    "nsfw.nsfw",
+    "nsfw.nsfw2",
     "sfw.safe",
     "cogs.stealemoji"
 
