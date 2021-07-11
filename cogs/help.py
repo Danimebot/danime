@@ -1,7 +1,7 @@
 import discord 
 from discord.ext import commands 
 from disputils import BotEmbedPaginator
-
+import datetime
 import random 
 from misc import emoji
 
@@ -28,7 +28,7 @@ class vein9(commands.Cog, name='Help'):
 
         if entity == None:
             em =  discord.Embed(color = random.choice(self.Bot.color_list))
-            em.description= f"Konichiwa {ctx.author.name}-sama, I'm **Danime**. The following embed lists out all of the major categories that I  can currently do. It also lists out common syntax for commands. Feel free to browse around the pages <a:vignettewink:799905466154352680>. Also check out our image policy with `dh imagepolicy`."
+            em.description= f"Konichiwa {ctx.author.name}-sama, I'm **Danime**. The following embed lists out all of the major categories that I  can currently do. It also lists out common syntax for commands. Feel free to browse around the pages <a:wink:863703322115178546>.\n"
             em.add_field(name="Help usage", value =f"`dh help [commmand name]`  to get help on specific command.\n"
                                                     "`dh help [category]` to get help about a certian category from below.")
             em.add_field(name="__Available categories__",
@@ -40,6 +40,7 @@ class vein9(commands.Cog, name='Help'):
                         f"{emoji.gun} Handy/Usefull : `dh help 5`\n",
                 inline = False
                 )
+            em.add_field(name = "[Policy]", value="See `dh ip` and `dh privacypolicy` before you use the bot.")
             await ctx.send(embed = em)
         elif  entity == "1" :
 
@@ -56,7 +57,7 @@ class vein9(commands.Cog, name='Help'):
             em1 = discord.Embed(color = random.choice(self.Bot.color_list))                                            
             em1.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `orgy`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl` ,`femdom`, `futanari`, `trap`, `furry`", inline=False)
+            em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `orgy`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
             em1.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
             em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
 
@@ -96,7 +97,7 @@ class vein9(commands.Cog, name='Help'):
             await ctx.send(embed=em)
         elif entity =="5":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
-            em.add_field(name=f"__Handy commands__", value=f"`reddit`,`addemoji`, `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, ", inline=False)
+            em.add_field(name=f"__Handy commands__", value=f"`reddit`,`addemoji`, `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, `privacypolicy`, `imagepolicy`", inline=False)
             em.add_field(name=f"__Fact commands__", value=f"`dogfact`, `catfact`, `pandafact`, `numberfact`, `yearfact`, `aquote`")
             await ctx.send(embed=em)
         
@@ -127,22 +128,56 @@ class vein9(commands.Cog, name='Help'):
         embed.set_footer(text = "Join the support server if you are facing issues.")
         await ctx.send(embed = embed)
 
-
-
-
     @commands.command()
+    @commands.is_owner()
+    async def rules(self, ctx):
+        bullet = "‣"
+        embed = discord.Embed()
+        embed.add_field(name="Rules", 
+            value = f"{bullet} No racism, racist slurs. They are not allowed.*\n"
+            f"{bullet} No nsfw content in main chat.\n"
+            f"{bullet} Use channels for their own sake.\n"
+            f"{bullet} Don't leak personal information.*\n"
+            f"{bullet} No server promoting, any other scam/ip grabber links.*\n"
+            f"{bullet} Don't bother any staff members in dms unless there is a reason behind it.\n"
+            f"{bullet} No spamming and flooding channels.\n"
+            f"{bullet} Follow [Discord TOS](https://discord.com/terms).\n"
+            f"{bullet} Get NSFW access from <#856616092251193404>, Don't bother staff.")
+        embed.set_footer(text="Rules ending with * may result ban.")
+        await ctx.send(embed=embed)
+
+
+    @commands.command(aliases=['ip'])
     @commands.guild_only()
     async def imagepolicy(self, ctx):
-        embed = discord.Embed()
+        bullet = "‣"
+        embed = discord.Embed(timestamp = datetime.datetime.fromisoformat("2021-07-11 16:16:21.513794"))
         embed.add_field(name=f"[Intro]", value="DAnime bot isn't managed by some professionals so there will be many things that may not be applied.", inline=False)
-        embed.add_field(name=f"[Information]", value=f"* The bot doesn't own any of the used image resources.\n"
-                                                    f"* Images are handpicked from trusted users or by the creator myself.\n"
-                                                    f"* If bad images are passed through, you can report that on the support server.\n"
-                                                    f"* If you want to contribute to the bot, you can do so by sending the images on the support server.\n"
-                                                    f"* I try to not include \"some\" tags on images but i'm still a human, I can't provide 100% reassureance.\n", inline=False)
+        embed.add_field(name=f"[Information]", value=f"{bullet} The bot doesn't own any of the used image resources.\n"
+                                                    f"{bullet} Images are handpicked from trusted users or by the creator myself.\n"
+                                                    f"{bullet} If bad images are passed through, you can report that on the [support server]({self.Bot.support}).\n"
+                                                    f"{bullet} If you want to contribute to the bot, you can do so by sending the images on the support server.\n"
+                                                    f"{bullet} I try to not include \"some\" tags on images but i'm still a human, I can't provide 100% reassureance.\n", inline=False)
+        embed.add_field(name = f"[प्रतिलिपि अधिकार ऐन, २०५९ and DMCA]", value=f"Since the bot is of origin Nepal, the primary policy shall be of [The Copyright Act, 2002](https://en.wikipedia.org/wiki/Copyright_law_of_Nepal). That doesn't mean [DMCA](https://en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act) claims are to be ignored. You can report your claims in the [support server]({self.Bot.support}). Your claim shall be resloved within a few business days.", inline=False)
         embed.add_field(name=f"[Personal Opinion]", value=f"Many are upset about some \"l*li\" pics passing through and yea I too am angry for the fact, I try to pass images that are under discord TOS, still i'm just one person. If you do find one, please take your time and report it, I will remove it asap.")
-        embed.set_footer(text="This may change anytime I wish.")
+        embed.set_footer(text="Last updated")
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=['pp'])
+    async def privacypolicy(self, ctx):
+        embed= discord.Embed(timestamp = datetime.datetime.fromisoformat("2021-07-11 14:16:21.513794"))
+        print(datetime.datetime.utcnow())
+        embed.add_field(name = f"[Intro]", value=f"Danime bot only saves the data collected in configuration. Data is auto-deleted if the configurations are turned off. We have no interested in storing data."
+            , inline=False)
+        embed.add_field(name = f"[Logs]", value = f"Commands logs are kept, that only have the user id and the command used, with the args. This data can only be viewd by the developers and is only used to ban \"some\" users.", inline=False)
+        embed.add_field(name = f"[Data Removal]", value=f"Simple join the support server and DM any of the developers, data shall be deleted NO QUESTIONS ASKED.", inline=False)
+        embed.add_field(name = f"[Public Data]", value="Danime will not sell, trade, or rent Users personal identification to anyone, data to be public may only include collective data such as most searched terms, etc. Any data leading to an individual won't be known to public.", inline=False)
+        embed.add_field(name = f"[Acceptance]", value="Users are to read this before using the bot, if you don't comply with our policy, you are free to not use the bot and if you do use Danime that signifies you agree to our terms.", inline=False)
+        embed.add_field(name = f"[Contact]", value=f"If one has any questions regarding the policy or the bot itself, feel free to join the [support server]({self.Bot.support}).")
+        embed.set_footer(text="Last updated")
+        await ctx.send(embed=embed)
+
+
 def setup(Bot): 
     Bot.add_cog(vein9(Bot))
     print("Help cog is working.")
