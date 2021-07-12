@@ -132,8 +132,8 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				collection.insert_one(data)
 		x = (f'{len(firstList)} in cloud.')
 		y = (f'{len(secondList)} in this instance.')
-		xx =  len(secondList) - len(firstList) 
-		await z.edit(content=f'It seems it worked! Report\n{x}\n{y}\nnew images : {xx}')
+		xx =  len(secondList) + len(firstList) 
+		await z.edit(content=f'It seems it worked! Report\n{x}\n{y}\nTotal {xx}')
 
 
 def setup (Bot):
