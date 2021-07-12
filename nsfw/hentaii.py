@@ -17,89 +17,9 @@ import urllib.request
 from random import randint
 import shutil
 import json
+from pygicord import Paginator
 
 
-class CatchAllMenu(menus.MenuPages, inherit_buttons=False):
-    def __init__(self, source, **kwargs):
-        super().__init__(source, **kwargs)
-        self._info_page = f"Info:\n⬅️ • Go back one page\n➡️ • Go forward one page\n⏪ • Go the the first page\n⏩ • Go to the last page\n⏹️ • Stop the paginator\n🔢 • Go to a page of your choosing\n❔ • Brings you here"
-    
-    @menus.button('⏪', position=menus.First(0))
-    async def go_to_first_page(self, payload):
-        """go to the first page"""
-        await self.message.remove_reaction(payload.emoji, payload.member)
-        await self.show_page(0)
-    
-    @menus.button('⬅️', position=menus.Position(0))
-    async def go_to_previous_page(self, payload):
-        """go to the previous page"""
-        await self.show_checked_page(self.current_page - 1)
-        await self.message.remove_reaction(payload.emoji, payload.member)
-    
-    @menus.button('⏹️', position=menus.Position(3))
-    async def stop_pages(self, payload):
-        """stops the pagination session."""
-        self.stop()
-        await self.message.delete()
-    
-    @menus.button('➡️', position=menus.Position(5))
-    async def go_to_next_page(self, payload):
-        """go to the next page"""
-        await self.message.remove_reaction(payload.emoji, payload.member)
-  
-        await self.show_checked_page(self.current_page + 1)
-    
-    @menus.button('⏩', position=menus.Position(6))
-    async def go_to_last_page(self, payload):
-        await self.message.remove_reaction(payload.emoji, payload.member)
-     
-        await self.show_page(self._source.get_max_pages() - 1)
-    
-    @menus.button('🔢', position=menus.Position(4))
-    async def _1234(self, payload):
-        await self.message.remove_reaction(payload.emoji, payload.member)
-        i = await self.ctx.send("What page would you like to go to?")
-        msg = await self.ctx.bot.wait_for('message', check=lambda m: m.author == self.ctx.author)
-        page = 0
-        try:
-            page += int(msg.content)
-        except ValueError:
-            return await self.ctx.send(
-                f"**{self.ctx.author.name}**, **{msg.content}** could not be turned into an integer! Please try again!",
-                delete_after=3)
-        
-        if page > (self._source.get_max_pages()):
-            await self.ctx.send(f"There are only **{self._source.get_max_pages()}** pages!", delete_after=3)
-        elif page < 1:
-            await self.ctx.send(f"There is no **{page}th** page!", delete_after=3)
-        else:
-            index = page - 1
-            await self.show_checked_page(index)
-            await i.edit(content=f"Transported to page **{page}**!", delete_after=3)
-    
-    @menus.button('❔', position=menus.Position(7))
-    async def on_info(self, payload):
-        
-        await self.message.remove_reaction(payload.emoji, payload.member)
-       
-        await self.message.edit(embed=discord.Embed(description=self.info_page, color =0xb863f2))
-    
-    @property
-    def info_page(self):
-        return self._info_page
-    
-    def add_info_fields(self, fields: dict):
-        for key, value in fields.items():
-            self._info_page += f"\n{key} • {value}"
-
-
-class EmbedSource(menus.ListPageSource):
-    def __init__(self, data):
-        super().__init__(data, per_page=1)
-    
-    async def format_page(self, menu, entries: discord.Embed):
-        entries.set_footer(text=f'({menu.current_page + 1}/{menu._source.get_max_pages()})')
-        return entries
 
 class hentaii(commands.Cog, name="hentaii"):
 	def __init__(self, Bot):
@@ -204,9 +124,8 @@ class hentaii(commands.Cog, name="hentaii"):
 							    e.description = f"[Direct link]({doujin.url})"
 							    e.set_image(url=i)
 							    embeds.append(e)
-							source = EmbedSource(embeds)
-							menu = CatchAllMenu(source=source)
-							await menu.start(ctx)
+							paginator = Paginator(pages=embeds, timeout=90.0)
+							await paginator.start(ctx)
 					if str(reaction.emoji) ==f"<:horny:810392503547199509>":
 						if len(doujin.image_urls) > 100:
 							return await ctx.send("Too many pages to be sent here.")
