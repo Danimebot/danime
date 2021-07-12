@@ -2,8 +2,11 @@ import discord
 from discord.ext import commands 
 from disputils import BotEmbedPaginator
 import datetime
-import random 
+import random
+import psutil
 from misc import emoji
+import datetime
+import sys
 
 ban = 'https://cdn.discordapp.com/attachments/782161513825042462/793136610619293726/ban_and_unban.gif'
 slowmode = 'https://cdn.discordapp.com/attachments/782161513825042462/793136512699072522/slowmode.gif'
@@ -177,6 +180,52 @@ class vein9(commands.Cog, name='Help'):
         embed.set_footer(text="Last updated")
         await ctx.send(embed=embed)
 
+
+    @commands.command(aliases=['botinfo'])
+    @commands.guild_only()
+    async def stats(self, ctx):
+        now = datetime.datetime.utcnow()
+        elapsed = now - self.Bot.starttime
+        seconds = elapsed.seconds
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)   
+
+        users = 0
+        for guild in self.Bot.guilds:
+            try:
+                users += guild.member_count
+            except:
+                pass
+
+        guilds = str(len(self.Bot.guilds))
+
+        invite_link = f"[Invite link]({self.Bot.invite})"
+        vote = "Soon"
+        
+        cpu = str(psutil.cpu_percent())
+        boot_time = str(psutil.boot_time() / 100000000)
+        boot_time_round = boot_time[:4]
+
+        owner = self.Bot.get_user(427436602403323905)
+        embed = discord.Embed(timestamp=self.Bot.starttime ,
+            color=0x26fcff,
+            description="```asciidoc\n"
+                        +"Name: Danime\n"
+                        +f"Bot Latency: {round(self.Bot.latency * 1000)}ms\n"
+                        +f"Web Socket Latency: {round(self.Bot.latency * 1000, 2)}ms\n"
+                        +f"Runtime: {elapsed.days} days, {hours} hours, {minutes} minutes and {seconds} seconds\n"
+                        +"```"
+
+            )
+        embed.set_author(name=f"Danime's Information")
+        embed.add_field(name=f"General ", inline=True, value=f"```asciidoc\nBoot Time: {boot_time_round}s\nUsers: {users}\nServer: {guilds}```\n")
+        embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 1.4\n```")
+        embed.add_field(name=f"System", inline=False, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
+        embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: {owner.name}#{owner.discriminator} [{owner.id}]```")
+        embed.add_field(name=f"Links", inline=False, value=f'[Invite]({self.Bot.invite}) |  [Support Server]({self.Bot.support}) |  [Github]({self.Bot.github}) |  [Website]({self.Bot.website_link}) |  [Vote]({vote})')
+        embed.set_footer(text=f"Last restart")
+
+        await ctx.send(embed=embed)
 
 def setup(Bot): 
     Bot.add_cog(vein9(Bot))
