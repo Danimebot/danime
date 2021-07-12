@@ -26,3 +26,5 @@ regex
 psutil
 discord-ext-menus @ git+https://github.com/Rapptz/discord-ext-menus@6f2b873bf0d28903eb752aa1166b3aac26dc9007
 saucenao-api
+pygicord
+pysaucenao
