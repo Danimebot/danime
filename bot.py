@@ -6,13 +6,12 @@ import traceback
 import discord.utils
 from pymongo import MongoClient
 import os
-import datetime
-import psutil
 import random
 import jishaku
 import certifi
 from misc import emoji
 import json
+import datetime
 
 with open('configs.json') as jsonfile:
     obj = json.load(jsonfile)
@@ -25,6 +24,8 @@ with open('configs.json') as jsonfile:
     booru_username = obj['data']['booru_username']
     booru_password = obj['data']['booru_password']
     anon_token = obj['data']['anon_token']
+    saucenao_keys = obj['data']['saucenao_keys']
+
 jsonfile.close()
 
     
@@ -53,6 +54,7 @@ bot.gelbooru_token = gelbooru_token
 bot.danbooru_token = danbooru_token
 bot.booru_username = booru_username
 bot.booru_password = booru_password
+bot.saucenao_keys = saucenao_keys
 bot.anon_token = anon_token
 bot.tips  = [
     'You can set the current channel to nsfw with dh set_nsfw',
@@ -105,52 +107,6 @@ bot.colors = {
 bot.color_list = [c for c in bot.colors.values()]
 
 
-@bot.command(aliases=['botinfo'])
-@commands.guild_only()
-async def stats(ctx):
-    now = datetime.datetime.utcnow()
-    elapsed = now - bot.starttime
-    seconds = elapsed.seconds
-    minutes, seconds = divmod(seconds, 60)
-    hours, minutes = divmod(minutes, 60)   
-
-    users = 0
-    for guild in bot.guilds:
-        try:
-            users += guild.member_count
-        except:
-            pass
-
-    guilds = str(len(bot.guilds))
-
-    invite_link = f"[Invite link]({bot.invite})"
-    vote = "Soon"
-    
-    cpu = str(psutil.cpu_percent())
-    boot_time = str(psutil.boot_time() / 100000000)
-    boot_time_round = boot_time[:4]
-
-    owner = bot.get_user(427436602403323905)
-    embed = discord.Embed(timestamp=bot.starttime ,
-        color=0x26fcff,
-        description="```asciidoc\n"
-                    +"Name: Danime\n"
-                    +f"Bot Latency: {round(bot.latency * 1000)}ms\n"
-                    +f"Web Socket Latency: {round(bot.latency * 1000, 2)}ms\n"
-                    +f"Runtime: {elapsed.days} days, {hours} hours, {minutes} minutes and {seconds} seconds\n"
-                    +"```"
-
-        )
-    embed.set_author(name=f"Danime's Information")
-    embed.add_field(name=f"General ", inline=True, value=f"```asciidoc\nBoot Time: {boot_time_round}s\nUsers: {users}\nServer: {guilds}```\n")
-    embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 1.3\n```")
-    embed.add_field(name=f"System", inline=True, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
-    embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: {owner.name}#{owner.discriminator} [{owner.id}]```")
-    embed.add_field(name=f"Links", inline=False, value=f'[Invite]({bot.invite}) |  [Support Server]({bot.support}) |  [Github]({bot.github}) |  [Website]({bot.website_link}) |  [Vote]({vote})')
-    embed.set_footer(text=f"Last restart",icon_url=ctx.me.avatar_url)
-
-    await ctx.send(embed=embed)
-    
 
 
 @bot.event
@@ -226,7 +182,7 @@ if __name__ == "__main__":
 
 bot.load_extension("jishaku")
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=300)
 async def status():
     await bot.wait_until_ready()
     await bot.change_presence(status=discord.Status.online, 

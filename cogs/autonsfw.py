@@ -200,9 +200,6 @@ class auto(commands.Cog, name="auto"):
 								print(url)
 							except:
 								continue
-			
-				
-			
 
 		except ValueError:
 			self.Bot.counter += .25
