@@ -54,6 +54,7 @@ class vein9(commands.Cog, name='Help'):
             em.add_field(name="Doujin", value=f"Description : You can search, read, download doujin from nhentai.net. \nUsage : `dh doujin <nhentai_id>`")
             em.add_field(name=f"Manga", value=f"Description: You can search any manga. \nUsage: `dh manga <your manga name>`", inline= False)
             em.add_field(name = f"Character", value = "You can search most of the characters. \nUsage : `dh character <your favourite character>`")
+            em.add_field(name=f"Sauce", value="`dh help sauce` for more info", inline=False)
             await ctx.send(embed = em)
 
         elif entity == "2":
@@ -65,7 +66,7 @@ class vein9(commands.Cog, name='Help'):
             em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
 
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
-                                                    "**enable** \n  dh `autonsfw enable tag time`    Enables the feature, tag and time are optional, time will be in minutes and tags are all the commands listed above.\n\n"
+                                                    "**enable** \n  dh `autonsfw enable <tag> <time>` Enables the feature, <tag> and <time> are optional, time will be in minutes(1-30) and tags are all the commands/tags listed above. Example `dh autonsfw enable stockings 5`\n\n"
                                                     "**disable**\n  dh `autonsfw disable`   Disables the feature\n", inline=False)
             
             
@@ -169,7 +170,6 @@ class vein9(commands.Cog, name='Help'):
     @commands.command(aliases=['pp'])
     async def privacypolicy(self, ctx):
         embed= discord.Embed(timestamp = datetime.datetime.fromisoformat("2021-07-11 14:16:21.513794"))
-        print(datetime.datetime.utcnow())
         embed.add_field(name = f"[Intro]", value=f"Danime bot only saves the data collected in configuration. Data is auto-deleted if the configurations are turned off. We have no interested in storing data."
             , inline=False)
         embed.add_field(name = f"[Logs]", value = f"Commands logs are kept, that only have the user id and the command used, with the args. This data can only be viewd by the developers and is only used to ban \"some\" users.", inline=False)
