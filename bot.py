@@ -156,7 +156,6 @@ extensions = [
     # 'cogs.scrapper'
     'cogs.logs',
     'misc.error',
-    'cogs.pokemon',
     'misc.config',
     # 'cogs.topics',
     'cogs.stolencode',
@@ -184,10 +183,13 @@ bot.load_extension("jishaku")
 
 @tasks.loop(seconds=300)
 async def status():
-    await bot.wait_until_ready()
-    await bot.change_presence(status=discord.Status.online, 
-        activity=discord.Game(f'dh help || {random.choice(bot.tips)}'))    
-    return
+    try:
+        await bot.wait_until_ready()
+        await bot.change_presence(status=discord.Status.online, 
+            activity=discord.Game(f'dh help || {random.choice(bot.tips)}'))    
+        return
+    except RuntimeError:
+        pass
 
 bot.db1 = MongoClient(db1_token, tlsCAFile=certifi.where())
 bot.db2 = MongoClient(db2_token, tlsCAFile=certifi.where())
