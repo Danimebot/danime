@@ -29,7 +29,7 @@ class auto(commands.Cog, name="auto"):
 		description = "Cool feature that allows you to receive hentai automatically.")
 	@commands.has_permissions(manage_webhooks=True)
 	@commands.bot_has_permissions(manage_webhooks=True)
-	async def enable(self,ctx,tag=None, time=None):
+	async def enable(self,ctx,tag=None, time:int=None):
 		if not ctx.channel.is_nsfw():
 			embed = discord.Embed(color = random.choice(self.Bot.color_list))
 			embed.title= f"Non-NSFW channel detected!"
@@ -43,10 +43,10 @@ class auto(commands.Cog, name="auto"):
 			
 			##Checks the time and backs off it's over than 30
 			if time != None:
-				time = int(f"{time}")
 				if time > 30:
 					return await ctx.send("Sorry mate but 30 is the limit.")
-
+				if time == 0:
+					time = 1
 
 			##It's checking the tag if it exists or not, if not backs away
 			if tag != None:
@@ -54,7 +54,6 @@ class auto(commands.Cog, name="auto"):
 					tag = self.tagdict(tag)
 				except :
 					tag = tag
-				
 				try:
 					checkUrl = f"{self.Bot.api_url}{tag}"
 					r = requests.get(f"{checkUrl}").json()['url']
@@ -69,7 +68,7 @@ class auto(commands.Cog, name="auto"):
 			collection= db['auto_channels']
 			if time == None or time < 1:
 				time == "None"
-			elif tag == None:
+			if tag == None:
 				tag = "None"
 
 			if (collection.find_one({"channel_id": channel.id})== None):
@@ -88,9 +87,10 @@ class auto(commands.Cog, name="auto"):
 			else:
 				await webhook.delete()
 				await ctx.send("This channel alreay has the auto nsfw feature enabled. If you just removed the webhook then this won't work, join the support server and ask the staff to manually remove it.")
+		except discord.Forbidden:
+			await ctx.send("I may not have enough permissions to complete the follow operation, make sure I have manage_webhooks and manage_channel permissions available.")
 		except:
-			await ctx.send("I may not have enough permissions to complete the follow operation, make sure I have manage_webhooks and manage_channel permissions available. Also be sure the tags are available on the bot.")
-
+			await ctx.send("Hey, it seems you called the command incorrectly, use this command like : `dh autonsfw enable stockings 5`")
 	def tagdict(self, tag:str):
 		dict = {
 			"sfwneko" : "sneko",
@@ -118,12 +118,12 @@ class auto(commands.Cog, name="auto"):
 
 
 
-	@tasks.loop(seconds=15)
+	@tasks.loop(seconds=60)
 	async def autosend(self):
 		try:
-			if self.Bot.DEFAULT_PREFIX == "&":
-				return 
-			self.Bot.counter += .25
+			# if self.Bot.DEFAULT_PREFIX == "&":
+			# 	return 
+			self.Bot.counter += 1
 			if int(self.Bot.counter) != self.Bot.counter:
 				return
 			db = self.Bot.db2['AbodeDB']
@@ -133,6 +133,7 @@ class auto(commands.Cog, name="auto"):
 			
 
 			for ans in search:
+				try:
 					webhook_url =ans["_id"]
 					setTime = ans["time"]
 					setTag = ans["tag"]
@@ -153,14 +154,10 @@ class auto(commands.Cog, name="auto"):
 							collection.delete_one({"_id" : webhook_url})
 							print("Deleted")
 						except discord.HTTPException:
-							print(image)
-							continue
+							await self.removeimage(setTag, image)
+							print(f"Removed , {setTag} tag, url : {image}")
 						except:
 							continue
-
-
-						
-						
 					if setTime == "None":
 						if setTag != "None":
 							try:
@@ -175,16 +172,18 @@ class auto(commands.Cog, name="auto"):
 								collection.delete_one({"_id" : webhook_url})
 								print("Deleted")
 							except discord.HTTPException:
-								url = f"{setTag} tag, url : {image} "
-								print(url)
+								await self.removeimage(setTag, image)
+								print(f"Removed , {setTag} tag, url : {image}")
 								continue
 							except:
 								continue
 
 					if setTime != "None" and setTag !=  "None":
-						if  (self.Bot.counter % setTime) == 0:
+						if setTime == 0:
+							collection.update_one({"_id" : webhook_url}, {"$set" : {"time" : 1}})
+							print("Collection Updated")
+						if  (int(self.Bot.counter) % setTime) == 0:
 							try:
-							
 								image = await self.danimeapi(tag = setTag)
 								hook = discord.Webhook.from_url(webhook_url,adapter=discord.RequestsWebhookAdapter())
 								embed =  discord.Embed(color =  random.choice(self.Bot.color_list))
@@ -196,16 +195,30 @@ class auto(commands.Cog, name="auto"):
 								collection.delete_one({"_id" : webhook_url})
 								print("Deleted")
 							except discord.HTTPException:
-								url = f"{setTag} tag, url : {image} "
-								print(url)
+								await self.removeimage(setTag, image)
+								print(f"Removed , {setTag} tag, url : {image}")
+
+								
 							except:
 								continue
+				except:
+					print(f"Didn't work for this one time.")
+					continue
 
 		except ValueError:
-			self.Bot.counter += .25
+			self.Bot.counter += 1
 			print("Couldn't send it")
 			pass
 
+		except:
+			continue
+	async def removeimage(self, tag, url ):
+		db = self.Bot.db2['AbodeDB']
+		collection = db[tag]
+		try:
+			collection.delete_one({"_id" : url})
+		except:
+			pass
 
 def setup (Bot):
 	Bot.add_cog(auto(Bot))
