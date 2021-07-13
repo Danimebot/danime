@@ -10,14 +10,12 @@ from misc.fetch import fetch
 from ago import human
 import re
 from cogs.utils import Pag
-
-
 import os
 from disputils import BotEmbedPaginator
-
 from bs4 import BeautifulSoup as soup
+from AnilistPython.botSupport import botSupportClass
 
-
+anilist_bot = botSupportClass()
 
 class anime(commands.Cog, name='anime'):
     def __init__(self, Bot):
@@ -25,6 +23,20 @@ class anime(commands.Cog, name='anime'):
 
 
 
+    @commands.command(description=f"Searchs about an anime character through Anilist API",
+        usage="dh character megumin", aliases=['ch'])
+    @commands.guild_only()
+    @commands.cooldown(1, 15, commands.BucketType.user)
+    async def character(self, ctx, *, name:str):
+        result = anilist_bot.getCharacterInfo(name)
+        em = discord.Embed(color = ctx.author.top_role.color)
+        try:
+            em.set_author(name = f"{result['first_name']} {result['last_name']} | {result['native_name']} ")
+        except:
+            em.set_author(name=name)
+        em.description= result['desc'].replace("!", "")
+        em.set_image(url = result['image'])
+        await ctx.send(embed=em)
 
 
 
