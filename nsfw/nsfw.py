@@ -885,7 +885,7 @@ class vein3(commands.Cog, name="APIs"):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def erofeet(self, ctx, amount: int = 0):
+    async def feet(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
@@ -901,17 +901,18 @@ class vein3(commands.Cog, name="APIs"):
     @commands.command(description=f"Sends a trap picture.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def trap(self, ctx):
+    async def trap(self, ctx, amount : int = 0):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
-        else:
+        if amount != 0:
+            return await self.send_image(ctx, "trap", amount)
 
-            url = nekos.img(target="trap")
-            embed = discord.Embed(color=random.choice(self.Bot.color_list))
-
-            embed.set_image(url=f"{url}")
-            await ctx.send(embed=embed)
+        r = requests.get(f"{self.Bot.api_url}trap").json()['url']
+        em = discord.Embed()
+        em.description = f"Bad image? [Report it]({self.Bot.support})"
+        em.set_image(url=r)
+        await ctx.send(embed=em)
 
     @commands.command(description=f"Glasses lady yay!")
     @commands.guild_only()
