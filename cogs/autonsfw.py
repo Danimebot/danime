@@ -211,7 +211,7 @@ class auto(commands.Cog, name="auto"):
 			pass
 
 		except:
-			continue
+			pass
 	async def removeimage(self, tag, url ):
 		db = self.Bot.db2['AbodeDB']
 		collection = db[tag]
