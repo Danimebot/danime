@@ -10,10 +10,12 @@ import random
 class booru(commands.Cog, name="booru"):
 	def __init__(self, Bot):
 		self.Bot = Bot
+		global nsfwToggledGuilds
+		nsfwToggledGuilds = self.Bot.nsfwToggledGuilds
 		
 
 	async def togglecheck(ctx):
-		if ctx.guild.id in self.Bot.nsfwToggledGuilds:
+		if ctx.guild.id in nsfwToggledGuilds:
 			return True
 		em = discord.Embed(
 			description = "Hey, it seems you used an image command with images not monitored by the bot, contact an admin and use the command `dh nsfwtoggle enable` to be able to use this command.")
