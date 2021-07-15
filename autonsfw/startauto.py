@@ -59,7 +59,6 @@ bot.website_link = "https://danime.netlify.app/"
 bot.cupped_fist = "<:Cuppedfist:757112296094040104>"
 bot.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
 bot.support = "https://discord.com/invite/aTzduKANKh"
-
 extensions = [
 	"cogs.autonsfw"
 ]

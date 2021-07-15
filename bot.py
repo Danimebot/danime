@@ -70,10 +70,10 @@ bot.tips  = [
 @bot.event
 async def on_ready():
     await bot.wait_until_ready()
-    try:
-        status.start()
-    except:
-        pass
+    # try:
+    #     status.start()
+    # except:
+    #     pass
     bot.commandName = []
     for cmd in bot.commands:
         bot.commandName.append(cmd.name)
@@ -112,7 +112,7 @@ bot.colors = {
 }
 bot.color_list = [c for c in bot.colors.values()]
 
-
+bot.nsfwToggledGuilds = [] 
 
 
 @bot.event

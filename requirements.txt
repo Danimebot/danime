@@ -29,3 +29,4 @@ saucenao-api
 pygicord
 pysaucenao
 schedule
+AnilistPython
