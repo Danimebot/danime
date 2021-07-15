@@ -39,7 +39,7 @@ class sauce(commands.Cog, name="Sauce"):
         try:
             google_url  = f"https://www.google.com/searchbyimage?image_url={url}&safe=off"
             yandex_url  = f"https://yandex.com/images/search?url={url}&rpt=imageview"
-            
+            saucenao_url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
             sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
             embed = discord.Embed()
             results = await sauce.from_url(url)
@@ -72,8 +72,9 @@ class sauce(commands.Cog, name="Sauce"):
             embed.add_field(name="Author", value =author )
             embed.add_field(name="Source", value=source, inline=False)
             embed.add_field(name="Index", value=f"ID : `{index_id}` \nName : `{index_name}`")
-            embed.add_field(name="Others", value=f"[<:google:864001090172354610>]({google_url})  "
-                                                f"[<:yandex:864002609466572840>]({yandex_url})"
+            embed.add_field(name="Others", value=f"<:google:864001090172354610> [Google]({google_url}) "
+                                                f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
+                                                f"[SauceNao]({saucenao_url})"
                                                 ,inline=False)
             embed.set_thumbnail(url = thumbnail)
             await ctx.send(embed=embed)
