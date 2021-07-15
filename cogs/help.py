@@ -54,20 +54,20 @@ class vein9(commands.Cog, name='Help'):
             em.add_field(name="Doujin", value=f"Description : You can search, read, download doujin from nhentai.net. \nUsage : `dh doujin <nhentai_id>`")
             em.add_field(name=f"Manga", value=f"Description: You can search any manga. \nUsage: `dh manga <your manga name>`", inline= False)
             em.add_field(name = f"Character", value = "You can search most of the characters. \nUsage : `dh character <your favourite character>`")
-            em.add_field(name=f"Sauce", value="`dh help sauce` for more info", inline=False)
+            em.add_field(name=f"Sauce", value="It's a given but `dh help sauce` for more info.", inline=False)
             await ctx.send(embed = em)
 
         elif entity == "2":
             em1 = discord.Embed(color = random.choice(self.Bot.color_list))                                            
             em1.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `orgy`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
+            em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
             em1.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
             em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
 
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
-                                                    "**enable** \n  dh `autonsfw enable <tag> <time>` Enables the feature, <tag> and <time> are optional, time will be in minutes(1-30) and tags are all the commands/tags listed above. Example `dh autonsfw enable stockings 5`\n\n"
-                                                    "**disable**\n  dh `autonsfw disable`   Disables the feature\n", inline=False)
+                                                    "**enable** \n  dh `autonsfw enable <tag> <time>` Enables the feature, `<tag>` and `<time>` are optional, time will be in minutes(1-30) and tags are all the commands/tags listed above. Example `dh autonsfw enable stockings 5`\n\n"
+                                                    "**disable**\n  dh `autonsfw disable`   Disables the feature for the channel.\n", inline=False)
             
             
             em1.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures.")
@@ -77,12 +77,12 @@ class vein9(commands.Cog, name='Help'):
 
         elif entity == "2.5":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
-            em.description= f"Lists the next page of nsfw section."
+            em.description= f"Lists the next page of nsfw section. Needs nsfw toggled turned on, `dh nsfwtoggle enable` if you're an admin."
             em.add_field(name=f"[Booru/Sites]", value = f"`danbooru`, `gelbooru`, `realbooru`, `yandere`, `konachan`, `realbooru`, `safebooru`, `e621`, `rule34`", inline= False)
             em.add_field(name = f"[Booru Usage]", value=f"`dh Site tags amount`"
                 )
             em.add_field(name = "Example", value =f"`dh yandere 1girl 10`")
-            em.set_footer(text = "Booru images are not monitored by the bot so use it at your own risk!")
+            em.set_footer(text = "The images from this commands are not monitored by the bot, please be sure before you enable them.")
             await ctx.send(embed =em)
 
         elif entity == "3":
@@ -161,11 +161,15 @@ class vein9(commands.Cog, name='Help'):
                                                     f"{bullet} Images are handpicked from trusted users or by the creator myself.\n"
                                                     f"{bullet} If bad images are passed through, you can report that on the [support server]({self.Bot.support}).\n"
                                                     f"{bullet} If you want to contribute to the bot, you can do so by sending the images on the support server.\n"
-                                                    f"{bullet} I try to not include \"some\" tags on images but i'm still a human, I can't provide 100% reassureance.\n", inline=False)
+                                                    f"{bullet} I try to not include \"some\" tags on images but i'm still a human, I can't provide 100% reassureance.\n"
+                                                    f"{bullet} If you have turned on nsfw toggle then the bot shall not be responsive for the images sent.\n", inline=False)
         embed.add_field(name = f"[प्रतिलिपि अधिकार ऐन, २०५९ and DMCA]", value=f"Since the bot is of origin Nepal, the primary policy shall be of [The Copyright Act, 2002](https://en.wikipedia.org/wiki/Copyright_law_of_Nepal). That doesn't mean [DMCA](https://en.wikipedia.org/wiki/Digital_Millennium_Copyright_Act) claims are to be ignored. You can report your claims in the [support server]({self.Bot.support}). Your claim shall be resloved within a few business days.", inline=False)
         embed.add_field(name=f"[Personal Opinion]", value=f"Many are upset about some \"l*li\" pics passing through and yea I too am angry for the fact, I try to pass images that are under discord TOS, still i'm just one person. If you do find one, please take your time and report it, I will remove it asap.")
         embed.set_footer(text="Last updated")
         await ctx.send(embed=embed)
+        if self.Bot.DEFAULT_PREFIX == "&":
+            message = await self.Bot.get_channel(856616084040056873).fetch_message(863714401902002196)
+            await message.edit(embed=embed)
 
     @commands.command(aliases=['pp'])
     async def privacypolicy(self, ctx):
@@ -180,7 +184,11 @@ class vein9(commands.Cog, name='Help'):
         embed.set_footer(text="Last updated")
         await ctx.send(embed=embed)
 
-
+    @commands.command()
+    async def website(self, ctx):
+        embed = discord.Embed(description=f"You can find our website [here]({self.Bot.website_link}).")
+        await ctx.send(embed=embed)
+        
     @commands.command(aliases=['botinfo'])
     @commands.guild_only()
     async def stats(self, ctx):
