@@ -34,13 +34,13 @@ class logs(commands.Cog, name="logs"):
 		
 		if self.Bot.DEFAULT_PREFIX == "&":
 			return
-		r = random.randint(0, 10)
+		r = random.randint(0, 15)
 		if r == 3:
 			embed = discord.Embed()
 			lists = [f"Like the bot? Why not [invite]({self.Bot.invite}) it to more servers?"]
 			embed.description = random.choice(lists)
 			embed.set_image(url = "https://media.discordapp.net/attachments/856616125857005658/861922663966441472/imonceagain.jpg")
-			await ctx.send(embed = embed)
+			await ctx.send(embed = embed, delete_after=10)
 			
 		if ctx.author.id == self.Bot.vein_id:
 			return
