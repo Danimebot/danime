@@ -3,7 +3,7 @@ from discord.ext import commands
 import requests
 import pymongo
 from pymongo import MongoClient
-
+import datetime
 
 
 
@@ -134,6 +134,24 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		y = (f'{len(secondList)} in this instance.')
 		xx =  len(secondList) + len(firstList) 
 		await z.edit(content=f'It seems it worked! Report\n{x}\n{y}\nTotal {xx}')
+
+
+	@commands.command()
+	@commands.check(is_dev)
+	async def apistatus(self, ctx):
+		url = " https://discordstatus.com/api/v2/status.json"
+		r = requests.get(url).json()
+		name = r['page']['name']
+		url = r['page']['url']
+		time_zone = r['page']['time_zone']
+		updated_at = r['page']['updated_at']
+		status = r['status']['description']
+		em = discord.Embed(timestamp = datetime.datetime.fromisoformat(updated_at))
+		em.description = f"Api Status for [{name}]({url})"
+		em.add_field(name = "TimeZone", value = time_zone)
+		em.add_field(name = "Status", value = status, inline = False)
+		em.set_footer(text="Last Updated")
+		await ctx.send(embed=em)
 
 
 def setup (Bot):
