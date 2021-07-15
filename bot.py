@@ -70,14 +70,20 @@ bot.tips  = [
 @bot.event
 async def on_ready():
     await bot.wait_until_ready()
-    status.start()
+    try:
+        status.start()
+    except:
+        pass
     bot.commandName = []
     for cmd in bot.commands:
         bot.commandName.append(cmd.name)
-    print("Bot is running.")
-    vein= bot.get_guild(802529391808086066).get_member(vein_id)
-    await vein.send("https://cdn.discordapp.com/attachments/774905992743747584/795535756759531530/sob.jpg")
-
+    
+    print("Bot is running. Don't forget to run autonsfw too you stupid head.")
+    try:
+        vein= bot.get_guild(802529391808086066).get_member(vein_id)
+        await vein.send("https://cdn.discordapp.com/attachments/774905992743747584/795535756759531530/sob.jpg")
+    except AttributeError:
+        pass
 bot.colors = {
     "WHITE": 0x26fcff,
     "AQUA": 0x1ABC9C,
