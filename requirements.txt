@@ -28,3 +28,4 @@ discord-ext-menus @ git+https://github.com/Rapptz/discord-ext-menus@6f2b873bf0d2
 saucenao-api
 pygicord
 pysaucenao
+schedule
