@@ -25,7 +25,6 @@ class hentaii(commands.Cog, name="hentaii"):
 	def __init__(self, Bot):
 		self.Bot = Bot
 		self.page = 1
-		
 		self.nsfwToggledGuildsGet.start()
 
 	@commands.command(aliases=['id','doujin'], description=f"Lets you read hentai through the use of N-hentai API, you will need to use the hentai code as the search attribute.")
@@ -89,8 +88,8 @@ class hentaii(commands.Cog, name="hentaii"):
 						"forbidden content", "scat",
 				]
 				if any(x in z for x in matches):
-					if not ctx.guild.id in self.nsfwToggledGuilds: 
-						embed = discord.Embed(description ="The content you searched up has images that are not allowed by default.\n Use `dh nsfwtoggle enable` to enable it. \n**USING THIS FEATURE IS NOT RECOMMENDED USE AT YOUR OWN RISK!!!**")
+					if not ctx.guild.id in self.Bot.nsfwToggledGuilds: 
+						embed = discord.Embed(description ="The content you searched up has images that are not allowed by default.\n Use `dh nsfwtoggle enable` to enable it. Enabling this will also enable booru commands. \n**USING THIS FEATURE IS NOT RECOMMENDED USE AT YOUR OWN RISK!!!**")
 						return await ctx.send(embed= embed)
 					else:
 						pass
@@ -230,8 +229,6 @@ class hentaii(commands.Cog, name="hentaii"):
 
 
 	@commands.group(pass_context=True)
-	@commands.has_permissions(manage_webhooks=True)
-	@commands.bot_has_permissions(manage_webhooks=True)
 	async def nsfwtoggle(self,ctx):
 		if ctx.invoked_subcommand is None:
 			helper = str(ctx.invoked_subcommand) if ctx.invoked_subcommand else str(ctx.command)
@@ -248,7 +245,7 @@ class hentaii(commands.Cog, name="hentaii"):
 		if (collection.find_one({"_id": guild_id})== None):
 			data = {"_id" : guild_id, "admin" : ctx.author.id }
 			collection.insert_one(data)
-			return await ctx.send(f"Toggle turned on, takes 1-2 mintues for changes to be applied.")
+			return await ctx.send(f"Toggle turned on, takes 15-20 seconds for changes to be applied.")
 		return await ctx.send("Already enabled, use `dh nsfwtoggle disable` to disabled it.")
 
 	@nsfwtoggle.command(pass_context=True)
@@ -258,22 +255,26 @@ class hentaii(commands.Cog, name="hentaii"):
 		collection = db['nsfwtoggle']
 		try:
 			search = collection.find_one({"_id" : ctx.guild.id})
+			if search is None:
+				return await ctx.send("No feature found.")
 			collection.delete_one({"_id" : ctx.guild.id})
+			self.Bot.nsfwToggledGuilds.remove(ctx.guild.id)
 			return await ctx.send("The feature has been disabled.")
 		except:
 			return await ctx.send("The feature is already disabled.")
 
 	@tasks.loop(seconds=15)
 	async def nsfwToggledGuildsGet(self):
+		if self.Bot.DEFAULT_PREFIX == "&":
+			return
 		await self.Bot.wait_until_ready()
 		db = self.Bot.db1['AbodeDB']
 		collection= db['nsfwtoggle']
 		search = collection.find()
-		self.nsfwToggledGuilds = []
 		for guild in search:
 			id_ = guild["_id"]
-			if not id_ in self.nsfwToggledGuilds:
-				self.nsfwToggledGuilds.append(id_)
+			if not id_ in self.Bot.nsfwToggledGuilds:
+				self.Bot.nsfwToggledGuilds.append(id_)
 		
 		return
 

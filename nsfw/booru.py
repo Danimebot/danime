@@ -4,13 +4,21 @@ import nsfw.imgdl as imgdl
 import rule34
 import aiohttp
 from pygelbooru import Gelbooru
-
+from nsfw.hentaii import hentaii
 import random
 
 class booru(commands.Cog, name="booru"):
 	def __init__(self, Bot):
 		self.Bot = Bot
+		
 
+	async def togglecheck(ctx):
+		if ctx.guild.id in self.Bot.nsfwToggledGuilds:
+			return True
+		em = discord.Embed(
+			description = "Hey, it seems you used an image command with images not monitored by the bot, contact an admin and use the command `dh nsfwtoggle enable` to be able to use this command.")
+		await ctx.send(embed = em)
+		return False
 
 	async def send_image(self, ctx , urls, amount):
 		random.shuffle(urls)
@@ -27,6 +35,8 @@ class booru(commands.Cog, name="booru"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def yandere(self, ctx, tags:str, amount :int = 1):
 		if amount >10:
 			return await ctx.send("10 is the limit")
@@ -36,6 +46,8 @@ class booru(commands.Cog, name="booru"):
 		
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def konachan(self, ctx, tags:str, amount :int = 1):
 		if amount >10:
 			return await ctx.send("10 is the limit")
@@ -44,6 +56,8 @@ class booru(commands.Cog, name="booru"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def rule34(self, ctx, tags:str, amount: int = 1):
 		if amount >10:
 			return await ctx.send("10 is the limit")
@@ -57,6 +71,8 @@ class booru(commands.Cog, name="booru"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def realbooru(self, ctx, tags:str, amount:int=1):
 		if amount >10:
 			return await ctx.send("10 is the limit")
@@ -75,6 +91,8 @@ class booru(commands.Cog, name="booru"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def danbooru(self, ctx, tags:str, amount:int=1):
 		if amount >10:
 			return await ctx.send("10 is the limit")
@@ -83,6 +101,8 @@ class booru(commands.Cog, name="booru"):
 
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def gelbooru(self, ctx, tags:str, amount:int=1):
 			tags =  tags.replace(";", "_")
 			list_tag = list(tags.split("+"))
@@ -105,10 +125,11 @@ class booru(commands.Cog, name="booru"):
 			
 	@commands.command()
 	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	@commands.check(togglecheck)
 	async def safebooru(self, ctx, tags:str, amount:int=1):
 		urls = imgdl.safebooru(tags = tags)
 		await self.send_image(ctx=ctx, urls=urls, amount=amount)
-
 
 
 	async def aiojson(self, url):
