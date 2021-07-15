@@ -716,12 +716,11 @@ class vein3(commands.Cog, name="APIs"):
     @commands.command(description=f"Sends a futanari picture.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def futanari(self, ctx):
+    async def futanari(self, ctx, amount:int = 0):
 
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
-
         if amount != 0:
             return await self.send_image(ctx, "futanari", amount)
         r = requests.get(f"{self.Bot.api_url}futanari").json()['url']
@@ -882,7 +881,7 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(aliases= ["erofeet"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def feet(self, ctx, amount: int = 0):
@@ -929,19 +928,8 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"owo")
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def orgy(self, ctx):
-        if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        else:
-            url = hmtai.useHM("v2-4", "orgy")
 
-            await self.waifu_embed(ctx=ctx, link=url, dl=url)
-
-    @commands.command(description=f"Sends a trap picture.")
+    @commands.command(description=f"Sends a cat pic :kek:")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pussy(self, ctx, amount: int = 0):
@@ -956,15 +944,21 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends a NSFW picture where the lead is in school unifrom.")
+    @commands.command(description=f"Sends a NSFW picture where the lead is in a formal uniform.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def uniform(self, ctx):
+    async def uniform(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
-        url = hmtai.useHM("v2", "uniform")
-        await self.waifu_embed(ctx=ctx, link=url)
+        if amount != 0:
+
+            return await self.send_image(ctx, "uniform", amount)
+        r = requests.get(f"{self.Bot.api_url}uniform").json()['url']
+        em = discord.Embed()
+        em.description = f"Bad image? [Report it]({self.Bot.support})"
+        em.set_image(url=r)
+        await ctx.send(embed=em)
 
     @commands.command(description=f"Thicc")
     @commands.guild_only()
