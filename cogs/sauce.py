@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 from pysaucenao import DailyLimitReachedException, AnimeSource,UnknownStatusCodeException ,GenericSource, InvalidImageException, InvalidOrWrongApiKeyException, MangaSource, SauceNao, SauceNaoException, ShortLimitReachedException, VideoSource
-
+from pysaucenao.containers import ACCOUNT_ENHANCED, AnimeSource, BooruSource
 from disputils import BotEmbedPaginator
 import re
 from urllib import parse
@@ -16,21 +16,22 @@ class sauce(commands.Cog, name="Sauce"):
     @commands.guild_only()
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def sauce(self, ctx, url=None):
+        #https://github.com/FujiMakoto/pysaucenao Nice thing
         if url!= None:
-            if not url.startswith("https"):
-                return await ctx.send("Not a valid url, a url must begin with https.")
+            if self.is_url(url) != True:
+                return await ctx.send("Your image url doesn't seem to be accurate. An image url should look like `https://danbooru.donmai.us/data/original/a2/d0/a2d093a060757d36d8a9f03bcbfbcd82.jpg`.")
+
         if url == None:
             await ctx.send("No url found in command, checking for attachments.", delete_after = 5)
             try:
                 url = ctx.message.attachments[0].url
-                print(url)
             except:
                 url = None
         
         if url == None:
             await ctx.send("Couldn't find the url checking for the last message with image.", delete_after = 5)
             async for message in ctx.channel.history(limit=10):
-                check = self.is_url(message)
+                check = self.is_url(message.content)
                 if check == True:
                     url = message.content
                     break
@@ -43,12 +44,22 @@ class sauce(commands.Cog, name="Sauce"):
             sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
             embed = discord.Embed()
             results = await sauce.from_url(url)
-            thumbnail = results[0].thumbnail if (results[0].thumbnail != None) else "None"
-            similarity = results[0].similarity if (results[0].similarity != None) else "None"
-            
-            if isinstance(results[0], AnimeSource):
-                 await results[0].load_ids()
+            thumbnail = results[0].thumbnail if (results[0].thumbnail != None) else ctx.author.avatar_url
+            similarity = results[0].similarity if (results[0].similarity != None) else 0
+            embed.set_thumbnail(url = thumbnail)
 
+            if isinstance(results[0], AnimeSource):
+                await results[0].load_ids()
+                embed.add_field(name="Anime Info", value=f"[AniList]({results[0].anilist_url}) "
+                                                        f"[MyAnimeList]({results[0].mal_url})")
+            if isinstance(results[0], VideoSource):
+                embed.add_field(name="Episode ", value=results[0].episode)
+                embed.add_field(name= "TimeStamp", value=results[0].timestamp, inline=False)           
+
+            if isinstance(results[0], MangaSource):
+                embed.add_field(name="Chapter", value=results[0].chapter)
+
+        
             try:
                 source = results[0].urls[0]
             except IndexError:
@@ -63,7 +74,7 @@ class sauce(commands.Cog, name="Sauce"):
                 title = "No title"
             index_id = results[0].index_id if (results[0].index_id != None) else "None"
             index_name = results[0].index_name if (results[0].index_name != None) else "None"
-            if 70 >  similarity:
+            if 50 >  similarity:
                 return await ctx.send("Couldn't find any thing for the given query.")
 
             
@@ -76,23 +87,24 @@ class sauce(commands.Cog, name="Sauce"):
                                                 f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
                                                 f"[SauceNao]({saucenao_url})"
                                                 ,inline=False)
-            embed.set_thumbnail(url = thumbnail)
+            
+            
             await ctx.send(embed=embed)
 
+        
         except UnknownStatusCodeException:
             url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
             em = discord.Embed(description =f"Sorry nothing found you can try [here]({url}) if you'd like.")
             em.set_footer(text="Also, make sure your url ends with an image format.")
             await ctx.send(embed = em)
 
+        except InvalidImageException:
+            return await ctx.send("Hey, it seems the url has no results. Also it seems your url is not an image url, please retry after checking that.")
     def is_url(self, message):
-        pattern = re.compile("(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:jpg|gif|png))(?:\?([^#]*))?(?:#(.*))?")
-        matches = pattern.finditer(message.content)
-        for match in matches:
-            if match.string.startswith("http"):
-                return True
+        pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif)$")
+        if not pattern.match(message):
             return False
-
+        return True
 
 
 
