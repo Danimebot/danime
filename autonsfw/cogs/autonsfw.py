@@ -77,6 +77,9 @@ class auto(commands.Cog, name="auto"):
 					if self.Bot.counter % setTime == 0:
 						try:
 							self.Bot.loop.create_task(self.sendwebhook(collection = collection, webhook_url = webhook_url, embed = embed))
+						except discord.HTTPException:
+							await self.removeimage(setTag, image)
+							
 						except:
 							continue
 		except ValueError:	
@@ -96,16 +99,16 @@ class auto(commands.Cog, name="auto"):
 		except discord.NotFound:
 			collection.delete_one({"_id" : webhook_url})
 			print("Deleted")
-		except discord.HTTPException:
-			await self.removeimage(setTag, image)
-			print(f"Removed , {setTag} tag, url : {image}")
+		
 
 	async def removeimage(self, tag, url ):
 		db = self.Bot.db2['AbodeDB']
 		collection = db[tag]
 		try:
 			collection.delete_one({"_id" : url})
+			print(f"Removed , {tag} tag, url : {image}")
 		except:
+			print(f"Couldn't remove.")
 			pass
 
 def setup (Bot):
