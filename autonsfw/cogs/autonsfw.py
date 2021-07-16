@@ -51,8 +51,8 @@ class auto(commands.Cog, name="auto"):
 
 	@tasks.loop(seconds=60)
 	async def auto_send(self):
-		await self.Bot.wait_until_ready()
-		try:
+		# await self.Bot.wait_until_ready()
+		# try:
 			# if self.Bot.DEFAULT_PREFIX == "&":
 			# 	return 
 			self.Bot.counter += 1
@@ -74,6 +74,10 @@ class auto(commands.Cog, name="auto"):
 					embed =  discord.Embed(color =  color)
 					embed.set_image(url=f"{image}")
 					embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
+					print(self.Bot.counter, setTime)
+					if isinstance(setTime, str):
+						collection.update_one({"_id" : webhook_url}, {"$set" : {"time" : 1}})
+						setTime = 1
 					if self.Bot.counter % setTime == 0:
 						try:
 							self.Bot.loop.create_task(self.sendwebhook(collection = collection, webhook_url = webhook_url, embed = embed))
@@ -81,14 +85,16 @@ class auto(commands.Cog, name="auto"):
 							await self.removeimage(setTag, image)
 							
 						except:
+							print("Failed sending the webhook.")
 							continue
-		except ValueError:	
-			self.Bot.counter += 1
-			print("Couldn't send it")
-			pass
-		except:
-			self.Bot.counter += 1
-			pass
+		# except ValueError:	
+		# 	self.Bot.counter += 1
+		# 	print("Couldn't send it")
+		# 	pass
+		# except:
+		# 	self.Bot.counter += 1
+		# 	print("Failed, no clue what went wrong.")
+		# 	pass
 
 			
 	async def sendwebhook(self, collection, webhook_url, embed:discord.Embed):
