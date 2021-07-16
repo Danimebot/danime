@@ -58,12 +58,13 @@ class sauce(commands.Cog, name="Sauce"):
 
             if isinstance(results[0], MangaSource):
                 embed.add_field(name="Chapter", value=results[0].chapter)
-
         
             try:
                 source = results[0].urls[0]
             except IndexError:
                 source = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+            except TypeError:
+                return await ctx.send("Nothing found in you request. Try not using a gif url if possible.")
             try:
                 author = results[0].author_name
             except AttributeError:
