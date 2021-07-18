@@ -6,7 +6,7 @@ from pymongo import MongoClient
 import datetime
 
 
-
+ 
 class danimeapi(commands.Cog, name="danimeapi"):
 	def __init__(self, Bot):
 		self.Bot = Bot
@@ -40,31 +40,49 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		else:
 			return await ctx.send("It seems the image is already added.")
 
-	@commands.command()
+	@commands.group(pass_context=True)
 	@commands.check(is_dev)
 	@commands.guild_only()
 	async def removeimage(self, ctx, collection:str, url:str):
+		if ctx.invoked_subcommand is None:
+			if url == None:
+				return await ctx.send(f"Bruh!")
 
-		if url == None:
-			return await ctx.send(f"Bruh!")
-
-		urls = list(url.split("+"))
-		db = self.Bot.db2['AbodeDB']
-		collection = db [f'{collection}']
-		check = db.list_collection_names()
-		if not collection in check:
-			return await ctx.send("No result for the db query.")
-		for url in urls:
-			try:
-				query = {"_id": url}
-				search = collection.find_one(query)
-				if search == None:
-					return await ctx.send("Nothing found.")
-				collection.delete_one(query)
-				await ctx.send(f"Removed.")
-			except:
-				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
+			urls = list(url.split("+"))
+			db = self.Bot.db2['AbodeDB']
+			collection = db [f'{collection}']
+			check = db.list_collection_names()
+			if not collection in check:
+				return await ctx.send("No result for the db query.")
+			for url in urls:
+				try:
+					query = {"_id": url}
+					search = collection.find_one(query)
+					if search == None:
+						return await ctx.send("Nothing found.")
+					collection.delete_one(query)
+					await ctx.send(f"Removed.")
+				except:
+					await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
 	
+	
+	@commands.command()
+	@commands.check(is_dev)
+	async def deleteimage(self, ctx, url:str):
+		await ctx.send("This command will delete the image from all the database if matched, please use this wisley.", delete_after=7)
+		db = self.Bot.db2['AbodeDB']
+		collections = db.list_collection_names()
+		for collection in collections:
+			activeCollection = db[f'{collection}']
+			query = {"_id" : url}
+			search = activeCollection.find_one(query)
+			if search != None:
+				activeCollection.delete_one({"_id" : url})
+				await ctx.send(f"DELETED IMAGE from {activeCollection.name}.")
+			else:
+				continue
+		return await ctx.send("Process completed.")
+
 	@commands.command()
 	@commands.check(is_dev)
 	@commands.guild_only()
