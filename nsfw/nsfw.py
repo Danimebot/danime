@@ -611,6 +611,7 @@ class vein3(commands.Cog, name="APIs"):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def femdom(self, ctx, amount: int = 0):
+        return await ctx.send("Femdom not available rightnow.")
 
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
