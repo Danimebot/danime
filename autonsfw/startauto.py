@@ -11,7 +11,7 @@ import certifi
 path = "/home/ubuntu/danime/configs.json"
 
 if not os.path.exists(path):
-	path = "/home/vein/Documents/danime/configs.json"
+    path = "/home/vein/Documents/danime/configs.json"
 
 with open(path) as jsonfile:
     obj = json.load(jsonfile)
@@ -60,7 +60,7 @@ bot.cupped_fist = "<:Cuppedfist:757112296094040104>"
 bot.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
 bot.support = "https://discord.com/invite/aTzduKANKh"
 extensions = [
-	"cogs.autonsfw"
+    "cogs.autonsfw"
 ]
 if __name__ == "__main__":
     for extension in extensions:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
 @bot.event
 async def on_ready():
-	print("Autonsfw working.")
+    print("Autonsfw working.")
 
 bot.db1 = MongoClient(db1_token, tlsCAFile=certifi.where())
 bot.db2 = MongoClient(db2_token, tlsCAFile=certifi.where())
