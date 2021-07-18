@@ -1063,4 +1063,3 @@ class vein3(commands.Cog, name="APIs"):
 def setup(Bot):
     Bot.add_cog(vein3(Bot))
     print("APIs cog is working.")
- 
