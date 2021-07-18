@@ -27,24 +27,33 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 		db = self.Bot.db2['AbodeDB']
 		collection = db [f'{collection}']
+		check = db.list_collection_names()
 
+		if not collection in check:
+			return await ctx.send("No result for the db query.")
 
 		if (collection.find_one({"_id": url})== None):
 			data = {"_id": f"{url}"}
 
 			collection.insert_one(data)
 			return await ctx.send("Added a new image.")
+		else:
+			return await ctx.send("It seems the image is already added.")
 
 	@commands.command()
 	@commands.check(is_dev)
 	@commands.guild_only()
 	async def removeimage(self, ctx, collection:str, url:str):
+
 		if url == None:
 			return await ctx.send(f"Bruh!")
 
 		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
 		collection = db [f'{collection}']
+		check = db.list_collection_names()
+		if not collection in check:
+			return await ctx.send("No result for the db query.")
 		for url in urls:
 			try:
 				query = {"_id": url}
@@ -55,6 +64,38 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				await ctx.send(f"Removed.")
 			except:
 				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
+	
+	@commands.command()
+	@commands.check(is_dev)
+	@commands.guild_only()
+	async def moveimage(self, ctx, collection:str, url:str, collection2:str):
+		if url == None:
+			return await ctx.send(f"Bruh!")
+
+		urls = list(url.split("+"))
+		db = self.Bot.db2['AbodeDB']
+		check = db.list_collection_names()
+		if not collection in check or not collection2 in check:
+			return await ctx.send("Check failed, wrong db given.")
+
+		collection = db [f'{collection}']
+		collection2 = db[collection2]
+		try:
+			query = {"_id": url}
+			search = collection.find_one(query)
+			search2 = collection2.find_one(query)
+			if search != None:
+				collection.delete_one(query)
+			if search2 != None:
+				return await ctx.send("Image already exists at the moved folder.")
+			
+			collection2.insert_one({"_id" : url})
+			await ctx.send(f"Image moved from `{collection.name}` to `{collection2.name}`")
+			
+		except:
+			await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
+
+
 	
 	@commands.command()
 	@commands.check(is_dev)
@@ -71,21 +112,21 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				matches.append(collection)
 			else:
 				continue
-		
+		matches = ['No matches'] if len(matches)== 0 else matches
 		r = requests.get(link).content
 		try:
 			status = 200
 		except:
 			status = r.status_code
-		try:
-			embed = discord.Embed()
-			embed.description = f"Link status  || [Link]({link})"
-			embed.add_field(name = "Collections", value = f", ".join(matches))
-			embed.add_field(name = "Status Code", value= status)
-			embed.add_field(name = "Remove it?", value= f"`dh removeimage <collection> {link}`", inline=False)
-			await ctx.send(embed=embed)
-		except:
-			return await ctx.send("Something went wrong.")
+		# try:
+		embed = discord.Embed()
+		embed.description = f"Link status  || [Link]({link})"
+		embed.add_field(name = "Collections", value = f", ".join(matches))
+		embed.add_field(name = "Status Code", value= status)
+		embed.add_field(name = "Remove it?", value= f"`dh removeimage <collection> {link}`", inline=False)
+		await ctx.send(embed=embed)
+		# except:
+		# 	return await ctx.send("Something went wrong.")
 			
 
 	@commands.command()
@@ -152,6 +193,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		em.add_field(name = "Status", value = status, inline = False)
 		em.set_footer(text="Last Updated")
 		await ctx.send(embed=em)
+
 
 
 def setup (Bot):
