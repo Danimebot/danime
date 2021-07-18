@@ -11,14 +11,8 @@ class safe(commands.Cog, name = "safe"):
 
 	async def send_image(self, ctx, tag:str, amount:int):
 		if amount > 10:
-			return await ctx.send("Can't go higher than that.")
-		i = 1
-		urls = []
-		while i <= amount:
-			url = f"{self.Bot.api_url}{tag}"
-			r = requests.get(url).json()['url']
-			urls.append(r)
-			i += 1	
+			return await ctx.send("Can't go higher than 10.")
+		urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']	
 		try:
 			if amount <= 5:
 				await ctx.send("\n".join(urls[:amount]))
