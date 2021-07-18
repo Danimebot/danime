@@ -70,14 +70,11 @@ class auto(commands.Cog, name="auto"):
 					webhook_url =item["_id"]
 					setTime = item["time"]
 					setTag = item["tag"]
-					image = image_list[key]
-					embed =  discord.Embed(color =  color)
-					embed.set_image(url=f"{image}")
-					embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
-					if isinstance(setTime, str):
-						collection.update_one({"_id" : webhook_url}, {"$set" : {"time" : 1}})
-						setTime = 1
 					if self.Bot.counter % setTime == 0:
+						image = image_list[key]
+						embed =  discord.Embed(color =  color)
+						embed.set_image(url=f"{image}")
+						embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
 						try:
 							self.Bot.loop.create_task(self.sendwebhook(collection = collection, webhook_url = webhook_url, embed = embed))
 						except discord.HTTPException:

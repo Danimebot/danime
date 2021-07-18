@@ -22,7 +22,7 @@ with open(path) as jsonfile:
    
 jsonfile.close()
 
-prefix = "&"
+prefix = "&&"
 bot = commands.Bot(command_prefix = prefix)
 bot.DEFAULT_PREFIX = prefix
 bot.api_url = api_url
