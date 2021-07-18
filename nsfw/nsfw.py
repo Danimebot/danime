@@ -640,7 +640,7 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends a ass picture.")
+    @commands.command(description=f"Sends a ass picture.", usage="dh ass 10")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ass(self, ctx, amount: int = 0):
