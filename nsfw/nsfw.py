@@ -607,7 +607,7 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends a femdom picture.")
+    @commands.command(description=f"Sends a femdom picture.", usage = "dh femdom 5")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def femdom(self, ctx, amount: int = 0):
