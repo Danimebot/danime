@@ -1,5 +1,4 @@
 import discord
-
 from discord.ext import commands, tasks
 import datetime
 import random
@@ -8,132 +7,23 @@ import asyncio
 import traceback
 import aiohttp
 from aiohttp import ClientSession
-
 import requests
 import urllib
 from discord.ext.commands import command, cooldown
 import json
-from discord.ext import menus
 import nekos
 from TextToOwO.owo import text_to_owo as owoConvert
 import hmtai
+from cogs.autonsfw import DanimeAPI
+from pygicord import Paginator
 
-
-def hyper_replace(text, old: list, new: list):
-    """
-    Allows you to replace everything you need in one function using two lists.
-    :param text:
-    :param old:
-    :param new:
-    :return:
-    """
-    msg = str(text)
-    for x, y in zip(old, new):
-        msg = str(msg).replace(x, y)
-        return msg
-
-
-class CatchAllMenu(menus.MenuPages, inherit_buttons=False):
-    def __init__(self, source, **kwargs):
-        super().__init__(source, **kwargs)
-        self._info_page = f"Info:\n⬅️ • Go back one page\n➡️ • Go forward one page\n⏪ • Go the the first page\n⏩ • Go to the last page\n⏹️ • Stop the paginator\n🔢 • Go to a page of your choosing\n❔ • Brings you here"
-
-    @menus.button('⏪', position=menus.First(0))
-    async def go_to_first_page(self, payload):
-        """go to the first page"""
-        try:
-            await self.message.remove_reaction(payload.emoji, payload.member)
-        except AttributeError as error:
-            pass
-        await self.show_page(0)
-
-    @menus.button('⬅️', position=menus.Position(0))
-    async def go_to_previous_page(self, payload):
-        """go to the previous page"""
-        try:
-            await self.show_checked_page(self.current_page - 1)
-        except AttributeError as error:
-            pass
-        await self.message.remove_reaction(payload.emoji, payload.member)
-
-    @menus.button('⏹️', position=menus.Position(3))
-    async def stop_pages(self, payload):
-        """stops the pagination session."""
-        self.stop()
-        await self.message.delete()
-
-    @menus.button('➡️', position=menus.Position(5))
-    async def go_to_next_page(self, payload):
-        """go to the next page"""
-        try:
-            await self.message.remove_reaction(payload.emoji, payload.member)
-        except AttributeError as error:
-            pass
-        await self.show_checked_page(self.current_page + 1)
-
-    @menus.button('⏩', position=menus.Position(6))
-    async def go_to_last_page(self, payload):
-        try:
-            await self.message.remove_reaction(payload.emoji, payload.member)
-        except AttributeError as error:
-            pass
-        await self.show_page(self._source.get_max_pages() - 1)
-
-    @menus.button('🔢', position=menus.Position(4))
-    async def _1234(self, payload):
-        try:
-            await self.message.remove_reaction(payload.emoji, payload.member)
-        except AttributeError as error:
-            i
-        pass
-        i = await self.ctx.send("What page would you like to go to?")
-        msg = await self.ctx.bot.wait_for('message', check=lambda m: m.author == self.ctx.author)
-        page = 0
-        try:
-            page += int(msg.content)
-        except ValueError:
-            return await self.ctx.send(
-                f"**{self.ctx.author.name}**, **{msg.content}** could not be turned into an integer! Please try again!",
-                delete_after=3)
-
-        if page > (self._source.get_max_pages()):
-            await self.ctx.send(f"There are only **{self._source.get_max_pages()}** pages!", delete_after=3)
-        elif page < 1:
-            await self.ctx.send(f"There is no **{page}th** page!", delete_after=3)
-        else:
-            index = page - 1
-            await self.show_checked_page(index)
-            await i.edit(content=f"Transported to page **{page}**!", delete_after=3)
-
-    @menus.button('❔', position=menus.Position(7))
-    async def on_info(self, payload):
-        try:
-            await self.message.remove_reaction(payload.emoji, payload.member)
-        except AttributeError as error:
-            pass
-        await self.message.edit(embed=discord.Embed(description=self.info_page, color=0xb863f2))
-
-    @property
-    def info_page(self):
-        return self._info_page
-
-    def add_info_fields(self, fields: dict):
-        for key, value in fields.items():
-            self._info_page += f"\n{key} • {value}"
-
-
-class EmbedSource(menus.ListPageSource):
-    def __init__(self, data):
-        super().__init__(data, per_page=1)
-
-    async def format_page(self, menu, entries: discord.Embed):
-        entries.set_footer(text=f'({menu.current_page + 1}/{menu._source.get_max_pages()})')
-        return entries
+#This cog also contains many sfw things :
 
 
 class vein3(commands.Cog, name="APIs"):
     def __init__(self, Bot):
         self.Bot = Bot
+        self.danime_api = DanimeAPI(self.Bot.api_url)
 
     async def notnsfw(self, ctx):
         embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -188,7 +78,7 @@ class vein3(commands.Cog, name="APIs"):
             link = data['url']
             await self.waifu_embed(ctx=ctx, link=link)
 
-    @commands.command(description=f"Sends blowjob gifs ig", aliases=['bj'])
+    @commands.command(description=f"Sends blowjob images ig", aliases=['bj'])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def blowjob(self, ctx, amount: int = 0):
@@ -196,16 +86,7 @@ class vein3(commands.Cog, name="APIs"):
             await self.notnsfw(ctx=ctx)
             return
         if amount != 0:
-            return await self.send_image(ctx, "nsfw", amount)
-        guess = random.randint(0, 1)
-        if guess == 1:
-            url = f"https://api.waifu.pics/nsfw/blowjob"
-            data = requests.get(url).json()
-            link = data['url']
-            embed = discord.Embed(color=random.choice(self.Bot.color_list))
-            embed.set_image(url=f"{link}")
-
-            await ctx.send(embed=embed)
+            return await self.send_image(ctx, "blowjob", amount)
         if guess == 0:
             r = requests.get(f"{self.Bot.api_url}blowjob").json()['url']
             em = discord.Embed()
@@ -651,20 +532,17 @@ class vein3(commands.Cog, name="APIs"):
                                     value=hyper_replace(str(item['example']), old=['[', ']'], new=['', '']))
                     embed.add_field(name="Votes", value=f"\n👍 **{item['thumbs_up']:,}** 👎 **{item['thumbs_down']}**", inline=False)
                     embeds.append(embed)
-                source = EmbedSource(embeds)
-                menu = CatchAllMenu(source=source)
-                menu.add_info_fields({"📝": "The author of the post", ":thumbsup:": "How many thumbs up the post has",
-                                      ":thumbsdown:": "How many thumbs down the post has"})
-                await menu.start(ctx)
+                paginator = Paginator(pages=embeds, timeout=90.0)
+                await paginator.start(ctx)
         except IndexError:
-            raise commands.BadArgument(f"<:zzexclam:803980883970359306> | Your search terms gave no results.")
+            raise commands.BadArgument(f"Your search terms gave no results.")
 
     # @commands.command(description=f"Tch weakness")
     # @commands.guild_only()
     # async def lewd(self, ctx, user: discord.Member = None):
     #     embed = discord.Embed(color= random.choice(self.Bot.color_list))
     #     if user != None:
-    #     	embed.description=f"{user.name} Yu-ouu are very lwedddd!!"
+    #       embed.description=f"{user.name} Yu-ouu are very lwedddd!!"
     #     url = await self.lewd_gifs()
     #     embed.set_image(url=f"{url}")
 
@@ -993,15 +871,9 @@ class vein3(commands.Cog, name="APIs"):
 
     async def send_image(self, ctx, tag: str, amount: int):
         if amount > 10:
-            return await ctx.send("Can't go higher than that.")
+            return await ctx.send("Can't go higher than 10.")
         i = 1
-        urls = []
-        while i <= amount:
-            url = f"{self.Bot.api_url}{tag}"
-            r = requests.get(url).json()['url']
-            urls.append(r)
-            i += 1
-
+        urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
         try:
             if amount <= 5:
                 await ctx.send("\n".join(urls[:amount]))
