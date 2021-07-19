@@ -29,7 +29,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		collection = db [f'{collection}']
 		check = db.list_collection_names()
 
-		if not collection in check:
+		if not collection.name in check:
 			return await ctx.send("No result for the db query.")
 
 		if (collection.find_one({"_id": url})== None):
@@ -50,9 +50,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 			urls = list(url.split("+"))
 			db = self.Bot.db2['AbodeDB']
+			print(collection)
 			collection = db [f'{collection}']
+
 			check = db.list_collection_names()
-			if not collection in check:
+			if not collection.name in check:
+				print("hello")
 				return await ctx.send("No result for the db query.")
 			for url in urls:
 				try:
@@ -81,7 +84,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				await ctx.send(f"DELETED IMAGE from {activeCollection.name}.")
 			else:
 				continue
-		return await ctx.send("Process completed.")
+
 
 	@commands.command()
 	@commands.check(is_dev)
@@ -93,7 +96,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
 		check = db.list_collection_names()
-		if not collection in check or not collection2 in check:
+		if not collection.name in check or not collection2.name in check:
 			return await ctx.send("Check failed, wrong db given.")
 
 		collection = db [f'{collection}']
@@ -211,6 +214,30 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		em.add_field(name = "Status", value = status, inline = False)
 		em.set_footer(text="Last Updated")
 		await ctx.send(embed=em)
+
+
+	@commands.command()
+	@commands.check(is_dev)
+	async def updateapiinfo(self, ctx):
+		db = self.Bot.db2['AbodeDB']
+		collections = db.list_collection_names()
+		collections.sort()
+		results = []
+		n = 1
+		total = 0
+		for collection in collections:
+			activeCollection = db[f'{collection}']
+			total += activeCollection.count()
+			if activeCollection.count() > 60:
+				string = f"`{n}.` {activeCollection.name.capitalize()} : `{activeCollection.count()}`"
+				results.append(string)
+				n+=1
+		embed = discord.Embed(timestamp=datetime.datetime.now())
+		embed.title = "Information on the DanimeAPI database collections."
+		embed.description = "\n".join(results)
+		embed.set_thumbnail(url = ctx.me.avatar_url)
+		embed.set_footer(text=f"Total images : {total} | Last updated ", )
+		await ctx.send(embed=embed) 
 
 
 
