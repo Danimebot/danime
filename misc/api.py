@@ -25,20 +25,20 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		if url == None:
 			return await ctx.send(f"Bruh!")
 
+		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
 		collection = db [f'{collection}']
 		check = db.list_collection_names()
 
 		if not collection.name in check:
 			return await ctx.send("No result for the db query.")
-
-		if (collection.find_one({"_id": url})== None):
-			data = {"_id": f"{url}"}
-
-			collection.insert_one(data)
-			return await ctx.send("Added a new image.")
-		else:
-			return await ctx.send("It seems the image is already added.")
+		for url in urls:
+			if (collection.find_one({"_id": url})== None):
+				data = {"_id": url}
+				collection.insert_one(data)
+				await ctx.send("Added a new image.")
+			else:
+				await ctx.send("It seems the image is already added.")
 
 	@commands.group(pass_context=True)
 	@commands.check(is_dev)
@@ -50,12 +50,10 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 			urls = list(url.split("+"))
 			db = self.Bot.db2['AbodeDB']
-			print(collection)
 			collection = db [f'{collection}']
 
 			check = db.list_collection_names()
 			if not collection.name in check:
-				print("hello")
 				return await ctx.send("No result for the db query.")
 			for url in urls:
 				try:
@@ -96,11 +94,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
 		check = db.list_collection_names()
+		collection = db [f'{collection}']
+		collection2 = db[collection2]
+
 		if not collection.name in check or not collection2.name in check:
 			return await ctx.send("Check failed, wrong db given.")
 
-		collection = db [f'{collection}']
-		collection2 = db[collection2]
 		try:
 			query = {"_id": url}
 			search = collection.find_one(query)
@@ -131,7 +130,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			if search != None:
 				collection = collection
 				matches.append(collection)
-			else:
+			else:y55555
 				continue
 		matches = ['No matches'] if len(matches)== 0 else matches
 		r = requests.get(link).content
@@ -148,7 +147,30 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		await ctx.send(embed=embed)
 		# except:
 		# 	return await ctx.send("Something went wrong.")
-			
+	
+	@commands.command()
+	@commands.guild_only()
+	@commands.check(is_dev)
+	async def sendallimages(self, ctx, id:int):
+		channel = self.Bot.get_channel(id)
+		z = await ctx.send("Working on it!!")
+		db = self.Bot.db2['AbodeDB']
+
+		collection= db[f'anal']
+		collection2 = db[f'anal2']
+		search1 = collection.find()
+		search2 = collection2.find()
+		search2url = []
+		for value in search2:
+			search2url.append(value['_id'])
+
+		for value in search1:
+			url = value["_id"]
+			if not url in search2url:
+				await channel.send(url)
+
+
+
 
 	@commands.command()
 	@commands.guild_only()
@@ -171,32 +193,41 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			firstList.append(r['_id'])
 		channel = self.Bot.get_channel(id_)
 		async for message in channel.history(limit=amount):
-			try:
-				if message.content.startswith("&upload_images") or message.content.startswith("+jsk debug upload_images"):
-					await ctx.send(f"Scraped images till [Here]({message.jump_url})")
-					break
-				# url = (message.content)
+			# try:
+			# 	# if message.content.startswith("&upload_images") or message.content.startswith("+jsk debug upload_images"):
+			# 	# 	await ctx.send(f"Scraped images till [Here]({message.jump_url})")
+			# 	# 	break
+				url = message.content
+				
+				if message.attachments != None:
+					for attachments in message.attachments:
+						content = attachments.url
+						if content.startswith("https"):
+							check = self.is_url()
+							if check == True:
+								secondList.append(content)
 
-				# if not url.startswith("https"):
-				# 	continue
-				url = str(message.attachments[0].url)
 				if url.endswith("mp4") or url.endswith("gif"):
 					continue
-				# if message.author.bot == True:
-				# 	continue
+				if not url.startswith("https"):
+					continue
+				if url in firstList:
+					continue
 				secondList.append(url)
-			except:
-				pass
+			# except:
+			# 	pass
 		
 		for x in secondList:
-			if not x in firstList:
+			if x.startswith("https") and x not in firstList:
+				await ctx.send(x)
 				data = {"_id": x}
-				collection.insert_one(data)
-		x = (f'{len(firstList)} in cloud.')
-		y = (f'{len(secondList)} in this instance.')
-		xx =  len(secondList) + len(firstList) 
-		await z.edit(content=f'It seems it worked! Report\n{x}\n{y}\nTotal {xx}')
+				try:
+					collection.insert_one(data)
+				except:
+					print(f"Couldn't send {x}")
 
+		message = f"Process completed, with addition of `{len(secondList)}` images to the tag `{collection.name}`, now the tag has total of `{len(firstList) + len(secondList)}` images."
+		await ctx.send(embed=discord.Embed(description = message))
 
 	@commands.command()
 	@commands.check(is_dev)
@@ -215,6 +246,11 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		em.set_footer(text="Last Updated")
 		await ctx.send(embed=em)
 
+	def is_url(self, message):
+		pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif)$")
+		if not pattern.match(message):
+			return False
+		return True
 
 	@commands.command()
 	@commands.check(is_dev)
