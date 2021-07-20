@@ -130,7 +130,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			if search != None:
 				collection = collection
 				matches.append(collection)
-			else:y55555
+			else:
 				continue
 		matches = ['No matches'] if len(matches)== 0 else matches
 		r = requests.get(link).content
