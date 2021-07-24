@@ -44,7 +44,8 @@ class sauce(commands.Cog, name="Sauce"):
             sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
             embed = discord.Embed()
             results = await sauce.from_url(url)
-            thumbnail = results[0].thumbnail if (results[0].thumbnail != None) else ctx.author.avatar_url
+            thumbnail = results[0].thumbnail
+
             similarity = results[0].similarity if (results[0].similarity != None) else 0
             embed.set_thumbnail(url = thumbnail)
 
@@ -101,6 +102,10 @@ class sauce(commands.Cog, name="Sauce"):
 
         except InvalidImageException:
             return await ctx.send("Hey, it seems the url has no results. Also it seems your url is not an image url, please retry after checking that.")
+    
+        except IndexError:
+            return await ctx.send("Something went worng, it seems no results from your queries.")
+    
     def is_url(self, message):
         pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif)$")
         if not pattern.match(message):

@@ -9,7 +9,7 @@ import random
 from misc.fetch import fetch 
 from ago import human
 import re
-from cogs.utils import Pag
+
 import os
 from disputils import BotEmbedPaginator
 from bs4 import BeautifulSoup as soup
