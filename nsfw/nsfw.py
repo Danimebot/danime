@@ -12,11 +12,10 @@ import urllib
 from discord.ext.commands import command, cooldown
 import json
 import nekos
-from TextToOwO.owo import text_to_owo as owoConvert
 import hmtai
 from cogs.autonsfw import DanimeAPI
 from pygicord import Paginator
-
+from owotext import OwO
 #This cog also contains many sfw things :
 
 
@@ -87,12 +86,12 @@ class vein3(commands.Cog, name="APIs"):
             return
         if amount != 0:
             return await self.send_image(ctx, "blowjob", amount)
-        if guess == 0:
-            r = requests.get(f"{self.Bot.api_url}blowjob").json()['url']
-            em = discord.Embed()
-            em.description = f"Bad image? [Report it]({self.Bot.support})"
-            em.set_image(url=r)
-            await ctx.send(embed=em)
+        
+        r = requests.get(f"{self.Bot.api_url}blowjob").json()['url']
+        em = discord.Embed()
+        em.description = f"Bad image? [Report it]({self.Bot.support})"
+        em.set_image(url=r)
+        await ctx.send(embed=em)
 
     @commands.command(description=f"Sends cute anime fox girls your way")
     @commands.guild_only()
@@ -509,6 +508,12 @@ class vein3(commands.Cog, name="APIs"):
         if user == None:
             await self.waifu_embed(ctx=ctx, link=link)
 
+    def hyper_replace(self, text, old: list, new: list):
+        msg = str(text)
+        for x, y in zip(old, new):
+            msg = str(msg).replace(x, y)
+        return msg
+
     @commands.command(aliases=['define'])
     @commands.guild_only()
     async def urban(self, ctx, *, terms):
@@ -522,15 +527,13 @@ class vein3(commands.Cog, name="APIs"):
                     data = await r.json()
                 items = data['list']
                 for item in items:
-                    embed = discord.Embed(color=0x26fcff)
-                    embed.title = item['word']
-                    embed.set_author(name=item['author'],
-                                     icon_url="https://images-ext-1.discordapp.net/external/Gp2DBilGEcbI2YR0qkOGVkivomBLwmkW_7v3K8cD1mg/https/cdn.discordapp.com/emojis/734991429843157042.png")
-                    embed.description = hyper_replace(
+                    embed = discord.Embed()
+                    embed.set_author(name= f"Urban Defination of {item['word']} by {item['author']}.")
+                    embed.description = self.hyper_replace(
                         str(item['definition']), old=['[', ']'], new=['', ''])
                     embed.add_field(name="Example",
-                                    value=hyper_replace(str(item['example']), old=['[', ']'], new=['', '']))
-                    embed.add_field(name="Votes", value=f"\n👍 **{item['thumbs_up']:,}** 👎 **{item['thumbs_down']}**", inline=False)
+                                    value=self.hyper_replace(str(item['example']), old=['[', ']'], new=['', '']))
+                    embed.set_footer(text=f"👍 {item['thumbs_up']:,}  👎 {item['thumbs_down']}")
                     embeds.append(embed)
                 paginator = Paginator(pages=embeds, timeout=90.0)
                 await paginator.start(ctx)
@@ -937,7 +940,7 @@ class vein3(commands.Cog, name="APIs"):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def neko(self, ctx, user: discord.Member = None):
+    async def neko(self, ctx):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
@@ -947,16 +950,7 @@ class vein3(commands.Cog, name="APIs"):
             url = f"https://api.waifu.pics/nsfw/neko"
             data = requests.get(f"{url}").json()
             link = data['url']
-            if user == None:
-                await self.waifu_embed(ctx=ctx, link=link)
-
-            elif user != None:
-
-                embed = discord.Embed(color=random.choice(self.Bot.color_list))
-
-                embed.set_image(url=f"{link}")
-                embed.description = f"{ctx.author.mention} lewds {user.mention}"
-                await ctx.send(embed=embed)
+            await self.waifu_embed(ctx=ctx, link=link)
         if no == 1:
             url = nekos.img(target="nsfw_neko_gif")
             await self.waifu_embed(ctx=ctx, link=url)
@@ -974,29 +968,23 @@ class vein3(commands.Cog, name="APIs"):
         embed.set_image(url=nekos.cat())
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Sends a SFW anime wallpaper.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wallpaper(self, ctx):
-
-        if ctx.channel.is_nsfw():
-            embed = discord.Embed(color=random.choice(self.Bot.color_list))
-            embed.set_footer(text=f"Requested by {ctx.author.name}")
-            embed.set_image(url=nekos.img(target="wallpaper"))
-            await ctx.send(embed=embed)
+        url = "https://memes.blademaker.tv/api/animewallpaper"
+        data = requests.get(f"{url}").json()
+        if data["nsfw"] == False:
+            link = (data['image'])
+            await self.waifu_embed(ctx=ctx, link=link, dl=link)
         else:
-            url = "https://memes.blademaker.tv/api/animewallpaper"
-            data = requests.get(f"{url}").json()
-            if data["nsfw"] == False:
-                link = (data['image'])
-                await self.waifu_embed(ctx=ctx, link=link, dl=link)
+            return await ctx.send("Try re running the command, got nsfw :(")
 
     @commands.command()
     @commands.guild_only()
     async def owofy(self, ctx, *, YourText):
-        owo = owoConvert(YourText)
-        await ctx.send(owo)
-
+        text = OwO().translate(YourText)
+        await ctx.send(content = text)
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -1045,8 +1033,7 @@ class vein3(commands.Cog, name="APIs"):
         return await ctx.send(embed=embed)
 
     @commands.command(usage = "dh reddit anime",
-        description = "Sends a random picture from the given subreddit, no need to include `r/`."
-        )
+        description = "Sends a random picture from the given subreddit, no need to include `r/`.")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def reddit(self, ctx, subreddit):
             url = f"https://memes.blademaker.tv/api/{subreddit}"
@@ -1057,7 +1044,7 @@ class vein3(commands.Cog, name="APIs"):
 
             else:
                 if not ctx.channel.is_nsfw():
-                    return self.notnsfw(self, ctx = ctx)
+                    return await ctx.send("Non nsfw channel bruv")
                 link = data['image']
                 await self.waifu_embed(ctx=ctx, link=link, dl=link)
                 
