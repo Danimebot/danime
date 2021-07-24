@@ -6,8 +6,6 @@ import random
 import asyncio
 import requests
 from disputils import BotEmbedPaginator
-from cogs.utils import Pag
-from discord.ext import menus
 from nsfw import imgdl
 from misc import emoji
 from pygelbooru import Gelbooru

@@ -1,6 +1,6 @@
 import discord 
 from discord.ext import commands 
-from disputils import BotEmbedPaginator
+from pygicord import Paginator
 import datetime
 import random
 import psutil
@@ -58,13 +58,15 @@ class vein9(commands.Cog, name='Help'):
             await ctx.send(embed = em)
 
         elif entity == "2":
-            em1 = discord.Embed(color = random.choice(self.Bot.color_list))                                            
-            em1.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
+            em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
+            em.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em1.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
-            em1.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
-            em1.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
+            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
+            em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
+            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
+            em.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures.")
 
+            em1 = discord.Embed()
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
                                                     "**enable** \n  dh `autonsfw enable <tag> <time>` Enables the feature, `<tag>` and `<time>` are optional, time will be in minutes(1-30) and tags are all the commands/tags listed above. Example `dh autonsfw enable stockings 5`\n\n"
                                                     "**disable**\n  dh `autonsfw disable`   Disables the feature for the channel.\n", inline=False)
@@ -73,8 +75,9 @@ class vein9(commands.Cog, name='Help'):
             em1.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures.")
             
 
-            await ctx.send(embed=em1)
-
+            embeds = [em, em1]
+            paginator = Paginator(pages=embeds, timeout=90.0)
+            await paginator.start(ctx)
         elif entity == "2.5":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.description= f"Lists the next page of nsfw section. Needs nsfw toggled turned on, `dh nsfwtoggle enable` if you're an admin."
@@ -103,6 +106,7 @@ class vein9(commands.Cog, name='Help'):
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.add_field(name=f"__Handy commands__", value=f"`reddit`,`addemoji`, `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, `privacypolicy`, `imagepolicy`", inline=False)
             em.add_field(name=f"__Fact commands__", value=f"`dogfact`, `catfact`, `pandafact`, `numberfact`, `yearfact`, `aquote`")
+            em.set_footer(text="This category has conditional nsfw commands, meaning sfw or nsfw depends on the condition.")
             await ctx.send(embed=em)
         
         elif not entity in check:

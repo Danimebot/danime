@@ -29,3 +29,4 @@ pygicord
 pysaucenao
 schedule
 AnilistPython
+owotext 
