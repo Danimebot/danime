@@ -77,7 +77,7 @@ class auto(commands.Cog, name="auto"):
 						embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
 						try:
 							self.Bot.loop.create_task(self.sendwebhook(collection = collection, webhook_url = webhook_url, embed = embed))
-						except discord.errors.HTTPException:
+						except discord.HTTPException:
 							await self.removeimage(setTag, image)
 							
 						except:
