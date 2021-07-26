@@ -41,7 +41,7 @@ bot.remove_command("help")
 bot.color = 0xa100f2
 bot.vein_id = vein_id
 bot.guild_id = 802529391808086066
-bot.github = "https://github.com/Vein05/danime"
+bot.github = "https://github.com/danimebot/danime"
 bot.website_link = "https://danime.netlify.app/"
 bot.cupped_fist = "<:Cuppedfist:757112296094040104>"
 bot.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
