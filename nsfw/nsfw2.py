@@ -265,6 +265,30 @@ class api2(commands.Cog, name="api2"):
 		url = await self.danimeapi(tag="thicc")
 		await self.waifu_embed(ctx=ctx, link=url)
 
+	@commands.command(usage = "dh league 5"
+		, description="League Of Legends")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def thicc(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "league", amount)			
+		url = await self.danimeapi(tag="league")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh fitness 5"
+		, description="Girls that you are afraid of.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def fitness(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "fitness", amount)			
+		url = await self.danimeapi(tag="fitness")
+		await self.waifu_embed(ctx=ctx, link=url)
+
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
 	print("Api2 is working")
