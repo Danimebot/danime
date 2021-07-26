@@ -58,13 +58,15 @@ class vein9(commands.Cog, name='Help'):
             await ctx.send(embed = em)
 
         elif entity == "2":
+            if not ctx.channel.is_nsfw():
+                return await ctx.send("Use this command in a nsfw channel please.")
             em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
             em.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
             em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `futanari`, `trap`, `furry`", inline=False)
             em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
             em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
-            em.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures.")
+            em.set_footer(text=f"Use [dh whatis nsfw] to get detail to know what is expected under nsfw commands.")
 
             em1 = discord.Embed()
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
@@ -79,6 +81,8 @@ class vein9(commands.Cog, name='Help'):
             paginator = Paginator(pages=embeds, timeout=90.0)
             await paginator.start(ctx)
         elif entity == "2.5":
+            if not ctx.channel.is_nsfw():
+                return await ctx.send("Use this command in a nsfw channel please.")
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.description= f"Lists the next page of nsfw section. Needs nsfw toggled turned on, `dh nsfwtoggle enable` if you're an admin."
             em.add_field(name=f"[Booru/Sites]", value = f"`danbooru`, `gelbooru`, `realbooru`, `yandere`, `konachan`, `realbooru`, `safebooru`, `e621`, `rule34`", inline= False)
