@@ -937,9 +937,8 @@ class vein3(commands.Cog, name="APIs"):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
-        no = random.randint(0, 2)
+        no = random.randint(0, 1)
         if no == 0:
-
             url = f"https://api.waifu.pics/nsfw/neko"
             data = requests.get(f"{url}").json()
             link = data['url']
