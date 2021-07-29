@@ -594,21 +594,21 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
         
-    @commands.command(description=f"Sends a futanari picture.")
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def futanari(self, ctx, amount:int = 0):
+    # @commands.command(description=f"Sends a futanari picture.")
+    # @commands.guild_only()
+    # @commands.cooldown(1, 5, commands.BucketType.user)
+    # async def futanari(self, ctx, amount:int = 0):
 
-        if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "futanari", amount)
-        r = requests.get(f"{self.Bot.api_url}futanari").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+    #     if not ctx.channel.is_nsfw():
+    #         await self.notnsfw(ctx=ctx)
+    #         return
+    #     if amount != 0:
+    #         return await self.send_image(ctx, "futanari", amount)
+    #     r = requests.get(f"{self.Bot.api_url}futanari").json()['url']
+    #     em = discord.Embed()
+    #     em.description = f"Bad image? [Report it]({self.Bot.support})"
+    #     em.set_image(url=r)
+    #     await ctx.send(embed=em)
 
     @commands.command(description=f"Sends a femdom picture.", usage = "dh femdom 5")
     @commands.guild_only()
@@ -779,21 +779,21 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends a trap picture.")
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def trap(self, ctx, amount : int = 0):
-        if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "trap", amount)
+    # @commands.command(description=f"Sends a trap picture.")
+    # @commands.guild_only()
+    # @commands.cooldown(1, 5, commands.BucketType.user)
+    # async def trap(self, ctx, amount : int = 0):
+    #     if not ctx.channel.is_nsfw():
+    #         await self.notnsfw(ctx=ctx)
+    #         return
+    #     if amount != 0:
+    #         return await self.send_image(ctx, "trap", amount)
 
-        r = requests.get(f"{self.Bot.api_url}trap").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+    #     r = requests.get(f"{self.Bot.api_url}trap").json()['url']
+    #     em = discord.Embed()
+    #     em.description = f"Bad image? [Report it]({self.Bot.support})"
+    #     em.set_image(url=r)
+    #     await ctx.send(embed=em)
 
     @commands.command(description=f"Glasses lady yay!")
     @commands.guild_only()
