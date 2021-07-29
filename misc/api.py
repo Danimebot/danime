@@ -10,7 +10,7 @@ import datetime
 class danimeapi(commands.Cog, name="danimeapi"):
 	def __init__(self, Bot):
 		self.Bot = Bot
-		self.sendstats.start()
+		# self.sendstats.start()
 
 
 	def is_dev(ctx):
