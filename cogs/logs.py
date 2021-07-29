@@ -14,6 +14,7 @@ class logs(commands.Cog, name="logs"):
 		if self.Bot.DEFAULT_PREFIX == "&":
 			return
 		channel = self.Bot.get_channel(856785981575659530)
+		await channel.send("<@427436602403323905>")
 		embed = discord.Embed()
 		embed.description = f"Joined `{guild.name} | {guild.id}` with `{guild.member_count}` members."
 		embed.set_thumbnail(url = guild.icon_url)
@@ -24,6 +25,7 @@ class logs(commands.Cog, name="logs"):
 		if self.Bot.DEFAULT_PREFIX == "&":
 			return
 		channel = self.Bot.get_channel(856786043834335232)
+		await channel.send("<@427436602403323905>")
 		embed = discord.Embed()
 		embed.description = f"Left `{guild.name} | {guild.id}` with `{guild.member_count}` members."
 		embed.set_thumbnail(url = guild.icon_url)

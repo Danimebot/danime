@@ -120,9 +120,9 @@ bot.nsfwToggledGuilds = []
 async def on_guild_join(guild):
     if bot.DEFAULT_PREFIX == "&":
         return
-    vein= bot.get_guild(802529391808086066).get_member(vein_id)
+    # vein= bot.get_guild(802529391808086066).get_member(vein_id)
 
-    await vein.send(f"Joined {guild.name} which has ``{guild.member_count}`` members.")
+    # await vein.send(f"Joined {guild.name} which has ``{guild.member_count}`` members.")
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).embed_links:
 
@@ -132,15 +132,15 @@ async def on_guild_join(guild):
                                                     f"[HentaiDelight](https://discord.gg/9VbqMyVvP3)\n"
                                                     f"[Gradient](discord.gg/EWfcVq7KvV)\n")
             await channel.send(embed=embed)
-        break
+            break
 
-@bot.event
-async def on_guild_remove(guild):
-    if bot.DEFAULT_PREFIX == "&":
-        return
-    vein= bot.get_guild(802529391808086066).get_member(vein_id)
+# @bot.event
+# async def on_guild_remove(guild):
+#     if bot.DEFAULT_PREFIX == "&":
+#         return
+    # vein= bot.get_guild(802529391808086066).get_member(vein_id)
 
-    await vein.send(f"Left {guild.name} which has ``{guild.member_count}`` members.")
+    # await vein.send(f"Left {guild.name} which has ``{guild.member_count}`` members.")
 
 # async def bruh():
 #     guilds = bot.guilds
