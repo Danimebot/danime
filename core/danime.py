@@ -12,8 +12,8 @@ import certifi
 import json
 import datetime
 
-prefix = "&"
-# prefix = ["dh ", "Dh "]
+# prefix = "&"
+prefix = ["dh ", "Dh "]
 vein_id  = 427436602403323905
 intents = discord.Intents.default()
 intents.guilds = True
