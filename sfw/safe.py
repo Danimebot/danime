@@ -80,6 +80,16 @@ class safe(commands.Cog, name = "safe"):
 
 		url = await self.danimeapi(tag = "soppai")
 		await self.waifu_embed(ctx=ctx, link =url)
+
+	@commands.command( usage= "dh sfw 4", description= "Get SFW images ;) dh whatis sfw for more info")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def sfw(self, ctx, amount:int=0):
+		if  amount != 0:
+			return await self.send_image(ctx, "sfw", amount)		
+
+		url = await self.danimeapi(tag = "sfw")
+		await self.waifu_embed(ctx=ctx, link =url)
+
 def setup(Bot):
 	Bot.add_cog(safe(Bot))
 	print("Safe cog is working.")
