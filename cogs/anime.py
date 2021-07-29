@@ -62,10 +62,9 @@ class anime(commands.Cog, name='anime'):
             if first_run:
                 
                 data = resdata[num - 1]
-
                 embed = discord.Embed(color=random.choice(self.Bot.color_list))
 
-                embed.set_thumbnail(url=data['poster_img'])
+                
                 embed.set_author(name=data['title'], url=data['link'], icon_url=f'{ctx.me.avatar_url}')
                 # embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
 
@@ -82,7 +81,8 @@ class anime(commands.Cog, name='anime'):
                 embed.add_field(name="Format", value=data['format'], inline=True)
                 embed.add_field(name="Source Material", value=data['source_fmt'], inline=True)
                 embed.add_field(name="Genres", value=data['genres'], inline=False)
-
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.add_field(name="Synopsis", value=data['synopsis'], inline=False)
                 embed.add_field(name="More about it ", value=f"[Here]({data['link']}) ")
                 embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
@@ -128,8 +128,8 @@ class anime(commands.Cog, name='anime'):
                 data = resdata[num - 1]
 
                 embed = discord.Embed(color=random.choice(self.Bot.color_list))
-
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.set_author(name=data['title'], url=data['link'],  icon_url=f'{ctx.me.avatar_url}')
                 embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
 
@@ -156,8 +156,9 @@ class anime(commands.Cog, name='anime'):
                 data = resdata[num - 1]
 
                 embed = discord.Embed(color=0x19212d)
-
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
+                
                 embed.set_author(name=data['title'], url=data['link'], icon_url=f'{ctx.me.avatar_url}')
                
 
@@ -182,7 +183,8 @@ class anime(commands.Cog, name='anime'):
                
                 embed = discord.Embed(color=0x19212d)
 
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.set_author(name=data['title'], url=data['link'], icon_url=f'{ctx.me.avatar_url}')
                 
 
@@ -239,8 +241,8 @@ class anime(commands.Cog, name='anime'):
                 
                 data = resdata[num - 1]
                 embed = discord.Embed(color=random.choice(self.Bot.color_list))
-
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.set_author(name=data['title'], icon_url=f'{ctx.me.avatar_url}')
                 embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
                 
@@ -298,7 +300,8 @@ class anime(commands.Cog, name='anime'):
 
                 embed = discord.Embed(color=random.choice(self.Bot.color_list))
 
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.set_author(name=data['title'], url=data['link'], icon_url=f'{ctx.me.avatar_url}')
                 embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
 
@@ -326,7 +329,8 @@ class anime(commands.Cog, name='anime'):
 
                 embed = discord.Embed(color=random.choice(self.Bot.color_list))
 
-                embed.set_thumbnail(url=data['poster_img'])
+                if not "hentai" in data['genres']:
+                    embed.set_thumbnail(url = data['poster_img'])
                 embed.set_author(name=data['title'], url=data['link'], icon_url=f'{ctx.me.avatar_url}')
                 embed.set_footer(text=f"Requested by {ctx.author.name} | AniID: {data['ani_id']} MALID: {data['MALID']}")
 
