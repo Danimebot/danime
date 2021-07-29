@@ -98,9 +98,9 @@ class vein3(commands.Cog, name="APIs"):
     @commands.cooldown(1, 15, commands.BucketType.user
                        )
     async def foxgirl(self, ctx):
-        url = nekos.img(target="fox_girl")
-        await self.waifu_embed(ctx=ctx, link=url)
-
+        # url = nekos.img(target="fox_girl")
+        # await self.waifu_embed(ctx=ctx, link=url)
+        return await ctx.send("Command inactive for now.")
     @commands.command(description='Sends a random doggo picture.')
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -567,16 +567,9 @@ class vein3(commands.Cog, name="APIs"):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
-        no = random.randint(0, 1)
-        if no == 0:
-            url = nekos.img(target="ero")
-            embed = discord.Embed(color=random.choice(self.Bot.color_list))
 
-            embed.set_image(url=f"{url}")
-            await ctx.send(embed=embed)
-        if no == 1:
-            url = hmtai.useHM("v2", "ero")
-            await self.waifu_embed(ctx=ctx, link=url)
+        url = hmtai.useHM("v2", "ero")
+        await self.waifu_embed(ctx=ctx, link=url)
 
     @commands.command(description=f"Sends a cumm picture.")
     @commands.guild_only()
@@ -952,9 +945,6 @@ class vein3(commands.Cog, name="APIs"):
             link = data['url']
             await self.waifu_embed(ctx=ctx, link=link)
         if no == 1:
-            url = nekos.img(target="nsfw_neko_gif")
-            await self.waifu_embed(ctx=ctx, link=url)
-        if no == 2:
             url = hmtai.useHM("v2-4", "nsfwNeko")
             await self.waifu_embed(ctx=ctx, link=url)
 
