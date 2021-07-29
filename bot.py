@@ -32,7 +32,8 @@ jsonfile.close()
 # prefix = "&"
 prefix = "dh "
 vein_id  = 427436602403323905
-intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.guilds = True
 # bot = commands.AutoShardedBot(command_prefix=prefix, case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
 bot = commands.AutoShardedBot(command_prefix=["dh ", "Dh "], case_insensitive=True, intents=intents, owner_id=vein_id, chunk_guilds_at_startup=False)
 
@@ -172,7 +173,8 @@ extensions = [
     "nsfw.nsfw",
     "nsfw.nsfw2",
     "sfw.safe",
-    "cogs.stealemoji"
+    "cogs.stealemoji",
+    "misc.whatis"
 
 
 ]
