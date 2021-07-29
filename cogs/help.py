@@ -61,11 +61,11 @@ class vein9(commands.Cog, name='Help'):
             if not ctx.channel.is_nsfw():
                 return await ctx.send("Use this command in a nsfw channel please.")
             em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
-            em.description = f"Lists all the nsfw commands, each tag mentioned is a command. For example : `dh yuri`"
+            em.description = f"Lists all the nsfw commands, each tag mentioned is a command. Do note only 80% of the tags are from DanimeAPI, I'm migrating every tag soon.\nFor example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`", inline=False)
+            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `neko`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `solo`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`", inline=False)
             em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
-            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`")
+            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`")
             em.set_footer(text=f"Use [dh whatis nsfw] to get detail to know what is expected under nsfw commands.")
 
             em1 = discord.Embed()
