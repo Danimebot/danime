@@ -3,6 +3,8 @@ from discord.ext import commands
 import os
 import requests
 from typing import Union
+from core import danime
+
 class stealemoji(commands.Cog):
 	def __init__(self, Bot):
 		self.Bot = Bot
@@ -58,6 +60,6 @@ class stealemoji(commands.Cog):
 				return f".{format}"
 		return None
 
-def setup(Bot):
+def setup(Bot: danime.Danime):
 	Bot.add_cog(stealemoji(Bot))
-	print("Emoji stealer is working.")
+	Bot.logger.info("Emoji stealer is working.")

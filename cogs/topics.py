@@ -5,7 +5,7 @@ import pymongo
 from pymongo import MongoClient
 import random
 
-
+from core.danime import Danime
 
 class topic(commands.Cog, name="topic"):
     def __init__(self, Bot):
@@ -97,6 +97,6 @@ class topic(commands.Cog, name="topic"):
     	return 
 
 
-def setup (Bot):
+def setup (Bot: Danime):
 	Bot.add_cog(topic(Bot))
-	print("Topic cog is working.")
+	Bot.logger.info("Topic cog is working.")

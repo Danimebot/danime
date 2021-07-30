@@ -6,6 +6,7 @@ from pysaucenao.containers import ACCOUNT_ENHANCED, AnimeSource, BooruSource
 from disputils import BotEmbedPaginator
 import re
 from urllib import parse
+from core import danime
 
 class sauce(commands.Cog, name="Sauce"):
     def __init__(self, Bot):
@@ -117,6 +118,6 @@ class sauce(commands.Cog, name="Sauce"):
 
 
 
-def setup (Bot):
+def setup (Bot: danime.Danime):
     Bot.add_cog(sauce(Bot))
-    print("Sauce cog is working.")
+    Bot.logger.info("Sauce cog is working.")
