@@ -21,7 +21,7 @@ class logs(commands.Cog, name="logs"):
 		for channel in guild.text_channels:
 			if channel.permissions_for(guild.me).embed_links:
 				embed = discord.Embed(color = 0xff4042)
-				embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({bot.support}) if needed. Also check out our affiliations."
+				embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({self.bot.support}) if needed. Also check out our affiliations."
 				embed.add_field(name="Affiliations", value=f"[HanimeHaven](https://discord.gg/U7AJBVaFVg)\n"
 				                                        f"[HentaiDelight](https://discord.gg/9VbqMyVvP3)\n"
 				                                        f"[Gradient](discord.gg/EWfcVq7KvV)\n")

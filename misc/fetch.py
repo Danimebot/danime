@@ -13,12 +13,7 @@ import discord.ext.commands as commands
 
 
 
-
-
-
 class fetch():
-
-
     async def fetch_anilist(title, method):
         def monthintext(number):
             idn = ["January", "February", "March", "April",
@@ -136,7 +131,6 @@ class fetch():
             except aiohttp.ClientError:
                 return 'ERROR: Connection lost'
             await sesi.close()
-       
         status_tl = {
             'finished': 'Finished',
             'releasing': 'Releasing',
@@ -286,4 +280,3 @@ class fetch():
             full_query_result.append(dataset)
         return {'result': full_query_result, 'data_total': len(full_query_result)}
 
-    
