@@ -9,6 +9,7 @@ import random
 from misc.fetch import fetch 
 from ago import human
 import re
+from core import danime
 
 import os
 from disputils import BotEmbedPaginator
@@ -18,7 +19,7 @@ from AnilistPython.botSupport import botSupportClass
 anilist_bot = botSupportClass()
 
 class anime(commands.Cog, name='anime'):
-    def __init__(self, Bot):
+    def __init__(self, Bot: danime.Danime):
         self.Bot = Bot
 
 
@@ -464,6 +465,6 @@ class anime(commands.Cog, name='anime'):
 
 
 
-def setup (Bot):
+def setup (Bot: danime.Danime) -> None:
     Bot.add_cog(anime(Bot))
-    print("Anime cog is working.")
+    Bot.logger.info("Anime cog is working.")

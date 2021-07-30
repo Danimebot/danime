@@ -13,7 +13,7 @@ import pymongo
 from pymongo import MongoClient
 import random
 from random import choice, randint
-
+from core import danime
 import asyncio
 
 
@@ -23,7 +23,7 @@ guild = 757098499836739594
 color = 0xa100f2
 
 class vein2(commands.Cog, name= "fun"):
-    def __init__(self, Bot):
+    def __init__(self, Bot: danime.Danime):
         self.Bot = Bot
         
 
@@ -501,6 +501,6 @@ class vein2(commands.Cog, name= "fun"):
 
 
 
-def setup (Bot):
-     Bot.add_cog (vein2(Bot))
-     print("Fun cog is working.")
+def setup (Bot: danime.Danime) -> None:
+     Bot.add_cog(vein2(Bot))
+     Bot.logger.info("Fun cog is working.")

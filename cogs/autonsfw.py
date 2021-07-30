@@ -4,7 +4,7 @@ import pymongo
 from pymongo import MongoClient
 import random
 import requests
-
+from core import danime
 
 class DanimeAPI:
 	def __init__(self, api_url):
@@ -44,7 +44,7 @@ class DanimeAPI:
 
 
 class auto(commands.Cog, name="auto"):
-	def __init__(self, Bot):
+	def __init__(self, Bot: danime.Danime):
 		self.Bot = Bot
 		self.danime_api = DanimeAPI(self.Bot.api_url)
 	
@@ -197,6 +197,6 @@ class auto(commands.Cog, name="auto"):
 	# 	except:
 	# 		pass
 
-def setup (Bot):
+def setup (Bot: danime.Danime) -> None:
 	Bot.add_cog(auto(Bot))
-	print("Auto nsfw is working.")
+	Bot.logger.info("Auto nsfw is working.")
