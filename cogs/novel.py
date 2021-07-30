@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup as soup
 from lxml import etree
 from lxml.html import fromstring, HTMLParser
 from cogs.utils import Pag
+from core import danime
 
 class novel(commands.Cog, name="novel"):
 	def __init__(self, Bot):
@@ -239,6 +240,6 @@ class novel(commands.Cog, name="novel"):
 
 
 
-def setup (Bot):
+def setup (Bot: danime.Danime):
 	Bot.add_cog(novel(Bot)) 
-	print("Novel cog is working.")
+	Bot.logger.info("Novel cog is working.")

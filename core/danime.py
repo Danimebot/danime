@@ -11,12 +11,18 @@ import jishaku
 import certifi
 import json
 import datetime
+import logging
 
 # prefix = "&"
-prefix = ["dh ", "Dh "]
+prefix = ("dh ", "Dh ")
 vein_id  = 427436602403323905
 intents = discord.Intents.default()
 intents.guilds = True
+
+# Jishaku Flags
+os.environ["JISHAKU_HIDE"] = "True"
+os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
+os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True"
 
 with open('configs.json') as jsonfile:
     obj = json.load(jsonfile)
@@ -33,8 +39,15 @@ with open('configs.json') as jsonfile:
 
 jsonfile.close()
 
+# For basic bot logging
+logger = logging.getLogger('WardenLog')
+hdlr = logging.StreamHandler()
+frmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', "%Y-%m-%d %H:%M:%S", style='{')
+hdlr.setFormatter(frmt)
+logger.addFilter(hdlr)
+
 class Danime(commands.AutoShardedBot):
-	def __init__(self):
+	def __init__(self) -> None:
 		allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
 		
 		super().__init__(command_prefix=prefix,
@@ -59,6 +72,7 @@ class Danime(commands.AutoShardedBot):
 		self.booru_password = booru_password
 		self.saucenao_keys = saucenao_keys
 		self.anon_token = anon_token
+		self.logger = logger
 		self.tips  = [
 		  'You can set the current channel to nsfw with dh set_nsfw',
 		  'Feel free to join the support server for your queries',
@@ -69,7 +83,7 @@ class Danime(commands.AutoShardedBot):
 		  'You can use the autonsfw command to get nsfw pics every minute',
 		  'The DanimeAPI has 50k+ image data and is still growing!!'
 		]
-		self.colors = {
+		self.colors: dict = {
 		    "WHITE": 0x26fcff,
 		    "AQUA": 0x1ABC9C,
 		    "GREEN": 0x2ECC71,
@@ -100,7 +114,8 @@ class Danime(commands.AutoShardedBot):
 		self.db1 = MongoClient(db1_token, tlsCAFile=certifi.where())
 		self.db2 = MongoClient(db2_token, tlsCAFile=certifi.where())
 		self.commandName = []
-		self._extensions = [ 
+		self.logger.info("Hello, World!")
+		self._extensions = (
 						'cogs.anime',
 						'cogs.owner',
 						'nsfw.hentaii',
@@ -124,15 +139,18 @@ class Danime(commands.AutoShardedBot):
 				    "sfw.safe",
 				    "cogs.stealemoji",
 				    "misc.whatis"
-					]
+			)
 
+	def __repr__(self) -> str:
+		return super().__repr__()
 
-	def bootup(self):
+	def bootup(self) -> None:
 		for extension in self._extensions:
 			try:
 				self.load_extension(extension)
+				self.logger.info(f"Loaded Extension - {extension}")
 			except Exception as e:
-					print(f"Error loading the {extension}", file=sys.stderr)
+					self.logger.error(f'Error loading the {extension}')
 					traceback.print_exc()
 
 		self.load_extension("jishaku")

@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import random
 import requests
+from core.danime import Danime
 
 class stolen(commands.Cog, name="stolen"):
     def __init__(self, Bot):
@@ -58,6 +59,6 @@ class stolen(commands.Cog, name="stolen"):
         await ctx.send(embed=embed)
         return
 
-def setup (Bot):
+def setup (Bot: Danime):
 	Bot.add_cog(stolen(Bot))
-	print("Stolen commands is working.")
+	Bot.logger.info("Stolen commands is working.")

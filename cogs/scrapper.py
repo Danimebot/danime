@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import random
 from disputils import BotEmbedPaginator
+from core import danime
 
 class movie(commands.Cog, name="movie"):
 	
@@ -90,6 +91,6 @@ class movie(commands.Cog, name="movie"):
 		await send.delete()
 		await paginator.run()
 		
-def setup (Bot):
+def setup (Bot: danime.Danime):
 	Bot.add_cog(movie(Bot))
-	print("Movie cog is working.")
+	Bot.logger.info("Movie cog is working.")

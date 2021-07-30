@@ -7,6 +7,7 @@ import psutil
 from misc import emoji
 import datetime
 import sys
+from core import danime
 
 ban = 'https://cdn.discordapp.com/attachments/782161513825042462/793136610619293726/ban_and_unban.gif'
 slowmode = 'https://cdn.discordapp.com/attachments/782161513825042462/793136512699072522/slowmode.gif'
@@ -243,6 +244,6 @@ class vein9(commands.Cog, name='Help'):
 
         await ctx.send(embed=embed)
 
-def setup(Bot): 
+def setup(Bot: danime.Danime) -> None: 
     Bot.add_cog(vein9(Bot))
-    print("Help cog is working.")
+    Bot.logger.info("Help cog is working.")

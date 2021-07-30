@@ -11,6 +11,7 @@ import asyncio
 import random
 from pygelbooru import Gelbooru
 starttime = datetime.utcnow()
+from core import danime
 
 
 class owner(commands.Cog, name='owner'):
@@ -313,6 +314,6 @@ class owner(commands.Cog, name='owner'):
         for url in results:
             await ctx.send(url)
 
-def setup(Bot):
+def setup(Bot: danime.Danime):
     Bot.add_cog(owner(Bot))
-    print("Owner command is working.")
+    Bot.logger.info("Owner command is working.")

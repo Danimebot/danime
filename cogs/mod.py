@@ -6,6 +6,9 @@ import typing
 import random
 from datetime import datetime
 
+from discord.ext.commands import bot
+from core import danime
+
 color = 0xa100f2
 guild = 757098499836739594
 
@@ -142,6 +145,6 @@ class vein(commands.Cog, name="moderation"):
 
 
 
-def setup(Bot):
+def setup(Bot: danime.Danime):
     Bot.add_cog(vein(Bot))
-    print("Mod cog is working.")
+    Bot.logger.info("Mod cog is working.")

@@ -3,6 +3,7 @@ from discord.ext import commands
 import random
 from random import randint
 import datetime
+from core import danime
 
 class logs(commands.Cog, name="logs"):
 	def __init__(self, Bot):
@@ -66,6 +67,6 @@ class logs(commands.Cog, name="logs"):
 		
 		await channel.send(embed=embed)
 
-def setup (Bot):
+def setup (Bot: danime.Danime):
 	Bot.add_cog(logs(Bot))
-	print("Logs cog is working.") 
+	Bot.logger.info("Logs cog is working.") 

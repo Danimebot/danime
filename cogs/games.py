@@ -2,6 +2,7 @@ import discord
 import random
 from discord.ext import commands
 from random import randint
+from core import danime
 
 class vein5(commands.Cog, name= "games"):
     def __init__(self, Bot):
@@ -75,6 +76,6 @@ class vein5(commands.Cog, name= "games"):
     
    
 
-def setup(Bot):
+def setup(Bot: danime.Danime):
     Bot.add_cog(vein5(Bot))
-    print("Games cogs is working.")
+    Bot.logger.info("Games cogs is working.")
