@@ -61,7 +61,8 @@ class danimeapi(commands.Cog, name="danimeapi"):
 					query = {"_id": url}
 					search = collection.find_one(query)
 					if search == None:
-						return await ctx.send("Nothing found.")
+						await ctx.send("Nothing found.")
+						continue
 					collection.delete_one(query)
 					await ctx.send(f"Removed.")
 				except:
