@@ -202,3 +202,4 @@ async def status():
 bot.db1 = MongoClient(db1_token, tlsCAFile=certifi.where())
 bot.db2 = MongoClient(db2_token, tlsCAFile=certifi.where())
 bot.run(token)
+
