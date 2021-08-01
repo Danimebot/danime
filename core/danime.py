@@ -58,7 +58,7 @@ class Danime(commands.AutoShardedBot):
 		self.vein_id = vein_id
 		self.guild_id = 802529391808086066
 		self.github = "https://github.com/danimebot/danime"
-		self.website_link = "https://danime.netlify.app/"
+		self.website_link = "https://danimebot.xyz/"
 		self.cupped_fist = "<:Cuppedfist:757112296094040104>"
 		self.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
 		self.support = "https://discord.com/invite/aTzduKANKh"
