@@ -743,7 +743,7 @@ class vein3(commands.Cog, name="APIs"):
     @commands.command(name="1girl")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def _1girl(self, ctx, amount: int = 1):
+    async def _1girl(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
