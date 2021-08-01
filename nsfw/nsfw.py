@@ -740,17 +740,17 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(name="1girl")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def solo(self, ctx, amount: int = 1):
+    async def _1girl(self, ctx, amount: int = 1):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
             return
         if amount != 0:
-            return await self.send_image(ctx, "solo", amount)
+            return await self.send_image(ctx, "1girl", amount)
 
-        r = requests.get(f"{self.Bot.api_url}solo").json()['url']
+        r = requests.get(f"{self.Bot.api_url}1girl").json()['url']
         em = discord.Embed()
         em.description = f"Bad image? [Report it]({self.Bot.support})"
         em.set_image(url=r)
