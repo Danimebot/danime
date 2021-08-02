@@ -56,18 +56,17 @@ class danimeapi(commands.Cog, name="danimeapi"):
 			check = db.list_collection_names()
 			if not collection.name in check:
 				return await ctx.send("No result for the db query.")
+			not_removed = 0
 			for url in urls:
 				try:
 					query = {"_id": url}
 					search = collection.find_one(query)
-					if search == None:
-						await ctx.send("Nothing found.")
-						continue
 					collection.delete_one(query)
-					await ctx.send(f"Removed.")
 				except:
+					not_removed += 1
 					await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
-			message = f"Removed {len(urls)} images from {collection.name} tag."
+			message = f"Removed `{len(urls) - not_removed}` image(s) from `{collection.name}` tag."
+			await ctx.send(message)
 	
 	@commands.command()
 	@commands.check(is_dev)
