@@ -16,6 +16,11 @@ from random import randint
 import shutil
 import json
 from pygicord import Paginator
+from reactionmenu import ButtonsMenu, ComponentsButton
+from dislash import *
+
+
+
 
 
 
@@ -32,18 +37,12 @@ class hentaii(commands.Cog, name="hentaii"):
 	async def search(self, ctx, id: int):
 		
 		if ctx.channel.is_nsfw():
-			send = await ctx.send(f"<:nh3ntai:802131455215796224> Searching for ``{id}`` ")
-			
-			
+
 			if not Hentai.exists(id):
 				await ctx.send("404 not found")
 			else:
-			
 				doujin = Hentai(id)
-				
-				
 				language = Tag.get(doujin.language, property_="name")
-
 				emoji = "🌐"
 				if language == "english":
 					emoji = "<:English_language:802096460170395658>"
@@ -54,14 +53,12 @@ class hentaii(commands.Cog, name="hentaii"):
 				type_= Tag.get(doujin.category, property_="name")
 				close = []
 				for related in doujin.related:
-					hmm = str(related.id)
 					close.append(related.title(Format.Pretty))
 				uploded = doujin.upload_date
 
 				uploadedBetter = human(uploded, 4)
 				Author = Tag.get(doujin.artist, property_='name')
-				if Author == None:
-					Author = "Not given"
+				Author = "Not given" if Author == None else Author
 				embed = discord.Embed(title=doujin.title(Format.Pretty),
 				 url=doujin.url, color=random.choice(self.Bot.color_list))
 				
@@ -76,54 +73,49 @@ class hentaii(commands.Cog, name="hentaii"):
 					embed.add_field(name="Favorites", value=f"❤ {(doujin.num_favorites)}")
 				embed.add_field(name="Pages", value=f"📕 {doujin.num_pages}")
 				embed.add_field(name="Upload Date", value=f" {uploadedBetter}")
-				embed.set_thumbnail(url=doujin.thumbnail)
-				thing= doujin.tag
-				tags = []
-				for tag in thing:
-					z = Tag.get(thing, property_="name")
-					
+				embed.set_image(url=doujin.thumbnail)
+				
+				tags = Tag.get(doujin.tag, property_="name")
 				matches = ["lolicon", "shotacon", "gore", "rape", "cannibalism", "eye penetration", 
 						"forbidden content", "scat",
 				]
-				if any(x in z for x in matches):
+				if any(x in tags for x in matches):
 					if not ctx.guild.id in self.Bot.nsfwToggledGuilds: 
 						embed = discord.Embed(description ="The content you searched up has images that are not allowed by default.\n Use `dh nsfwtoggle enable` to enable it. Enabling this will also enable booru commands. \n**USING THIS FEATURE IS NOT RECOMMENDED USE AT YOUR OWN RISK!!!**")
 						return await ctx.send(embed= embed)
 					else:
 						pass
-				embed.add_field(name="Tags",value=f"{z}", inline=False)
-				if close != None:
-					embed.add_field(name="Related",value=f" \n".join(close))
-				embed.add_field(name=f"Reactions", 
-					value=f"React with <:nh3ntai:802131455215796224> if you want to read this. \nReact with <:horny:810392503547199509> to get all the images. \nReact with 📤 if you want to open a reading room.\n"
-							"React with 📥 to download this doujin." , inline=False)
-				await send.delete()
-				x = await ctx.send(embed=embed)
-
-				await x.add_reaction("<:nh3ntai:802131455215796224>")
-				await x.add_reaction("<:horny:810392503547199509>")
-				await x.add_reaction("📤")
-				await x.add_reaction("📥")
-				def check(reaction,user):
-					
-					return user == ctx.author and user.id != ctx.me.id
+				embed.add_field(name="Tags",value=f'{tags}', inline=False)
+				row = ActionRow(
+					Button(style=ButtonStyle.primary, label="Read", custom_id="first_option") ,
+					Button(style=ButtonStyle.primary, label="Send Images", custom_id="second_option"),
+					Button(style=ButtonStyle.primary, label="Reading Room", custom_id="third_option"),
+					Button(style=ButtonStyle.primary, label="Download", custom_id="fourth_option")
+				)
+				msg = await ctx.send(embed=embed, components = [row])
+				def check(inter):
+					return inter.author == ctx.author
 				try:
-					reaction, user= await self.Bot.wait_for("reaction_add",timeout=60, check=check)
-					await x.remove_reaction( emoji = f"<:nh3ntai:802131455215796224>" , member = ctx.author)
-					if str(reaction.emoji) == f'<:nh3ntai:802131455215796224>':
-						await x.delete()
-						a =0 
-						if a == 0:
-							list_ = doujin.image_urls
-							embeds= []
-							for i in list_:
-							    e = discord.Embed(color = random.choice(self.Bot.color_list))
-							    e.description = f"[Direct link]({doujin.url})"
-							    e.set_image(url=i)
-							    embeds.append(e)
-							paginator = Paginator(pages=embeds, timeout=90.0)
-							await paginator.start(ctx)
-					if str(reaction.emoji) ==f"<:horny:810392503547199509>":
+					inter = await msg.wait_for_button_click(check=check, timeout=30)
+					await msg.delete()
+					if inter.button.label== f'Read':
+						menu = ButtonsMenu(ctx, menu_type=ButtonsMenu.TypeEmbed, timeout=90, show_page_director=False)
+						list_ = doujin.image_urls
+						for i in list_:
+							e = discord.Embed(description = f"[Direct link]({doujin.url})")
+							e.set_image(url=i)
+							menu.add_page(e)
+						buttons = [ComponentsButton(style=ComponentsButton.style.primary, label = '' ,emoji='⏪', custom_id=ComponentsButton.ID_GO_TO_FIRST_PAGE),
+							ComponentsButton(style=ComponentsButton.style.primary, label = '' ,emoji='◀️', custom_id=ComponentsButton.ID_PREVIOUS_PAGE),
+							ComponentsButton(style=ComponentsButton.style.primary, label = '' ,emoji='⏹️', custom_id=ComponentsButton.ID_END_SESSION),
+							ComponentsButton(style=ComponentsButton.style.primary, label = '' ,emoji='▶️', custom_id=ComponentsButton.ID_NEXT_PAGE),
+							ComponentsButton(style=ComponentsButton.style.primary, label = '' ,emoji='⏩', custom_id=ComponentsButton.ID_GO_TO_LAST_PAGE)
+						]
+						for button in buttons:
+							menu.add_button(button)
+						await menu.start()
+							
+					if inter.button.label== f'Send Images':
 						if len(doujin.image_urls) > 100:
 							return await ctx.send("Too many pages to be sent here.")
 						
@@ -137,8 +129,7 @@ class hentaii(commands.Cog, name="hentaii"):
 							a += 5
 							b += 5
 							
-					if str(reaction.emoji) == f"📤":
-						
+					if inter.button.label== f'Reading Room':
 							try:
 								channelName = f"Reading room #{ctx.author.discriminator}"
 								overwrites = {
@@ -168,8 +159,7 @@ class hentaii(commands.Cog, name="hentaii"):
 								await ctx.send("It seems I don't have `manage channels` permissions enabled, enable it to use this feature.")
 
 
-					if str(reaction.emoji) == F"📥":
-						await x.delete()
+					if inter.button.label== f'Download':
 						await ctx.send(f"You will be given a direct download link, it will be a zip file, you can reassure about the security but it's wise to run a quick scan.")
 						db  = self.Bot.db1['AbodeDB']
 						collection =   db['direct_links']
