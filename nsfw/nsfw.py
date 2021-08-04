@@ -8,7 +8,6 @@ import traceback
 import aiohttp
 from aiohttp import ClientSession
 import requests
-import urllib
 from discord.ext.commands import command, cooldown
 import json
 import nekos
@@ -93,14 +92,7 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends cute anime fox girls your way")
-    @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.user
-                       )
-    async def foxgirl(self, ctx):
-        # url = nekos.img(target="fox_girl")
-        # await self.waifu_embed(ctx=ctx, link=url)
-        return await ctx.send("Command inactive for now.")
+
     @commands.command(description='Sends a random doggo picture.')
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -560,16 +552,6 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Sends an ero picture")
-    @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.user)
-    async def ero(self, ctx):
-        if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-
-        url = hmtai.useHM("v2", "ero")
-        await self.waifu_embed(ctx=ctx, link=url)
 
     @commands.command(description=f"Sends a cumm picture.")
     @commands.guild_only()
@@ -930,22 +912,21 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(description="Kemo = animal ears")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def neko(self, ctx):
+    async def kemo(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        no = random.randint(0, 1)
-        if no == 0:
-            url = f"https://api.waifu.pics/nsfw/neko"
-            data = requests.get(f"{url}").json()
-            link = data['url']
-            await self.waifu_embed(ctx=ctx, link=link)
-        if no == 1:
-            url = hmtai.useHM("v2-4", "nsfwNeko")
-            await self.waifu_embed(ctx=ctx, link=url)
+            return await self.notnsfw(ctx=ctx)
+
+        if amount != 0:
+            return await self.send_image(ctx, "kemo", amount)
+
+        r = requests.get(f"{self.Bot.api_url}kemo").json()['url']
+        em = discord.Embed()
+        em.set_image(url=r)
+        await ctx.send(embed=em)
+
 
     @commands.command()
     @commands.guild_only()
