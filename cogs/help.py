@@ -129,6 +129,7 @@ class vein9(commands.Cog, name='Help'):
         commandName : str = f"{command.name}"
         
         commandUsage = command.usage
+        commandCooldown = 0 if (command._buckets._cooldown.per) == None else int(command._buckets._cooldown.per)
         if command.usage == None: commandUsage = "Not given"
         commandAliase = ", ".join(command.aliases) or f"{command.name}"
         embed = discord.Embed(color = random.choice(self.Bot.color_list))
@@ -137,7 +138,7 @@ class vein9(commands.Cog, name='Help'):
         embed.add_field(name = f"<:notes:856427200555384842> Description", value=f"`{commandDescription}`", inline =False)
         embed.add_field(name=f"Example", value = f"`{commandUsage}`")
         embed.add_field(name = f"Aliases", value= f"`{commandAliase}`", inline = False)
-        # embed.add_field(name = f"Cooldown" , value=f"{command.cooldown_after_parsing}")
+        embed.add_field(name = f"Cooldown" , value=f"`{commandCooldown}` seconds.")
         embed.set_footer(text = "Join the support server if you are facing issues.")
         await ctx.send(embed = embed)
 
