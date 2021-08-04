@@ -1,15 +1,12 @@
-discord==1.0.1
+discord
 jishaku
 timeago
 aiohttp
-async-timeout
 requests
 pybooru
 pygelbooru
 rule34
-TextToOwO
 hmtai
-nekos.py
 ago
 disputils
 pymongo
@@ -27,6 +24,7 @@ discord-ext-menus @ git+https://github.com/Rapptz/discord-ext-menus@6f2b873bf0d2
 saucenao-api
 pygicord
 pysaucenao
-schedule
 AnilistPython
-owotext 
+owotext
+reactionmenu
+dislash
