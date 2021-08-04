@@ -863,8 +863,9 @@ class vein3(commands.Cog, name="APIs"):
             return await ctx.send("ERROR!")
 
     @commands.command(usage=f"dh nsfw 10 ",
-                      description="From a collection of more than 25000+ images and gifs sends a random one.")
+                      description="From a collection of more than 40,000+ images and gifs sends a random one.")
     @commands.guild_only()
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def nsfw(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
             await self.notnsfw(ctx=ctx)
