@@ -4,7 +4,7 @@ import requests
 import pymongo
 from pymongo import MongoClient
 import datetime
-
+import re
 
  
 class danimeapi(commands.Cog, name="danimeapi"):
@@ -206,7 +206,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 					for attachments in message.attachments:
 						content = attachments.url
 						if content.startswith("https"):
-							check = self.is_url()
+							check = self.is_url(content)
 							if check == True:
 								secondList.append(content)
 

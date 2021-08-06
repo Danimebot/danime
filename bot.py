@@ -1,7 +1,7 @@
 from discord.ext import commands, tasks
 from core.danime import Danime
 import os
-
+from dislash import *
 import logging
 import contextlib
 
@@ -43,7 +43,7 @@ def setup_logging():
             log.removeHandler(hdlr)
 
 bot = Danime()
-
+SlashClient(bot)
 @bot.event
 async def on_ready() -> None:
     for cmd in bot.commands:
