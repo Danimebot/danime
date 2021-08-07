@@ -44,7 +44,10 @@ class vein9(commands.Cog, name='Help'):
                         f"{emoji.gun} Handy/Usefull : `dh help 5`\n",
                 inline = False
                 )
-            em.add_field(name = "[Policy]", value="See `dh ip` and `dh privacypolicy` before you use the bot.")
+            sep = "**|**"
+            em.add_field(name = "[Links]", value=f"[Invite]({self.Bot.invite}) {sep} [Website]({self.Bot.website_link}) {sep} "
+                                                 f"[Support]({self.Bot.support}) {sep} [Policy]({self.Bot.website_link}policies)"
+            )
             await ctx.send(embed = em)
         elif  entity == "1" :
 
@@ -64,10 +67,11 @@ class vein9(commands.Cog, name='Help'):
             em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
             em.description = f"Lists all the nsfw commands, each tag mentioned is a command. Do note only 80% of the tags are from DanimeAPI, I'm migrating every tag soon.\nFor example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`", inline=False)
+            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `gifs` ,`blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`", inline=False)
             em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
             em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`")
-            em.set_footer(text=f"Use [dh whatis nsfw] to get detail to know what is expected under nsfw commands.")
+            em.add_field(name= f"[Multiple Tags]", value=f"You can also get images with multiple tags, `dh multiple <tag>+<tag2> amount`.\nExample: `dh multiple nsfw+oppai 10`", inline=False)
+            em.set_footer(text=f"Use [dh whatis nsfw] to get detail info about what is expected under nsfw commands.")
 
             em1 = discord.Embed()
             em1.add_field(name="[Autonsfw]", value=f"Can be used to set up a channel where the bot will send a nsfw pic every given minute\n\n"
@@ -133,9 +137,8 @@ class vein9(commands.Cog, name='Help'):
         if command.usage == None: commandUsage = "Not given"
         commandAliase = ", ".join(command.aliases) or f"{command.name}"
         embed = discord.Embed(color = random.choice(self.Bot.color_list))
-        embed.set_author(name =f"Extra information on the command {commandName}")
-        # embed.description = f"🗒️Description : {command.description} "
-        embed.add_field(name = f"<:notes:856427200555384842> Description", value=f"`{commandDescription}`", inline =False)
+        embed.set_author(name =f"Extra information on the command {commandName}.", url=self.Bot.website_link + "commands")
+        embed.add_field(name = f"Description", value=f"`{commandDescription}`", inline =False)
         embed.add_field(name=f"Example", value = f"`{commandUsage}`")
         embed.add_field(name = f"Aliases", value= f"`{commandAliase}`", inline = False)
         embed.add_field(name = f"Cooldown" , value=f"`{commandCooldown}` seconds.")
