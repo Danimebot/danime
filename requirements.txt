@@ -27,4 +27,4 @@ pysaucenao
 AnilistPython
 owotext
 reactionmenu
-dislash
+dislash.py

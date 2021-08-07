@@ -138,7 +138,8 @@ class Danime(commands.AutoShardedBot):
 				    "nsfw.nsfw2",
 				    "sfw.safe",
 				    "cogs.stealemoji",
-				    "misc.whatis"
+				    "misc.whatis",
+					"cogs.premium"
 			)
 
 	def __repr__(self) -> str:
