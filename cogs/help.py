@@ -133,7 +133,10 @@ class vein9(commands.Cog, name='Help'):
         commandName : str = f"{command.name}"
         
         commandUsage = command.usage
-        commandCooldown = 0 if (command._buckets._cooldown.per) == None else int(command._buckets._cooldown.per)
+        try : 
+            commandCooldown = int(command._buckets._cooldown.per)
+        except:
+            commandCooldown = 0
         if command.usage == None: commandUsage = "Not given"
         commandAliase = ", ".join(command.aliases) or f"{command.name}"
         embed = discord.Embed(color = random.choice(self.Bot.color_list))
