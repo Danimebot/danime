@@ -210,8 +210,8 @@ class danimeapi(commands.Cog, name="danimeapi"):
 							if check == True:
 								secondList.append(content)
 
-				if url.endswith("mp4") or url.endswith("gif"):
-					continue
+				# if url.endswith("mp4") or url.endswith("gif"):
+				# 	continue
 				if not url.startswith("https"):
 					continue
 				if url in firstList:
@@ -222,7 +222,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		
 		for x in secondList:
 			if x.startswith("https") and x not in firstList:
-				await ctx.send(x)
+				# await ctx.send(x)
 				data = {"_id": x}
 				try:
 					collection.insert_one(data)
@@ -280,7 +280,22 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		await message.edit(embed=embed)
 		await ctx.send("Message updated.")
 
+	@commands.command()
+	@commands.check(is_dev)
+	async def sendapiimages(self, ctx, tag, amount):
+		return await self.send_image(ctx, tag, amount)
 
+	async def send_image(self, ctx, tag:str, amount:int):
+		urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
+		a = 0 
+		b = 5
+		while len(urls) >= a:
+			try:
+				await ctx.send("\n".join(urls[a:b]))
+			except Exception:
+				break
+			a += 5
+			b += 5
 	# @tasks.loop(seconds=30)
 	# async def sendstats(self):
 	# 	await self.Bot.wait_until_ready()
