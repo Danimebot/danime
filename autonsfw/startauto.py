@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
 @bot.event
 async def on_ready():
-    print("Autonsfw working.")
+    print("Start Auto is working.")
 
 bot.db1 = MongoClient(db1_token, tlsCAFile=certifi.where())
 bot.db2 = MongoClient(db2_token, tlsCAFile=certifi.where())

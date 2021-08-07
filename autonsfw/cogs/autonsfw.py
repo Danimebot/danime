@@ -18,7 +18,7 @@ class DanimeAPI:
 		return requests.get(f"{self.api_url}{tag}/{amount}").json()['urls']
 
 	def get_hentai(self, id):
-		return requests.get(f"{self.api_url}{doujin}/{id}").json()['url']
+		return requests.get(f"{self.api_url}doujin/{id}").json()['url']
 
 	def tag_dict(self, tag:str):
 		dict = {
@@ -76,7 +76,7 @@ class auto(commands.Cog, name="auto"):
 						embed.set_image(url=f"{image}")
 						embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
 						try:
-							self.Bot.loop.create_task(self.sendwebhook(image = image, time = setTime , collection = collection, webhook_url = webhook_url, embed = embed))
+							self.Bot.loop.create_task(self.sendwebhook(image = image, tag = setTag , collection = collection, webhook_url = webhook_url, embed = embed))
 							
 						except:
 							print("Failed sending the webhook.")
