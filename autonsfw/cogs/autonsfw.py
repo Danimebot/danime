@@ -76,7 +76,7 @@ class auto(commands.Cog, name="auto"):
 						embed.set_image(url=f"{image}")
 						embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
 						try:
-							self.Bot.loop.create_task(self.sendwebhook(collection = collection, webhook_url = webhook_url, embed = embed))
+							self.Bot.loop.create_task(self.sendwebhook(image = image, time = setTime , collection = collection, webhook_url = webhook_url, embed = embed))
 							
 						except:
 							print("Failed sending the webhook.")
@@ -91,7 +91,7 @@ class auto(commands.Cog, name="auto"):
 			pass
 
 			
-	async def sendwebhook(self, collection, webhook_url, embed:discord.Embed):
+	async def sendwebhook(self, collection, webhook_url, embed:discord.Embed, image, tag):
 		try:
 			bot_avatar = "https://cdn.discordapp.com/attachments/790246681563889694/804058149504942080/Vien.png"
 			hook = discord.Webhook.from_url(webhook_url,adapter=discord.RequestsWebhookAdapter())
@@ -100,14 +100,14 @@ class auto(commands.Cog, name="auto"):
 			collection.delete_one({"_id" : webhook_url})
 			print("Deleted")
 		except discord.HTTPException:
-			await self.removeimage(setTag, image)
+			await self.removeimage(tag, image)
 
 	async def removeimage(self, tag, url ):
 		db = self.Bot.db2['AbodeDB']
 		collection = db[tag]
 		try:
 			collection.delete_one({"_id" : url})
-			print(f"Removed , {tag} tag, url : {image}")
+			print(f"Removed , {tag} tag, url : {url}")
 		except:
 			print(f"Couldn't remove.")
 			pass
