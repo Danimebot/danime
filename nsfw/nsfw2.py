@@ -13,14 +13,16 @@ class api2(commands.Cog, name="api2"):
 		if amount > 10:
 			return await ctx.send("Can't go higher than 10.")
 		urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
-		try:
-			if amount <= 5:
-				await ctx.send("\n".join(urls[:amount]))
-			if amount > 5:
-				await ctx.send("\n".join(urls[:5]))
-				await ctx.send("\n".join(urls[5:amount]))
-		except :
-			return await ctx.send("ERROR!")
+		a = 0 
+		b = 5
+		while len(urls) >= a:
+			try:
+				await ctx.send(content = f"```Images powered by https://danimebot.xyz/```" + f"\n".join(urls[a:b]))
+			except Exception:
+				break
+			a += 5
+			b += 5
+
 	async def notnsfw(self, ctx):
 		embed = discord.Embed(color = random.choice(self.Bot.color_list))
 		embed.title= f"Non-NSFW channel detected!"
@@ -48,6 +50,30 @@ class api2(commands.Cog, name="api2"):
 		data = requests.get(f"{self.Bot.api_url}{tag}").json()
 		image = data['url']
 		return image
+
+	@commands.command(description="Get multiple tag relat images, 2 tags are available for free usage with 10 images at a time.", usage="dh multiple nsfw+oppai 10")
+	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def multiple(self, ctx, tags:str, amount:int=1):
+		url = f"{self.Bot.api_url}multiple/{tags}/{amount}"
+		tags = tags.split("+")
+		if len(tags) > 2:
+			return await ctx.send("Sorry you can't request more than two tags, `dh premium` if you do want to.")
+		if amount > 10:
+			return await ctx.send("Sorry you can't request more than 10 images at a time, `dh premium` if you do want to.")
+		urls = requests.get(url).json()['urls']
+		a = 0 
+		b = 5
+		while len(urls) >= a:
+			try:
+				await ctx.send("```py\nMultiple tagged images.``` "+"\n".join(urls[a:b]))
+			except Exception:
+				break
+			a += 5
+			b += 5		
+
+
+
 
 	@commands.command()
 	@commands.guild_only()
@@ -287,6 +313,20 @@ class api2(commands.Cog, name="api2"):
 		if  amount != 0:
 			return await self.send_image(ctx, "fitness", amount)			
 		url = await self.danimeapi(tag="fitness")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+
+	@commands.command(usage = "dh gifs 5"
+		, description="Girls that you are afraid of.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def gifs(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "gifs", amount)			
+		url = await self.danimeapi(tag="gifs")
 		await self.waifu_embed(ctx=ctx, link=url)
 
 def setup (Bot):
