@@ -851,19 +851,21 @@ class vein3(commands.Cog, name="APIs"):
     async def send_image(self, ctx, tag: str, amount: int):
         if amount > 10:
             return await ctx.send("Can't go higher than 10.")
-        i = 1
         urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
-        try:
-            if amount <= 5:
-                await ctx.send("\n".join(urls[:amount]))
-            if amount > 5:
-                await ctx.send("\n".join(urls[:5]))
-                await ctx.send("\n".join(urls[5:amount]))
-        except:
-            return await ctx.send("ERROR!")
+        a = 0 
+        b = 5
+        while len(urls) >= a:
+            try:
+                await ctx.send(content = f"```py\nImages powered by https://danimebot.xyz/```" + f"\n".join(urls[a:b]))
+            except Exception:
+                break
+            a += 5
+            b += 5
+
+
 
     @commands.command(usage=f"dh nsfw 10 ",
-                      description="From a collection of more than 40,000+ images and gifs sends a random one.")
+                      description="From a collection of more than 40,000+ images and gifs sends a random one(s).")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def nsfw(self, ctx, amount: int = 0):
