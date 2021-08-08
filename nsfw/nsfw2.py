@@ -294,7 +294,7 @@ class api2(commands.Cog, name="api2"):
 	@commands.command(usage = "dh league 5"
 		, description="League Of Legends")
 	@commands.cooldown(1, 5, commands.BucketType.user)
-	async def thicc(self, ctx, amount:int=0):
+	async def league(self, ctx, amount:int=0):
 		if not ctx.channel.is_nsfw():
 			await self.notnsfw(ctx=ctx)
 			return
