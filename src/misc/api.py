@@ -28,19 +28,22 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
-		collection = db [f'{collection}']
-		check = db.list_collection_names()
-
-		if not collection.name in check:
-			return await ctx.send("No result for the db query.")
-		for url in urls:
-			try:
-				data = {"_id": url}
-				collection.insert_one(data)
-				await ctx.send("Added a new image.")
-			except:
-				await ctx.send("It seems the image is already added.")
-
+		collections = collection.split("+")
+		for collection in collections:
+			added = []
+			collection = db [f'{collection}']
+			check = db.list_collection_names()
+			if not collection.name in check:
+				await ctx.send("No result for the db query.")
+				continue
+			for url in urls:
+				try:
+					data = {"_id": url}
+					collection.insert_one(data)
+					added.append(collection.name)
+				except:
+					await ctx.send("It seems the image is already added.")
+			await ctx.send("Added image to " + ", ".join(added))
 	@commands.group(pass_context=True)
 	@commands.check(is_dev)
 	@commands.guild_only()
