@@ -261,7 +261,7 @@ class vein9(commands.Cog, name='Help'):
             )
         embed.set_author(name=f"Danime's Information")
         embed.add_field(name=f"General ", inline=True, value=f"```asciidoc\nBoot Time: {boot_time_round}s\nUsers: {users}\nServer: {guilds}```\n")
-        embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 2.2\n```")
+        embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: 2.6\n```")
         embed.add_field(name=f"System", inline=False, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
         embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: Vein#8177 [427436602403323905]```")
         embed.add_field(name=f"Links", inline=False, value=f'[Invite]({self.Bot.invite}) |  [Support Server]({self.Bot.support}) |  [Github]({self.Bot.github}) |  [Website]({self.Bot.website_link}) |  [Vote]({vote})')
