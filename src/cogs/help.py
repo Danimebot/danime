@@ -35,6 +35,10 @@ class vein9(commands.Cog, name='Help'):
             em.description= f"Konichiwa {ctx.author.name}-sama, I'm **Danime**. The following embed lists out all of the major categories that I  can currently do. It also lists out common syntax for commands. Feel free to browse around the pages <a:wink:863703322115178546>.\n"
             em.add_field(name="Help usage", value =f"`dh help [commmand name]`  to get help on specific command.\n"
                                                     "`dh help [category]` to get help about a certian category from below.")
+            sep = "**|**"
+            em.add_field(name = "Links", value=f"[Invite]({self.Bot.invite}) {sep} [Website]({self.Bot.website_link}) {sep} "
+                                                 f"[Support]({self.Bot.support}) {sep} [Policy]({self.Bot.website_link}policies)"
+            , inline=False)
             em.add_field(name="__Available categories__",
                 value = f"{emoji.love} Anime : `dh help 1`\n"
                         f"{emoji.think} NSFW : `dh help 2`\n"
@@ -42,13 +46,10 @@ class vein9(commands.Cog, name='Help'):
                         f"{emoji.nhentai} Doujin : `dh help 2.6`\n"
                         f"{emoji.approved}SFW : `dh help 3`\n"
                         f"{emoji.hmmm} Settings : `dh help 4`\n"
-                        f"{emoji.gun} Handy/Usefull : `dh help 5`\n",
+                        f"{emoji.gun} Handy/Useful : `dh help 5`\n",
                 inline = False
                 )
-            sep = "**|**"
-            em.add_field(name = "[Links]", value=f"[Invite]({self.Bot.invite}) {sep} [Website]({self.Bot.website_link}) {sep} "
-                                                 f"[Support]({self.Bot.support}) {sep} [Policy]({self.Bot.website_link}policies)"
-            )
+
             await ctx.send(embed = em)
         elif  entity == "1" :
 
