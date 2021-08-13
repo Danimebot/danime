@@ -25,7 +25,7 @@ class logs(commands.Cog, name="logs"):
 				embed.description= f"Thanks alot for inviting the bot to the server! The prefix is `dh `. Join [support server]({self.Bot.support}) if needed. Also check out our affiliations."
 				embed.add_field(name="Affiliations", value=
 				                                        f"[HentaiDelight](https://discord.gg/9VbqMyVvP3)\n"
-				                                        f"[Gradient](discord.gg/EWfcVq7KvV)\n")
+				                                        f"[Gradient](https://discord.gg/EWfcVq7KvV)\n")
 				await channel.send(embed=embed)
 				break
 	@commands.Cog.listener()
