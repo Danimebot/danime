@@ -60,7 +60,6 @@ class hentaii(commands.Cog, name="hentaii"):
 		author = self.get_doujin_tags(tags=doujin.artist)[0]
 		embed = discord.Embed(title=doujin.title(Format.Pretty),
 			url=doujin.url, color=random.choice(self.Bot.color_list))
-		
 		embed.add_field(name="Language", value=f"{emoji} ")
 		embed.add_field(name="Artist", value=f" {author}")
 		embed.add_field(name="Type", value = type_)
@@ -369,7 +368,7 @@ class hentaii(commands.Cog, name="hentaii"):
 	async def send_doujins_info(self, ctx, doujins, description:str=f"Powered by [Danime](https://danimebot.xyz/)"):
 		filtered = []
 		for doujin in doujins:
-			hyperlink = f"`ID : {doujin.id}` -> [{doujin.title(Format.Pretty)}]({doujin.url}) by {self.get_doujin_tags(tags=doujin.artist)[0]} with 📄`{doujin.num_pages}` and ❤️`{doujin.num_favorites}.`"
+			hyperlink = f"`ID : {doujin.id}` -> [{doujin.title(Format.Pretty)}]({doujin.url}) with 📄`{doujin.num_pages}` and ❤️`{doujin.num_favorites}.`"
 			filtered.append(hyperlink)
 		embed = discord.Embed()
 		embed.description = f"{description}"
