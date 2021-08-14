@@ -157,14 +157,20 @@ class vein9(commands.Cog, name='Help'):
         except:
             commandCooldown = 0
         if command.usage == None: commandUsage = "Not given"
+        try:
+            commandPremium = command.premium 
+        except AttributeError:
+            commandPremium = "False"
+        
         commandAliase = ", ".join(command.aliases) or f"{command.name}"
+            
         embed = discord.Embed(color = random.choice(self.Bot.color_list))
         embed.set_author(name =f"Extra information on the command {commandName}.", url=self.Bot.website_link + "commands")
         embed.add_field(name = f"Description", value=f"`{commandDescription}`", inline =False)
         embed.add_field(name=f"Example", value = f"`{commandUsage}`")
         embed.add_field(name = f"Aliases", value= f"`{commandAliase}`", inline = False)
         embed.add_field(name = f"Cooldown" , value=f"`{commandCooldown}` seconds.")
-        embed.add_field(name = f"Is premium", value=f"`{command.premium}`", inline=False)
+        embed.add_field(name = f"Is premium", value=f"`{commandPremium}`", inline=False)
         embed.set_footer(text = "Join the support server if you are facing issues.")
         await ctx.send(embed = embed)
 
