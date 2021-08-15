@@ -24,7 +24,8 @@ class DanimeAPI:
 			"sfwneko" : "sneko",
 			"sfwoppai" : "soppai",
 			"sfwswimsuit" : "sswimsuit",
-			"hairy" : "bush"
+			"hairy" : "bush",
+			"erofeet" :"feet"
 		}
 		return dict[tag]
 
@@ -66,11 +67,14 @@ class auto(commands.Cog, name="auto"):
 		if not ctx.channel.is_nsfw():
 			return await self.danime_api.is_nsfw(ctx)	
 		try:
-			#Checks the time and backs off it's over than 30
+
 			if  time > 60:
 				return await ctx.send("Sorry mate but 60 is the limit for the free version. Please refer to `dh premium` for longer times.")
-			if time <= 5:
-				return await ctx.send("Hey you have to atleast have 5 minutes of post time.")
+			if time < 5:
+				if ctx.guild.id in self.Bot.premium_guilds:
+					pass
+				else:
+					return await ctx.send("Hey you have to atleast have 5 minutes of post time.")
 
 			##It's checking the tag if it exists or not, if not backs away
 			try:
@@ -90,7 +94,12 @@ class auto(commands.Cog, name="auto"):
 			
 			active = collection.find({"guild_id" : ctx.guild.id}).count()
 			if active >= 10:
-				return await ctx.send("A server can't have more than 10 active autonsfw plugins. Please remove an active plugin or get the premium version from dh premium.")
+				if ctx.guild.id in self.Bot.premium_guilds:
+					if active >= 30:
+						return await ctx.send("Hey mate even though you have premium, we are limited to only server 30 active channels at the moment.")
+					pass
+				else:
+					return await ctx.send("A server can't have more than 10 active autonsfw plugins. Please remove an active plugin or get the premium version from dh premium.")
 
 			if (collection.find_one({"channel_id": channel.id})== None):
 				if isinstance(time, int):
