@@ -56,8 +56,10 @@ class hentaii(commands.Cog, name="hentaii"):
 			emoji = "<:FlagChina:802097002364010527> Cn"
 		type_= self.get_doujin_tags(tags=doujin.category)[0]
 		uploded = human(doujin.upload_date, 4)
-
-		author = self.get_doujin_tags(tags=doujin.artist)[0]
+		try:
+			author = self.get_doujin_tags(tags=doujin.artist)[0]
+		except IndexError:
+			author = "Unknown"
 		embed = discord.Embed(title=doujin.title(Format.Pretty),
 			url=doujin.url, color=random.choice(self.Bot.color_list))
 		embed.add_field(name="Language", value=f"{emoji} ")
@@ -85,18 +87,18 @@ class hentaii(commands.Cog, name="hentaii"):
 		embed.add_field(name="Tags",value=f' | '.join(tags), inline=False)
 		if doujin.character:
 			characters = self.get_doujin_tags(tags=doujin.character)
-			embed.add_field(name="Characters",value=' | '.join(characters))
+			embed.add_field(name="Characters",value=' | '.join(characters), inline=False)
 
 		if doujin.parody:
 			parodies = self.get_doujin_tags(tags=doujin.parody)
-			embed.add_field(name="Parody?",value=f' | '.join(parodies))
+			embed.add_field(name="Parody?",value=f' | '.join(parodies), inline=False)
 		if doujin.group:
 			group = self.get_doujin_tags(tags= doujin.group)
-			embed.add_field(name="Group",value=f' | '.join(group))
+			embed.add_field(name="Group",value=f' | '.join(group), inline=False)
 
 		if doujin.related:
 			related = self.get_related_doujins(doujin.related)
-			embed.add_field(name="Related",value=f'\n'.join(related))
+			embed.add_field(name="Related",value=f'\n'.join(related), inline=False)
 
 		row = ActionRow(
 			Button(style=ButtonStyle.primary, label="Read", custom_id="first_option") ,
@@ -350,9 +352,13 @@ class hentaii(commands.Cog, name="hentaii"):
 
 	def get_doujin_tags(self, tags):
 		filtered = []
+		n = 0
 		for tag in tags:
 			hyperlink = f"[{tag.name}({tag.count})]({tag.url})"
 			filtered.append(hyperlink)
+			n += len(hyperlink)
+			if n >= 1000:
+				break
 		return filtered
 	
 	def get_related_doujins(self, doujins):
