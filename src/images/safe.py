@@ -38,6 +38,19 @@ class safe(commands.Cog, name = "safe"):
 		embed.set_image(url=f"{link}")
 		await ctx.send(embed=embed)
 		
+	async def some_random_embed(self, ctx, type:str, query:str=None):
+		if type != "none":
+			r = requests.get(f"https://some-random-api.ml/{type}/{query}").json()
+			embed = discord.Embed(color =random.choice(self.Bot.color_list))
+			try: 
+				embed.description = r['fact']
+				embed.set_image(url = r['image'])
+			except KeyError:
+				embed.set_image(url = r['link'])
+			
+			embed.set_footer(text=f'Requested by {ctx.author.name}, Source : some-random-api.ml', icon_url=ctx.author.avatar_url)
+			return await ctx.send(embed=embed)
+
 
 	async def getreddit(self, sub):
 		r = requests.get(f"https://meme-api.herokuapp.com/gimme/{sub}").json()
@@ -47,6 +60,77 @@ class safe(commands.Cog, name = "safe"):
 		data = requests.get(f"{self.Bot.api_url}{tag}").json()
 		image = data['url']
 		return image
+
+
+	@commands.command(description='Sends a random doggo picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def dog(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="dog")
+
+	@commands.command(description='Sends a random cat picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def cat(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="cat")
+
+	@commands.command(description='Sends a random panda picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def panda(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="panda")
+
+	@commands.command(description='Sends a random fox picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def fox(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="fox")
+
+	@commands.command(description='Sends a random bird picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def bird(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="bird")
+
+	@commands.command(description='Sends a random koala picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def koala(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="koala")
+
+	@commands.command(description='Sends a random kangaroo picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def kangaroo(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="kangaroo")
+
+	@commands.command(description='Sends a random raccoon picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def raccoon(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="raccoon")
+
+	@commands.command(description='Sends a random redpanda picture and also a related fact.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def redpanda(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="animal", query="red_panda")
+
+	@commands.command(description='Sends a random pikachu picture.')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def pikachu(self, ctx):
+		await self.some_random_embed(ctx=ctx, type="img", query="pikachu")
+
+
+	@commands.command(description='funni')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def joke(self, ctx):
+		url = "https://some-random-api.ml/joke"
+		embed = discord.Embed(color =random.choice(self.Bot.color_list))
+		embed.description = requests.get(url).json()['joke']
+		await ctx.send(embed=embed)
+
+	@commands.command(description='Get honry verification :eyes:')
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def horny(self, ctx, user:discord.Member = None):
+		if not user:
+			user = ctx.author
+		url = f"https://some-random-api.ml/canvas/horny?avatar={user.avatar_url_as(format='png')}"
+		embed=discord.Embed(color =random.choice(self.Bot.color_list))
+		embed.set_image(url = url )
+		embed.description = f":eyes: {user.name} is now a certified horny."
+		await ctx.send(embed=embed)
 
 
 	# No, the double s is not a type, s stands for safe image.
