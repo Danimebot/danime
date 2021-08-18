@@ -92,6 +92,7 @@ class hentaii(commands.Cog, name="hentaii"):
 		if doujin.parody:
 			parodies = self.get_doujin_tags(tags=doujin.parody)
 			embed.add_field(name="Parody?",value=f' | '.join(parodies), inline=False)
+
 		if doujin.group:
 			group = self.get_doujin_tags(tags= doujin.group)
 			embed.add_field(name="Group",value=f' | '.join(group), inline=False)
@@ -355,10 +356,12 @@ class hentaii(commands.Cog, name="hentaii"):
 		n = 0
 		for tag in tags:
 			hyperlink = f"[{tag.name}({tag.count})]({tag.url})"
-			filtered.append(hyperlink)
+			if n >= 900:
+				break			
 			n += len(hyperlink)
-			if n >= 1000:
-				break
+
+			filtered.append(hyperlink)
+
 		return filtered
 	
 	def get_related_doujins(self, doujins):
@@ -366,8 +369,11 @@ class hentaii(commands.Cog, name="hentaii"):
 		n = 1
 		for doujin in doujins:
 			hyperlink = f"`{n}.` [{doujin.title(Format.Pretty)}]({doujin.url}) 📄`{doujin.num_pages}` ❤️`{doujin.num_favorites}`"
+			if n >= 900:
+				break
+			n += len(hyperlink)
+
 			filtered.append(hyperlink)
-			n += 1
 
 		return filtered
 
