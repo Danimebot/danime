@@ -248,14 +248,15 @@ class vein2(commands.Cog, name= "fun"):
 
     @commands.command()
     @commands.guild_only()
-    async def enlarge(self, ctx, emoji:  discord.PartialEmoji = None):
+    async def enlarge(self, ctx, emoji= None):
         if emoji == None:
             return await ctx.send(":_: add a emoji will you")
+        if emoji == "pp":
+            return await ctx.send(f"Enlarged your pp by {random.randint(1, 100)}%.")
         elif emoji != None:
-            try:
-
+            if isinstance(emoji, discord.PartialEmoji):
                 await ctx.send(emoji.url)
-            except:
+            else:
                 await ctx.send(f"That's a default emoji:_:")
 
 
@@ -280,7 +281,7 @@ class vein2(commands.Cog, name= "fun"):
 
 
 
-    @commands.command(aliases=['lennyface'], description='Send a random lenny face.')
+    @commands.command(aliases=['lennyface', "lerry"], description='Send a random lenny face.')
     @commands.guild_only()
     # sends a random lenny from my collection 
 
