@@ -68,9 +68,9 @@ class vein9(commands.Cog, name='Help'):
             em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
             em.description = f"Lists all the nsfw commands, each tag mentioned is a command. Do note only 80% of the tags are from DanimeAPI, I'm migrating every tag soon.\nFor example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `gifs` ,`blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`", inline=False)
+            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `gifs` ,`blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `maid`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`, `monstergirl`", inline=False)
             em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
-            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`")
+            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`, `genshin`")
             em.add_field(name= f"[Multiple Tags]", value=f"You can also get images with multiple tags, `dh multiple <tag>+<tag2> amount`.\nExample: `dh multiple nsfw+oppai 10`", inline=False)
             em.set_footer(text=f"Use [dh whatis nsfw] to get detail info about what is expected under nsfw commands.")
 
@@ -133,7 +133,7 @@ class vein9(commands.Cog, name='Help'):
         elif entity =="5":
             em = discord.Embed(color = random.choice(self.Bot.color_list))
             em.add_field(name=f"__Handy commands__", value=f"`reddit`,`addemoji`, `welcome`, `ping`, `invite`, `lenny`, `f`, `hi`, `flip`, `calc`, `owofy`, `wallpaper`, `enlarge`, `topic`, `stats`, `userinfo`, `serverinfo`, `privacypolicy`, `imagepolicy`,`changelog`", inline=False)
-            em.add_field(name=f"__Fact commands__", value=f"`dogfact`, `catfact`, `pandafact`, `numberfact`, `yearfact`, `aquote`")
+            em.add_field(name=f"__Fact commands__", value=f"`dog`, `cat`, `bird`, `panda`, `koala`, `kangaroo`, `redpanda`,`raccoon`, `pikachu`,`dogfact`, `catfact`, `pandafact`, `numberfact`, `yearfact`, `aquote`, `horny`, `joke` ")
             em.set_footer(text="This category has conditional nsfw commands, meaning sfw or nsfw depends on the condition.")
             await ctx.send(embed=em)
         
