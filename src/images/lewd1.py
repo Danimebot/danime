@@ -329,6 +329,59 @@ class api2(commands.Cog, name="api2"):
 		url = await self.danimeapi(tag="gifs")
 		await self.waifu_embed(ctx=ctx, link=url)
 
+
+	@commands.command(usage = "dh genshin 5"
+		, description="Images related to your fav game, chad.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def genshin(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "genshin", amount)			
+		url = await self.danimeapi(tag="genshin")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+
+	@commands.command(usage = "dh monstergirl 5"
+		, description=":eyes:")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def monstergirl(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "monstergirl", amount)			
+		url = await self.danimeapi(tag="monstergirl")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+	@commands.command(usage = "dh maid 5"
+		, description="WELCOME BACK MASTER!!!!!!!")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def maid(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "maid", amount)			
+		url = await self.danimeapi(tag="maid")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+	@commands.command(usage = "dh succubus 5"
+		, description="Don't let her seduce you :eyes:")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def succubus(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "succubus", amount)			
+		url = await self.danimeapi(tag="succubus")
+		await self.waifu_embed(ctx=ctx, link=url)
+
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
 	print("Api2 is working")
