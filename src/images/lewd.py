@@ -93,23 +93,6 @@ class vein3(commands.Cog, name="APIs"):
         await ctx.send(embed=em)
 
 
-    @commands.command(description='Sends a random doggo picture.')
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def dog(self, ctx):
-        try:
-            async with ctx.channel.typing():
-                async with aiohttp.ClientSession() as cs:
-                    async with cs.get("https://dog.ceo/api/breeds/image/random") as r:
-                        data = await r.json()
-                        await cs.close()
-                        embed = discord.Embed(title="Woof", colour=0x529dff)
-                        embed.set_image(url=data['message'])
-                        embed.set_footer(text=f"Requested by {ctx.author}, Source: Thedogapi", icon_url=ctx.author.avatar_url)
-
-                        await ctx.send(embed=embed)
-        except:
-            await ctx.send(f'Command on cooldown for some seconds.', delete_after=5)
 
     @commands.command(description='Echos\' words from clyde')
     @commands.guild_only()
@@ -193,49 +176,7 @@ class vein3(commands.Cog, name="APIs"):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(description='Sends a random panda picture :heart:')
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def panda(self, ctx):
 
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get("https://some-random-api.ml/img/panda") as r:
-                data = await r.json()
-                await cs.close()
-                embed = discord.Embed(title="Pandasound :P", colour=0x529dff)
-                embed.set_image(url=data['link'])
-                embed.set_footer(text=f"Requested by {ctx.author}, Source : Some-random-api", icon_url=ctx.author.avatar_url)
-
-                await ctx.send(embed=embed)
-
-    @commands.command(description='Nevermind the koala is sleeping.')
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def koala(self, ctx):
-
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get("https://some-random-api.ml/img/koala") as r:
-                data = await r.json()
-                await cs.close()
-                embed = discord.Embed(title="Koala sound :P", colour=0x529dff)
-                embed.set_image(url=data['link'])
-                embed.set_footer(text=f"Requested by {ctx.author}, Source : Some-random-api", icon_url=ctx.author.avatar_url)
-
-                await ctx.send(embed=embed)
-
-    @commands.command(description='*Pikachu open mouth*')
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def pikachu(self, ctx):
-
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get("https://some-random-api.ml/img/pikachu") as r:
-                data = await r.json()
-                await cs.close()
-                embed = discord.Embed(title="Pika pika", colour=0x529dff)
-                embed.set_image(url=data['link'])
-                embed.set_footer(text=f"Requested by {ctx.author}, source some random api", icon_url=ctx.author.avatar_url)
-                await ctx.send(embed=embed)
 
     @commands.command(description='Sends a random numberfact.')
     @commands.guild_only()
@@ -273,7 +214,7 @@ class vein3(commands.Cog, name="APIs"):
                 anime = data['anime']
                 quote = data['sentence']
 
-                embed = discord.Embed(title=f'"{quote}"', colour=0x529dff)
+                embed = discord.Embed(description=f'"{quote}"', colour=0x529dff)
                 embed.set_author(name=f'By {by} from {anime}')
                 embed.set_footer(text=f'Requested by {ctx.author}, Quote from some-random-api')
                 await ctx.send(embed=embed)
@@ -458,7 +399,7 @@ class vein3(commands.Cog, name="APIs"):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cringe(self, ctx, user: discord.Member = None):
-        url = f"https://api.waifu.pics/sfw/slap"
+        url = f"https://api.waifu.pics/sfw/cringe"
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
@@ -930,16 +871,6 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-
-    @commands.command()
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def cat(self, ctx):
-        embed = discord.Embed(color=random.choice(self.Bot.color_list))
-        embed.description = f"Neko!"
-        embed.set_footer(text=f"Requested by {ctx.author.name}")
-        embed.set_image(url=nekos.cat())
-        await ctx.send(embed=embed)
 
     @commands.command(description="Sends a SFW anime wallpaper.")
     @commands.guild_only()
