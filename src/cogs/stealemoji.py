@@ -40,9 +40,9 @@ class stealemoji(commands.Cog):
 			
 	def download_emoji(self, url, name, extension):
 		img_data = requests.get(url).content
-		path = "/home/ubuntu/danime/download/"
+		path = "/home/ubuntu/danime/src/download/"
 		if not os.path.exists(path):
-			path = "/home/vein/Documents/danime/download/"
+			path = "/home/vein/Documents/danime/src/download/"
 
 		try:
 			with open(f"{path}{name}" + extension, 'wb') as handler:
