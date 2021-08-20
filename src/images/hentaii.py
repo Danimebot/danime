@@ -84,10 +84,10 @@ class hentaii(commands.Cog, name="hentaii"):
 			else:
 				pass
 		tags = self.get_doujin_tags(tags=doujin.tag)
-		embed.add_field(name="Tags",value=f' | '.join(tags), inline=False)
+		embed.add_field(name="Tags",value= "‎‎‏‏‎ ‎" + f' | '.join(tags), inline=False)
 		if doujin.character:
 			characters = self.get_doujin_tags(tags=doujin.character)
-			embed.add_field(name="Characters",value=' | '.join(characters), inline=False)
+			embed.add_field(name="Characters",value= "‏‏‎ ‎" + ' | '.join(characters), inline=False)
 
 		if doujin.parody:
 			parodies = self.get_doujin_tags(tags=doujin.parody)
