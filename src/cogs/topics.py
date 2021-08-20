@@ -60,7 +60,8 @@ class topic(commands.Cog, name="topic"):
 	        'Flat or Boing?',
 	        'Which anime has the best plot and why?',
 	        'How are you really?',
-	        'What is the thing you are most afraid of?'
+	        'What is the thing you are most afraid of?',
+			'If you were the richest man in the world what would you do?'
         ]
 
     @commands.command(aliases=['topics', 'questions'])
