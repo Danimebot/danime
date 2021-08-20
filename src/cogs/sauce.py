@@ -110,7 +110,7 @@ class sauce(commands.Cog, name="Sauce"):
             return await ctx.send("Something went worng, it seems no results from your queries.")
     
     def is_url(self, message):
-        pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif|\.mp4)$")
+        pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif|\.mp4|\.mov|\.webm)$")
         if not pattern.match(message):
             return False
         return True
