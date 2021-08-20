@@ -10,7 +10,7 @@ import re
 class danimeapi(commands.Cog, name="danimeapi"):
 	def __init__(self, Bot):
 		self.Bot = Bot
-		# self.sendstats.start()
+		self.sendstats.start()
 
 
 	def is_dev(ctx):
@@ -71,7 +71,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 					except:
 						await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
-				message = f"Removed `{removed}` images(s) from `{collection.name}` tag."
+				message = f"Removed `{removed}` imagesg(s) from `{collection.name}` tag."
 				await ctx.send(message)
 	
 	@commands.command()
@@ -305,50 +305,38 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				break
 			a += 5
 			b += 5
-	# @tasks.loop(seconds=30)
-	# async def sendstats(self):
-	# 	await self.Bot.wait_until_ready()
-	# 	if self.Bot.DEFAULT_PREFIX == "&":
-	# 		return
-	# 	db = self.Bot.db2['AbodeDB']
-	# 	collection = db['1avialablepaths']
+	@tasks.loop(seconds=60)
+	async def sendstats(self):
+		await self.Bot.wait_until_ready()
+		if self.Bot.DEFAULT_PREFIX == "&":
+			return
+		db = self.Bot.db2['AbodeDB']
+		collection = db['1avialablepaths']
 
-	# 	now = datetime.datetime.utcnow()
-	# 	elapsed = now - self.Bot.starttime
-	# 	seconds = elapsed.seconds
-	# 	minutes, seconds = divmod(seconds, 60)
-	# 	hours, minutes = divmod(minutes, 60) 
-	# 	users = 0
-	# 	for guild in self.Bot.guilds:
-	# 	    try:
-	# 	        users += guild.member_count
-	# 	    except:
-	# 	        pass
+		now = datetime.datetime.utcnow()
+		elapsed = now - self.Bot.starttime
+		seconds = elapsed.seconds
+		minutes, seconds = divmod(seconds, 60)
+		hours, minutes = divmod(minutes, 60) 
+		users = 0
+		for guild in self.Bot.guilds:
+		    try:
+		        users += guild.member_count
+		    except:
+		        pass
 
-	# 	guilds = len(self.Bot.guilds)
-	# 	uptime = f"{elapsed.days}d {hours}h {minutes}m"
-	# 	discordpy = discord.__version__
-	# 	devs = [811823086193999892, 427436602403323905, 755436063828213821, 814953152640974869]
-	# 	devlist = []
-	# 	for dev in devs:
-	# 		dev =  self.Bot.get_user(dev)
-	# 		data = {
-	# 			"name" : dev.name,
-	# 			"id" : dev.id,
-	# 			"discriminator" : dev.discriminator,
-	# 			"avatar_url" : f"{dev.avatar_url}",
-	# 		}
-	# 		devlist.append(data)
-	# 	data = {"_id" : 2 , "guilds" : guilds, "users " :users ,  
-	# 			"uptime" : uptime, "discordpy" :  discordpy, "botinvite" : self.Bot.invite
-	# 			, "github" : self.Bot.github, "support_server" : self.Bot.support, "devs" : devlist}
-	# 	search = collection.find_one({"_id" : 2})
-	# 	if search == None:
-	# 		collection.insert_one(data)
-	# 		return
-	# 	collection.delete_one({"_id" : 2})
-	# 	collection.insert_one(data)
-		
+		guilds = len(self.Bot.guilds)
+		uptime = f"{elapsed.days}d {hours}h {minutes}m"
+		discordpy = discord.__version__
+
+		data = {"_id" : 2 , "guilds" : guilds, "users " :users ,  
+				"uptime" : uptime, "discordpy" :  discordpy, "botinvite" : self.Bot.invite
+				, "github" : self.Bot.github, "support_server" : self.Bot.support}
+		search = collection.find_one({"_id" : 2})
+		if search == None:
+			collection.insert_one(data)
+			return
+		collection.update_one({"_id" : 2}, {"$set" : data})
 		
 		
 
