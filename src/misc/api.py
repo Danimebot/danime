@@ -54,22 +54,25 @@ class danimeapi(commands.Cog, name="danimeapi"):
 
 			urls = list(url.split("+"))
 			db = self.Bot.db2['AbodeDB']
-			collection = db [f'{collection}']
+			collections = collection.split("+")
+			for collection in collections:
+				collection = db [f'{collection}']
+				check = db.list_collection_names()
+				if not collection.name in check:
+					await ctx.send("No result for the db query.")
+					continue
+				removed = 0
+				for url in urls:
+					try:
+						query = {"_id": url}
+						search = collection.find_one(query)
+						collection.delete_one(query)
+						removed += 1
 
-			check = db.list_collection_names()
-			if not collection.name in check:
-				return await ctx.send("No result for the db query.")
-			not_removed = 0
-			for url in urls:
-				try:
-					query = {"_id": url}
-					search = collection.find_one(query)
-					collection.delete_one(query)
-				except:
-					not_removed += 1
-					await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
-			message = f"Removed `{len(urls) - not_removed}` image(s) from `{collection.name}` tag."
-			await ctx.send(message)
+					except:
+						await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
+				message = f"Removed `{removed}` images(s) from `{collection.name}` tag."
+				await ctx.send(message)
 	
 	@commands.command()
 	@commands.check(is_dev)
