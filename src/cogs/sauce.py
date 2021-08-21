@@ -3,19 +3,77 @@ from discord.ext import commands
 import random
 from pysaucenao import DailyLimitReachedException, AnimeSource,UnknownStatusCodeException ,GenericSource, InvalidImageException, InvalidOrWrongApiKeyException, MangaSource, SauceNao, SauceNaoException, ShortLimitReachedException, VideoSource
 from pysaucenao.containers import ACCOUNT_ENHANCED, AnimeSource, BooruSource
-from disputils import BotEmbedPaginator
 import re
 from urllib import parse
 from core import danime
+from reactionmenu import ButtonsMenu, ComponentsButton
 
 class sauce(commands.Cog, name="Sauce"):
     def __init__(self, Bot):
         self.Bot = Bot
         self.saucenao_keys = self.Bot.saucenao_keys
 
+    async def get_sauce_embeds(self, ctx, url,results):
+        embeds = []
+        google_url  = f"https://www.google.com/searchbyimage?image_url={url}&safe=off"
+        yandex_url  = f"https://yandex.com/images/search?url={url}&rpt=imageview"
+        saucenao_url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+        for sauce in results:
+            try:
+                embed = discord.Embed()
+                thumbnail = ctx.author.avatar_url if not sauce.thumbnail else sauce.thumbnail
+                similarity = 0 if not sauce.similarity else sauce.similarity
+                if similarity > 80:
+                    review = "Hey found something highly similar to your query. Result seems to be identical."
+                if similarity >60 and similarity < 80:
+                    review = "Not so sure if this is the correct result."
+                if similarity < 60:
+                    review = "Probably not the correct result but still take it."
+
+                if isinstance(sauce.urls, list):
+                    embed.add_field(name="Sauce(s)", value="\n".join(sauce.urls), inline=False)
+                else:
+                    if sauce.urls:
+                        embed.add_field(name="Sauce", value=f"{sauce.urls}")
+                    else:
+                        source = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+                        embed.add_field(name="Sauce", value=f"Sauce not given man :(. Still try by going [Here]({source})", inline=False)
+                
+                if isinstance(sauce, AnimeSource):
+                    await sauce.load_ids()
+                    embed.add_field(name="Anime Info", value=f"[AniList]({sauce.anilist_url}) "
+                                                            f"[MyAnimeList]({sauce.mal_url})")            
+                if isinstance(sauce, VideoSource):
+                    embed.add_field(name="Episode ", value=sauce.episode)
+                    embed.add_field(name= "TimeStamp", value=sauce.timestamp, inline=False) 
+                
+                if isinstance(sauce, MangaSource):
+                    embed.add_field(name="Chapter", value=sauce.chapter if sauce.chapter else "Not given")
+
+
+                author = "Author not given" if not sauce.author_name else sauce.author_name
+                title = "Title not given" if not sauce.title else sauce.title
+
+                index_id = "Index not given" if (sauce.index_id == None) else sauce.index_id
+                index_name = "Inxed name not given" if (sauce.index_name == None) else sauce.index_name       
+
+                embed.description=f"Sucessfully found closest image(`{title}`) with the following information."
+                embed.add_field(name="Similarity", value = similarity)
+                embed.add_field(name="Author", value = author )
+                embed.add_field(name="Index", value=f"ID : `{index_id}` \nName : `{index_name}`", inline = False)
+                embed.add_field(name="Others", value=f"<:google:864001090172354610> [Google]({google_url}) "
+                                                    f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
+                                                    f"[SauceNao]({saucenao_url})" ,inline=False)
+                embed.add_field(name="Danime says:", value=review)
+                embed.set_thumbnail(url=thumbnail)
+                embeds.append(embed)
+            except :
+                continue
+        return embeds
+
     @commands.command(aliases = ['saucenao'], description = "Let's you search for sauce with saucenao, works with image links. You also have the option to just use dh sauce and the bot will auto search the previous 10 messages and give sauce for the first image it finds. You also have the option to attach an image while using the command. Now works with .mp4 formats too.", usage="dh sauce image.jpg \n dh sauce")
     @commands.guild_only()
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def sauce(self, ctx, url=None):
         #https://github.com/FujiMakoto/pysaucenao Pray to the lord and savior
         if url!= None:
@@ -30,7 +88,7 @@ class sauce(commands.Cog, name="Sauce"):
                 url = None
         
         if url == None:
-            await ctx.send("Couldn't find the url checking for the last message with image.", delete_after = 5)
+            await ctx.send("Couldn't find the url checking for the last message with image url.", delete_after = 5)
             async for message in ctx.channel.history(limit=10):
                 check = self.is_url(message.content)
                 if check == True:
@@ -40,74 +98,29 @@ class sauce(commands.Cog, name="Sauce"):
             return await ctx.send("No image urls found in the last 10 messages please retry by uploading one.")
         if url.endswith(('.mp4', '.webm', '.mov')):
             url = url.replace("cdn.discordapp.com", "media.discordapp.net") + "?format=jpeg"
-        try:
-            google_url  = f"https://www.google.com/searchbyimage?image_url={url}&safe=off"
-            yandex_url  = f"https://yandex.com/images/search?url={url}&rpt=imageview"
-            saucenao_url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
-            sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
-            embed = discord.Embed()
-            results = await sauce.from_url(url)
-            thumbnail = results[0].thumbnail
-
-            similarity = results[0].similarity if (results[0].similarity != None) else 0
-            embed.set_thumbnail(url = thumbnail)
-
-            if isinstance(results[0], AnimeSource):
-                await results[0].load_ids()
-                embed.add_field(name="Anime Info", value=f"[AniList]({results[0].anilist_url}) "
-                                                        f"[MyAnimeList]({results[0].mal_url})")
-            if isinstance(results[0], VideoSource):
-                embed.add_field(name="Episode ", value=results[0].episode)
-                embed.add_field(name= "TimeStamp", value=results[0].timestamp, inline=False)           
-
-            if isinstance(results[0], MangaSource):
-                embed.add_field(name="Chapter", value=results[0].chapter)
         
-            try:
-                source = results[0].urls[0]
-            except IndexError:
-                source = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
-            except TypeError:
-                return await ctx.send("Nothing found in you request. Try not using a gif url if possible.")
-            try:
-                author = results[0].author_name
-            except AttributeError:
-                author = "Not given"
-            try:
-                title = results[0].title
-            except AttributeError:
-                title = "No title"
-            index_id = results[0].index_id if (results[0].index_id != None) else "None"
-            index_name = results[0].index_name if (results[0].index_name != None) else "None"
-            if 50 >  similarity:
-                return await ctx.send("Couldn't find any thing for the given query.")
-
+        sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
+        results = await sauce.from_url(url)
+        embeds = await self.get_sauce_embeds(ctx, url,results)
+        if embeds:
+            menu = ButtonsMenu(ctx, menu_type=ButtonsMenu.TypeEmbed, timeout=90, show_page_director=False)
+            for e in embeds:
+                menu.add_page(e)
+            buttons = [
+                ComponentsButton(style=ComponentsButton.style.primary, label = 'Previous Result', custom_id=ComponentsButton.ID_PREVIOUS_PAGE),
+                ComponentsButton(style=ComponentsButton.style.primary, label = 'Stop' , custom_id=ComponentsButton.ID_END_SESSION),
+                ComponentsButton(style=ComponentsButton.style.primary, label = 'Next Result', custom_id=ComponentsButton.ID_NEXT_PAGE),
+            ]
+            for button in buttons:
+                menu.add_button(button)
+            await menu.start()
             
-            embed.description=f"Sucessfully found closest image(`{title}`) with the following information."
-            embed.add_field(name="Similarity", value = similarity)
-            embed.add_field(name="Author", value =author )
-            embed.add_field(name="Source", value=source, inline=False)
-            embed.add_field(name="Index", value=f"ID : `{index_id}` \nName : `{index_name}`")
-            embed.add_field(name="Others", value=f"<:google:864001090172354610> [Google]({google_url}) "
-                                                f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
-                                                f"[SauceNao]({saucenao_url})"
-                                                ,inline=False)
-            
-            embed.set_footer(text=f"The sauce is found from sauce-nao.net.")
-            await ctx.send(embed=embed)
-
-        
-        except SauceNaoException:
+        if not embeds:
             url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
-            em = discord.Embed(description =f"Sorry nothing found you can try [here]({url}) if you'd like.")
+            em = discord.Embed(description =f"Sorry, nothing found you can try [here]({url}) if you'd like.")
             em.set_footer(text="Also, make sure your url ends with an image format.")
             await ctx.send(embed = em)
 
-        except InvalidImageException:
-            return await ctx.send("Hey, it seems the url has no results. Also it seems your url is not an image url, please retry after checking that.")
-    
-        except IndexError:
-            return await ctx.send("Something went worng, it seems no results from your queries.")
     
     def is_url(self, message):
         pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif|\.mp4|\.mov|\.webm)$")
