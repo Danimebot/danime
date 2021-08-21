@@ -61,9 +61,10 @@ class sauce(commands.Cog, name="Sauce"):
                 embed.add_field(name="Similarity", value = similarity)
                 embed.add_field(name="Author", value = author )
                 embed.add_field(name="Index", value=f"ID : `{index_id}` \nName : `{index_name}`", inline = False)
-                embed.add_field(name="Others", value=f"<:google:864001090172354610> [Google]({google_url}) "
-                                                    f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
-                                                    f"[SauceNao]({saucenao_url})" ,inline=False)
+                if not url.startswith(("https://konachan", "https://yan")):
+                    embed.add_field(name="Others", value=f"<:google:864001090172354610> [Google]({google_url}) "
+                                                        f"<:yandex:864002609466572840> [Yandex]({yandex_url}) "
+                                                        f"[SauceNao]({saucenao_url})" ,inline=False)
                 embed.add_field(name="Danime says:", value=review)
                 embed.set_thumbnail(url=thumbnail)
                 embeds.append(embed)
@@ -101,26 +102,27 @@ class sauce(commands.Cog, name="Sauce"):
         
         sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 6)
         results = await sauce.from_url(url)
-        embeds = await self.get_sauce_embeds(ctx, url,results)
-        if embeds:
-            menu = ButtonsMenu(ctx, menu_type=ButtonsMenu.TypeEmbed, timeout=90, show_page_director=False)
-            for e in embeds:
-                menu.add_page(e)
-            buttons = [
-                ComponentsButton(style=ComponentsButton.style.primary, label = 'Previous Result', custom_id=ComponentsButton.ID_PREVIOUS_PAGE),
-                ComponentsButton(style=ComponentsButton.style.primary, label = 'Stop' , custom_id=ComponentsButton.ID_END_SESSION),
-                ComponentsButton(style=ComponentsButton.style.primary, label = 'Next Result', custom_id=ComponentsButton.ID_NEXT_PAGE),
-            ]
-            for button in buttons:
-                menu.add_button(button)
-            await menu.start()
-            
-        if not embeds:
-            url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
-            em = discord.Embed(description =f"Sorry, nothing found you can try [here]({url}) if you'd like.")
-            em.set_footer(text="Also, make sure your url ends with an image format.")
-            await ctx.send(embed = em)
+        try:
+            embeds = await self.get_sauce_embeds(ctx, url,results)
+            if embeds:
+                menu = ButtonsMenu(ctx, menu_type=ButtonsMenu.TypeEmbed, timeout=90, show_page_director=False)
+                for e in embeds:
+                    print(e.fields[4])
+                    menu.add_page(e)
+                buttons = [
+                    ComponentsButton(style=ComponentsButton.style.primary, label = 'Previous Result', custom_id=ComponentsButton.ID_PREVIOUS_PAGE),
+                    ComponentsButton(style=ComponentsButton.style.primary, label = 'Stop' , custom_id=ComponentsButton.ID_END_SESSION),
+                    ComponentsButton(style=ComponentsButton.style.primary, label = 'Next Result', custom_id=ComponentsButton.ID_NEXT_PAGE),
+                ]
+                for button in buttons:
+                    menu.add_button(button)
+                await menu.start()
+                
+            if not embeds:
+                return await self.generic_error(ctx, url)
 
+        except SauceNaoException:
+            return await self.generic_error(ctx, url)
     
     def is_url(self, message):
         pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif|\.mp4|\.mov|\.webm)$")
@@ -128,7 +130,11 @@ class sauce(commands.Cog, name="Sauce"):
             return False
         return True
 
-
+    async def generic_error(self, ctx, url):
+        url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+        em = discord.Embed(description =f"Sorry, nothing found you can try [here]({url}) if you'd like.")
+        em.set_footer(text="Also, make sure your url ends with an image format.")
+        await ctx.send(embed = em)
 
 
 
