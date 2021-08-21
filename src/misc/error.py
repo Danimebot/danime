@@ -15,9 +15,6 @@ class Exceptor(commands.Cog, name="Exceptor"):
         
         elif isinstance(error, errors.MissingRequiredArgument):
             await ctx.send(f"{cross} | You missed the `{error.param.name}` argument.")
-            helper = str(ctx.invoked_subcommand) if ctx.invoked_subcommand else str(
-                ctx.command)
-            return await ctx.send_help(helper)
         
         elif isinstance(error, commands.BadArgument):
             if isinstance(error, commands.MessageNotFound):
@@ -44,9 +41,7 @@ class Exceptor(commands.Cog, name="Exceptor"):
                 await ctx.send(f"{cross} | The argument `{error.argument}` was not a valid color.")
         
             else:
-                helper = str(ctx.invoked_subcommand) if ctx.invoked_subcommand else str(
-                    ctx.command)
-                return await ctx.send_help(helper)
+                pass
         
             return
     
@@ -91,7 +86,6 @@ class Exceptor(commands.Cog, name="Exceptor"):
 
         else:
             em = discord.Embed(title=f" Error encountered!",description="A bug or error is detected!",color=discord.Color.orange())
-            # em.add_field(name="Bug Level",value=f"{error_level}",inline=False) #---> not gonna use for now
             em.add_field(name="Bug/Error : ",value=f"```{error}```",inline=False)
             em.add_field(name="Support Server Link",value=f"Please report it here : [Support Server]({self.Bot.support})",inline=False)
             em.set_footer(text=f"Bug Hunter: {ctx.message.author}")
