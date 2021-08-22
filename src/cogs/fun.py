@@ -16,7 +16,7 @@ import random
 from random import choice, randint
 from core import danime
 import asyncio
-
+from typing import Union
 
 
 
@@ -245,19 +245,17 @@ class vein2(commands.Cog, name= "fun"):
     #     await ctx.send(tb[:2000])
 
 
+    @commands.command()
+    async def enlargepp(self, ctx):
+        return await ctx.send(f"Enlarged your pp by {random.randint(1, 100)}% <:lipbite:858395166250631168>")
 
     @commands.command()
     @commands.guild_only()
-    async def enlarge(self, ctx, emoji= None):
+    async def enlarge(self, ctx, emoji: Union[discord.Emoji, discord.PartialEmoji]):
         if emoji == None:
-            return await ctx.send(":_: add a emoji will you")
-        if emoji == "pp":
-            return await ctx.send(f"Enlarged your pp by {random.randint(1, 100)}%.")
-        elif emoji != None:
-            if isinstance(emoji, discord.PartialEmoji):
-                await ctx.send(emoji.url)
-            else:
-                await ctx.send(f"That's a default emoji:_:")
+            return await ctx.send(":_: add a emoji will you")    
+        if emoji != None:
+            await ctx.send(emoji.url)
 
 
     @commands.command(aliases=['serverinvite', 'support'], description='Get Dhentai\'s invite link.')
