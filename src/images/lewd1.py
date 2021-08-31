@@ -382,6 +382,104 @@ class api2(commands.Cog, name="api2"):
 		url = await self.danimeapi(tag="succubus")
 		await self.waifu_embed(ctx=ctx, link=url)
 
+	@commands.command(usage = "dh videos 5"
+		, description="Sends hentai videos. ")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def videos(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "videos", amount)			
+		url = await self.danimeapi(tag="videos")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh azurlane 5"
+		, description="Images fom Azur Lane universe.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def azurlane(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "azurlane", amount)			
+		url = await self.danimeapi(tag="azurlane")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh albedo 5"
+		, description="Albedo the besto succubus")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def albedo(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "albedo", amount)			
+		url = await self.danimeapi(tag="albedo")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh lingerie 5"
+		, description="You know the thing and so do I")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def lingerie(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "lingerie", amount)			
+		url = await self.danimeapi(tag="lingerie")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh foreplay 5"
+		, description="Things you will never do.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def foreplay(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "foreplay", amount)			
+		url = await self.danimeapi(tag="foreplay")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh handjob 5"
+		, description="It's not much but honest work.")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def handjob(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "handjob", amount)			
+		url = await self.danimeapi(tag="handjob")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh masturbation 5"
+		, description="Oh yea")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def masturbation(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "masturbation", amount)			
+		url = await self.danimeapi(tag="masturbation")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+	@commands.command(usage = "dh swimsuit 5"
+		, description="Your fav cloth!!")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def swimsuit(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "swimsuit", amount)			
+		url = await self.danimeapi(tag="swimsuit")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
 	print("Api2 is working")
