@@ -104,7 +104,6 @@ class sauce(commands.Cog, name="Sauce"):
         if url == None:
             return await ctx.send("No image urls found in the last 10 messages please retry by uploading one.")
         if url.endswith(('.mp4', '.webm', '.mov')):
-            print(url)
             if  url.startswith('https://cdn.discordapp.com') or url.startswith('https://media.discordapp.net'):
                 url = url.replace("cdn.discordapp.com", "media.discordapp.net") + "?format=jpeg"
             else:

@@ -61,6 +61,7 @@ class vein9(commands.Cog, name='Help'):
             em.add_field(name=f"Manga", value=f"{bullet} {self.bold(text='Description')} : Get information about your favorite manga. \n{bullet} {self.bold(text='Usage')} : `dh manga <your manga name>`")
             em.add_field(name = f"Character", value = f"{bullet} {self.bold(text='Description')} : Command to learn a little more about your favourite character. \n{bullet} {self.bold(text='Usage')} : `dh character <your favourite character>`.", inline=False)
             em.add_field(name=f"Sauce", value=f"{bullet} Get sauce for artworks, Hvideos, etc. Made possible with the help of [SauceNao](https://saucenao.com/).", inline=False)
+            em.add_field(name=f"Sauceadv", value=f"The advanced version of sauce command for advanced users.", inline=False)
             await ctx.send(embed = em)
 
         elif entity == "2":
@@ -196,6 +197,48 @@ class vein9(commands.Cog, name='Help'):
         embed.set_footer(text="Rules ending with * may result ban.")
         await ctx.send(embed=embed)
 
+
+    @commands.command()
+    @commands.is_owner()
+    async def perks(self, ctx):
+        bullet = "‣"
+        booster_role = "<@&862728918163652619>"
+        pogu = "<:pogu:882144512317751296>"
+        blush = "<a:blushing_red:878921174594236436>"
+        chikahey = "<a:chika_hey:878934185543352340>"
+        panda_think = "<:pandathink:858395941199806474>"
+        chad = "<:chad:878905095645970432>"
+        chad_coffee = "<:chad_coffee:878905342870835200>"
+        nitro = "<a:NitroWombus:882150090964344862>"
+        nice_champ = "<:nicechamp:881171588882505748>"
+        vibing_cat = "<a:vibing_cat:878923772055404584>"
+        vein_shy = "<:vein_shy:878853093310234654>"
+        lick = "<a:LigmaLick:878902882206896128>"
+        pat_pepe = "<a:pepe_pat:860882835321651241>"
+        hyper = "<a:hyper:878932354591236116>"
+        parrot = "<a:chad_parrot:878922984235073567>"
+        chika_shy = "<:ChikaEmbarrassed:878921916096868352>"
+        pepe_scheme = "<:plotting_pepe:860883634957189130>"
+        pug_champ = "<a:pug_champ:878935279052939284>"
+        embed = discord.Embed(color=0xf47fff)
+        embed.description = f"OwO wat is dis? __**IT'S DA PERKS**__ for helping us, yes {pogu},you heard it right **with** your help our cool developers can work more freely on better updates {chikahey}. But you may ask \"How can I help you guys?{panda_think}\", it's simple you can help us and the bot by two ways.\n\n**{chad} -> Boosting Our Server**\n**{chad_coffee} -> Danime Premium**"
+        embed.add_field(name="Boosting Our Server", value=f"You can use __{nitro} Discord Nitro Boosts {nitro}__ to boost our server and get the following rewards {nice_champ}. \n"
+                                                    f"{bullet} __Get this {booster_role} hoisted role which is just below the staff roles__ {vibing_cat}\n"
+                                                    f"{bullet} __Get access to the <#857660418013397023> and talk with other chads {chad_coffee}__\n"
+                                                    f"{bullet} __Get priority over feature requests and tags suggestions {vein_shy}__\n"
+                                                    f"{bullet} __Get access to Vein's heart {lick}__", inline=False)
+
+        embed.add_field(name = "Danime Premium", value=f"If you are an alpha chad {chad_coffee} and would like to help us with the real stuffs then you can earn more perks!\n"
+                                                        f"{bullet} __Enjoy all the above perks earned from server boosting {pat_pepe}__\n"
+                                                        f"{bullet} __Get the most priority over feature requests and tags suggestions__\n"
+                                                        f"{bullet} __No more **cooldowns** while using the bot {hyper}__\n"
+                                                        f"{bullet} __Get access to a few more exciting commands {blush}, visit **[Our Website](https://danimebot.xyz/premium)** for exact information__\n"
+                                                        f"{bullet} __No more channel or time limit on autonsfw feature {parrot}__\n"
+                                                        f"{bullet} __Get access to our to-do lists and next-update lists for sneak picks__\n"
+                                                        f"{bullet} __Get direct access to Vein's house {chika_shy}__", inline=False)
+        embed.add_field(name="But I dun have moni :(", value=f"If you don't have the moni to support us then don't worry you can just vote our bot at **[Top.gg](), [DiscordBots.gg](), [VoidBots]()**, etc. No, we are not money hungry people {pepe_scheme}, you reading this is already enough for us. It makes me very happy knowing that my efforts aren't in vain. Feel free to recommend **[Danime]({self.Bot.website_link})** to your friends if you think we are worthy of your time {pug_champ} **[Invite]({self.Bot.invite})**", inline=False)
+        embed.set_footer(text="Be a chad.", icon_url=f"{ctx.me.avatar_url}")
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['ip'])
     @commands.guild_only()
