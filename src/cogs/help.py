@@ -52,25 +52,26 @@ class vein9(commands.Cog, name='Help'):
 
             await ctx.send(embed = em)
         elif  entity == "1" :
+            bullet = "・"
 
             em = discord.Embed(color = random.choice(self.Bot.color_list))
-            em.description = "Anime related commands. Remove the <> during usage."
+            em.set_author(name= "Commands related to the animeverse. Remove the <> during usage.", icon_url=ctx.me.avatar_url)
             # em.description =f"The embed is in the order of : \nCommandName Synatx Description"
-            em.add_field(name="Anime", value=f"Description : You can search anime. \nUasge : `dh anime <your anime name>`", inline=False)
-            em.add_field(name=f"Manga", value=f"Description: You can search any manga. \nUsage: `dh manga <your manga name>`", inline= False)
-            em.add_field(name = f"Character", value = "You can search most of the characters. \nUsage : `dh character <your favourite character>`")
-            em.add_field(name=f"Sauce", value="It's a given but `dh help sauce` for more info.", inline=False)
+            em.add_field(name="Anime", value=f"{bullet} {self.bold(text='Description')} : Search information about your favorite anime. \n{bullet} {self.bold(text='Usage')} : `dh anime <your anime name>`")
+            em.add_field(name=f"Manga", value=f"{bullet} {self.bold(text='Description')} : Get information about your favorite manga. \n{bullet} {self.bold(text='Usage')} : `dh manga <your manga name>`")
+            em.add_field(name = f"Character", value = f"{bullet} {self.bold(text='Description')} : Command to learn a little more about your favourite character. \n{bullet} {self.bold(text='Usage')} : `dh character <your favourite character>`.", inline=False)
+            em.add_field(name=f"Sauce", value=f"{bullet} Get sauce for artworks, Hvideos, etc. Made possible with the help of [SauceNao](https://saucenao.com/).", inline=False)
             await ctx.send(embed = em)
 
         elif entity == "2":
             if not ctx.channel.is_nsfw():
                 return await ctx.send("Use this command in a nsfw channel please.")
             em = discord.Embed(color = random.choice(self.Bot.color_list))                                            
-            em.description = f"Lists all the nsfw commands, each tag mentioned is a command. Do note only 80% of the tags are from DanimeAPI, I'm migrating every tag soon.\nFor example : `dh yuri`"
+            em.description = f"Lists all the nsfw commands, each tag mentioned is a command. **Images are handpicked and maintained by the developement team, please don't confuse these as booru commands.**\nFor example : `dh yuri`"
             # em1.add_field(name=f"__nsfw command usuage__", value=f"dh `command_name`", inline=False)
-            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `gifs` ,`blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `maid`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`, `monstergirl`", inline=False)
-            em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`", inline=False)
-            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`, `genshin`")
+            em.add_field(name=f"[Commands/Tags]", value =f"**You can pass in the amount of pictures like, `dh nsfw 10`**\n `nsfw`, `gifs` ,`blowjob`, `anal`, `ass`, `milf` , `kemo`, `oppai`, `glasses`, `panties`, `elves`, `maid`, `bdsm`, `pussy`, `1girl`, `cum`, `uniform`, `public`, `thighs`, `creampie`, `cuckold`, `gangbang`, `boobjob`, `erofeet`, `pantyhose` `stockings`, `bunnygirl`,`hairy`,`femdom`, `fitness`, `monstergirl, `videos`, `lingerie`, `foreplay`, `handjob`, `masturbation`, `swimsuit`", inline=False)
+            em.add_field(name=f"[Specific Character]", value=f"`zerotwo`, `rem` , `tsunade`, `albedo`", inline=False)
+            em.add_field(name= f"[Specific Anime/Source]", value=f"`konosuba`, `dragonball`, `naruto`, `fate`, `quintuplets`, `league`, `genshin`, `azurlane`")
             em.add_field(name= f"[Multiple Tags]", value=f"You can also get images with multiple tags, `dh multiple <tag>+<tag2> amount`.\nExample: `dh multiple nsfw+oppai 10`", inline=False)
             em.set_footer(text=f"Use [dh whatis nsfw] to get detail info about what is expected under nsfw commands.")
 
@@ -80,7 +81,7 @@ class vein9(commands.Cog, name='Help'):
                                                     "**disable**\n  dh `autonsfw disable`   Disables the feature for the channel.\n", inline=False)
             
             
-            em1.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures.")
+            em1.set_footer(text=f"Join the support server if you want to contribute or just enjoy some pictures. Next page : AutoNSFW")
             
 
             embeds = [em, em1]
@@ -106,7 +107,7 @@ class vein9(commands.Cog, name='Help'):
             em.description = "Hello, the following commands allow you to basically search anything from nhentai.net.\nGlobal Syntax: `dh doujin_command <query> [page] [sort]`"
             em.add_field(name="Doujin", value="Lets you read hentai through the use of N-hentai API, you will need to use the hentai code as the search attribute.\nExample: `dh doujin 123456`", inline=False)
             em.add_field(name=f"Doujin_tag", value="Lets you search doujins with specific tags. Tags are case sensetive and you can use `_` to connect spaces. Page and Sort are optional.\nExample: `dh doujin_tag milf 1 date`", inline=False)
-            em.add_field(name=f"Doujin_characters", value="Lets you search doujins with specific characters. Page and Sort are optional.\nExample: `dh doujin_character rin_tosoka 2 popular`", inline=False)
+            em.add_field(name=f"Doujin_characters", value="Lets you search doujins with specific characters. Page and Sort are optional.\nExample: `dh doujin_character rin_tosaka 2 popular`", inline=False)
             em.add_field(name=f"Doujin_artist", value = "Lets you search doujins with specific artist. Page and Sort are optional.\nExample: `dh doujin_artist crimson 5 popular-year`", inline=False)
             em.add_field(name="Doujin_parody", value=f"Lets you search doujins with specific parody. Page and Sort are optional. \nExample: `dh doujin_parody one_piece 10 popular-month`", inline=False)
             em.add_field(name="Doujin_group", value=f"Lets you search doujins with specific group. Page and Sort are optional. \nExample: `dh doujin_group crimson-comics 10 popular-week`", inline=False)
@@ -144,6 +145,9 @@ class vein9(commands.Cog, name='Help'):
 
             else:
                 await ctx.send(f"Couldn't find {entity}.")
+
+    def bold(self, text) -> str:
+        return f"**{text}**"
 
     async def send_command_help(self, ctx, command):
         commandDescription = command.description
