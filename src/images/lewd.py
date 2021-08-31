@@ -201,23 +201,6 @@ class vein3(commands.Cog, name="APIs"):
         embed.set_footer(text=f"Requested by {ctx.author}, adviceslip.com", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
-    @commands.command(description='Anime quotes :)')
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def aquote(self, ctx):
-        async with aiohttp.ClientSession() as cs:
-            async with cs.get(f'https://some-random-api.ml/animu/quote') as r:
-
-                data = await r.json()
-                await cs.close()
-                by = data['characther']
-                anime = data['anime']
-                quote = data['sentence']
-
-                embed = discord.Embed(description=f'"{quote}"', colour=0x529dff)
-                embed.set_author(name=f'By {by} from {anime}')
-                embed.set_footer(text=f'Requested by {ctx.author}, Quote from some-random-api')
-                await ctx.send(embed=embed)
 
     @commands.command(description='Give a headpat to someone.', aliases=['pat'])
     @commands.guild_only()
@@ -286,7 +269,6 @@ class vein3(commands.Cog, name="APIs"):
 
         elif user != None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
-
             embed.set_image(url=f"{link}")
             embed.description = f"{user.mention} You bully! Stop hurting {ctx.author.mention}"
             await ctx.send(embed=embed)
