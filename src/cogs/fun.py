@@ -216,7 +216,7 @@ class vein2(commands.Cog, name= "fun"):
                                                                f'**Server ID : ** {guild.id}\n'
                                                                f'**Created at : ** {time}\n'
                                                                f'**Verification level : ** {guild.verification_level} \n'
-                                                               f'**Server owner : ** {guild.owner.name} \n'
+                                                               # f'**Server owner : ** {guild.owner.name} \n'
                                                                , inline=False)
 
 
@@ -303,7 +303,8 @@ class vein2(commands.Cog, name= "fun"):
         channel = self.Bot.get_channel(856616086325297172)
         async for message in channel.history(limit =1):
             message = message.content
-        embed = discord.Embed(color =random.choice(self.Bot.color_list))
+            time = message.created_at
+        embed = discord.Embed(color =random.choice(self.Bot.color_list), timestamp = time)
         embed.description = message[:2000]
         await ctx.send(embed=embed)
         
