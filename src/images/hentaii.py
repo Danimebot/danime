@@ -14,7 +14,7 @@ from pygicord import Paginator
 from reactionmenu import ButtonsMenu, ComponentsButton
 from dislash import *
 import aiohttp
-
+import time
 
 
 
@@ -131,28 +131,46 @@ class hentaii(commands.Cog, name="hentaii"):
 				for button in buttons:
 					menu.add_button(button)
 				await menu.start()
+
+			def check_react(reaction, user):
+			    if user != ctx.message.author:
+			        return False
+			    return True
 					
 			if inter.button.label== f'Send Images':
-				if len(doujin.image_urls) > 100:
-					return await ctx.send("Too many pages to be sent here.")
-				
+				if doujin.num_pages > 100:
+					return await ctx.send("Sorry mate too many pics, please use the read option!")
+				try:
+					x = await ctx.send("By using this option you allow the bot to DM you, this may spam your DMs. Make sure you have DMs enabled. **Click the green to go.**")
+					await x.add_reaction("✅")
+					res, user = await self.Bot.wait_for('reaction_add', timeout=30.0, check=check_react)
+					if "✅" in str(res):
+						pass
+					else:
+						return await ctx.send("Bruh")
+				except asyncio.TimeoutError:
+					return await ctx.send("Timed out!")
+				except discord.Forbidden:
+					return await ctx.send("Please turn on your DMs.")
+
 				a = 0 
 				b = 5
 				while len(doujin.image_urls) >= a:
 					try:
-						await ctx.send("\n".join(doujin.image_urls[a:b]))
-					except Exception:
+						await ctx.author.send("\n".join(doujin.image_urls[a:b]))
+						time.sleep(3)
+					except IndexError:
 						break
 					a += 5
 					b += 5
-					
+				await ctx.send("Images sent!", delete_after=30)
 			if inter.button.label== f'Reading Room':
 					try:
 						channelName = f"Reading room #{ctx.author.discriminator}"
 						overwrites = {
 							ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
 							ctx.guild.me: discord.PermissionOverwrite(read_messages=True, manage_channels=True, manage_messages=True),
-							ctx.author : discord.PermissionOverwrite(read_messages= True)
+							ctx.author : discord.PermissionOverwrite(read_messages= True, send_messages=False)
 							}
 						readingChannel = await ctx.guild.create_text_channel(f'{channelName}', overwrites=overwrites,
 							nsfw=True, reason = "Trigger : reading room" , 
