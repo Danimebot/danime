@@ -61,6 +61,16 @@ class safe(commands.Cog, name = "safe"):
 		image = data['url']
 		return image
 
+	@commands.command(description='Anime quotes :)')
+	@commands.guild_only()
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def aquote(self, ctx):
+		data = requests.get("https://animechan.vercel.app/api/random").json()
+		em = discord.Embed(color=random.choice(self.Bot.color_list))
+		em.description = f'"{data["quote"]}" by {data["character"]} from {data["anime"]}.'
+		await ctx.send(embed=em)
+
+
 
 	@commands.command(description='Sends a random doggo picture and also a related fact.')
 	@commands.cooldown(1, 5, commands.BucketType.user)
@@ -134,7 +144,7 @@ class safe(commands.Cog, name = "safe"):
 
 
 	# No, the double s is not a type, s stands for safe image.
-	@commands.command(aliases=['swimsuit'], usage= "dh swimsuit 4",
+	@commands.command(aliases=['sswimsuit'], usage= "dh swimsuit 4",
 		description="Get safe swimsuit boi")
 	@commands.cooldown(1, 5, commands.BucketType.user)
 	async def sfwswimsuit(self, ctx, amount:int=0):
