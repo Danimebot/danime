@@ -43,6 +43,8 @@ class premium_commands(commands.Cog):
                 chapter = res.content
                 url = info[user_choice]['link'] + f"-chap-{chapter}/"
                 pages = self.get_manga_pages(url)
+                if pages == "Unforseen error occured.":
+                    return await ctx.send("Unforseen error occured. Please report it to the support server.")
                 menu = ButtonsMenu(ctx, menu_type=ButtonsMenu.TypeEmbed, timeout=90, show_page_director=False)
                 for url in pages:
                     em = discord.Embed()
@@ -67,7 +69,10 @@ class premium_commands(commands.Cog):
         images = []
         for img in chapter_content.find_all("img"):
             images.append(img['src'])
-        return images
+        if "/content/upload/coming-soon.jpg" not in images:
+            return images
+        else:
+            return "Unforseen error occured."
 
 
 
@@ -83,6 +88,7 @@ class premium_commands(commands.Cog):
                 content = entry.find("div", {"class" : "content"})
                 title_main = content.find("h3", {"class" : "name"})
                 title_link = title_main.find("a")['href']
+                title_link = title_link.replace("-1", "")
                 title_name = title_main.text.strip()
                 status = content.find("div", {"class" : "status"}).find_all("span")[1].text.strip()
                 views = content.find("div", {"class" : "view"}).find_all("span")[1].text.strip()
@@ -139,6 +145,14 @@ class premium_commands(commands.Cog):
                 
         except asyncio.TimeoutError:
             await ctx.send("Timed out.")
+
+    @DanimeCommands(premium=True, aliase=['animedl'])
+    @checks.is_premium_guild()
+    async def anime_dl(self, ctx, query:str):
+        query = (re.sub("[-,.]", " ", query))
+        info = await self.Bog.get_anime(self, query)
+        
+
 
     def get_novel(self, title):
         query = (re.sub("[ ,.]", "+", title))
