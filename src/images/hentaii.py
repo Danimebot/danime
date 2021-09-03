@@ -103,6 +103,7 @@ class hentaii(commands.Cog, name="hentaii"):
 
 		row = ActionRow(
 			Button(style=ButtonStyle.primary, label="Read", custom_id="first_option") ,
+			Button(style=ButtonStyle.primary, label="Auto-read", custom_id="ok"),
 			Button(style=ButtonStyle.primary, label="Send Images", custom_id="second_option"),
 			Button(style=ButtonStyle.primary, label="Reading Room", custom_id="third_option"),
 			Button(style=ButtonStyle.primary, label="Download", custom_id="fourth_option")
@@ -193,8 +194,36 @@ class hentaii(commands.Cog, name="hentaii"):
 					except discord.Forbidden:
 						await ctx.send("It seems I don't have `manage channels` permissions enabled, enable it to use this feature.")
 
+			if inter.button.label== f'Auto-read':
+				await ctx.send("Please tell me how often do you want the pages to turn? Should be in the range of 60-300")
+				try:
+					res = await self.Bot.wait_for("message",timeout=60, check= lambda message: message.author == ctx.author and message.channel == ctx.channel )
+					try:
+						time = int(res.content)
+					except:
+						return await ctx.send("Time should be a number between 60 and 300.")
+					if not time > 300 and time >= 30:
+						pass
+					else:
+						return await ctx.send("Time should be a number between 60 and 300.")
+
+					embeds = self.get_pages_embeds(doujin)
+					for key, embed in enumerate(embeds):
+						if key == 0:
+							send = await ctx.send(embed = embed)
+							await asyncio.sleep(time)
+						else:
+							await send.edit(embed = embed)
+							await asyncio.sleep(time)
+					await ctx.send(embed = discord.Embed(description=f"Auto read has reached the last page, feel free to share our **[Bot]({self.Bot.invite})** with your friends."))
+
+
+				except asyncio.TimeoutError:
+					await ctx.send("Timed out!")
+
 
 			if inter.button.label== f'Download':
+				return await ctx.send("Being reworked!")
 				await ctx.send(f"You will be given a direct download link, it will be a zip file, you can reassure about the security but it's wise to run a quick scan.")
 				db  = self.Bot.db1['AbodeDB']
 				collection =   db['direct_links']
@@ -413,6 +442,15 @@ class hentaii(commands.Cog, name="hentaii"):
 			await ctx.send(embed=embed)
 		except discord.HTTPException:
 			await ctx.send("Unknow error occured make sure your query is correct.")
+
+	def get_pages_embeds(self, doujin):
+		embeds = []
+		for key, images in enumerate (doujin.image_urls):
+			e = discord.Embed()
+			e.set_image(url = images)
+			e.set_footer(text=f"Page {key+1}/{len(doujin.image_urls)}")
+			embeds.append(e)
+		return embeds
 
 	@commands.command(aliases=['enable_nsfw'],description='Enables the NSFW option from channel settings.')
 	@commands.guild_only()
