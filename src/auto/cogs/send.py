@@ -74,7 +74,7 @@ class auto(commands.Cog, name="auto"):
 						image = image_list[key]
 						embed =  discord.Embed(color =  color)
 						embed.set_image(url=f"{image}")
-						embed.description = f"Images powered by [Danime Bot]({self.Bot.invite})"
+						embed.description = f"[Image]({image}) powered by [Danime Bot]({self.Bot.invite})"
 						try:
 							self.Bot.loop.create_task(self.sendwebhook(image = image, tag = setTag , collection = collection, webhook_url = webhook_url, embed = embed))
 							
