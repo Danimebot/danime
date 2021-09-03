@@ -188,7 +188,7 @@ class sauce(commands.Cog, name="Sauce"):
         embed.set_footer(icon_url = ctx.author.avatar_url, text = "This data is from imageops.com, please refer there for more cool image operaions.")        
         return await ctx.send(embed=embed)
     def is_url(self, message):
-        pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp]|\.gif|\.mp4|\.mov|\.webm)$")
+        pattern =  re.compile(r"^https?://\S+(\.jpg|\.png|\.jpeg|\.webp|\.gif|\.mp4|\.mov|\.webm)$")
         if not pattern.match(message):
             return False
         return True

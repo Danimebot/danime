@@ -63,7 +63,7 @@ class Danime(commands.AutoShardedBot):
 		self.website_link = "https://danimebot.xyz/"
 		self.novel_website = novel_website
 		self.cupped_fist = "<:Cuppedfist:757112296094040104>"
-		self.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=392304&scope=bot"
+		self.invite= "https://discord.com/api/oauth2/authorize?client_id=861117247174082610&permissions=2684446736&scope=applications.commands%20bot"
 		self.support = "https://discord.com/invite/aTzduKANKh"
 		self.starttime = datetime.datetime.utcnow()
 		self.pfp = "https://cdn.discordapp.com/avatars/797456198932103189/3cfde6cfddfd2eb7c2933473d6661bb1.png?size=1024"
