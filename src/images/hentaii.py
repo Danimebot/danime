@@ -159,7 +159,7 @@ class hentaii(commands.Cog, name="hentaii"):
 				while len(doujin.image_urls) >= a:
 					try:
 						await ctx.author.send("\n".join(doujin.image_urls[a:b]))
-						time.sleep(3)
+						await asyncio.sleep(3)
 					except IndexError:
 						break
 					a += 5
