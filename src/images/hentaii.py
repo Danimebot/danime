@@ -151,8 +151,7 @@ class hentaii(commands.Cog, name="hentaii"):
 						return await ctx.send("Bruh")
 				except asyncio.TimeoutError:
 					return await ctx.send("Timed out!")
-				except discord.Forbidden:
-					return await ctx.send("Please turn on your DMs.")
+
 
 				a = 0 
 				b = 5
@@ -160,7 +159,9 @@ class hentaii(commands.Cog, name="hentaii"):
 					try:
 						await ctx.author.send("\n".join(doujin.image_urls[a:b]))
 						await asyncio.sleep(3)
-					except IndexError:
+					except discord.Forbidden:
+						return await ctx.send("Please turn on your DMs.")
+					except discord.HTTPException:
 						break
 					a += 5
 					b += 5
