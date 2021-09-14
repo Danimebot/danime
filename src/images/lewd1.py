@@ -479,6 +479,32 @@ class api2(commands.Cog, name="api2"):
 		await self.waifu_embed(ctx=ctx, link=url)
 
 
+	@commands.command(usage = "dh armpits 5"
+		, description="Arm to the pits :chad:")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def armpits(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "armpits", amount)			
+		url = await self.danimeapi(tag="armpits")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
+	@commands.command(usage = "dh wet"
+		, description="Sweaty girls!!")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def wet(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			await self.notnsfw(ctx=ctx)
+			return
+		if  amount != 0:
+			return await self.send_image(ctx, "wet", amount)			
+		url = await self.danimeapi(tag="wet")
+		await self.waifu_embed(ctx=ctx, link=url)
+
+
 
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
