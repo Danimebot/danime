@@ -193,7 +193,7 @@ class vein9(commands.Cog, name='Help'):
             f"{bullet} Don't bother any staff members in dms unless there is a reason behind it.\n"
             f"{bullet} No spamming and flooding channels.\n"
             f"{bullet} Follow [Discord TOS](https://discord.com/terms).\n"
-            f"{bullet} Get NSFW access from <#856616092251193404>, Don't bother staff.")
+            f"{bullet} Get Access to the server from <#886095861149483048>, Don't bother staff.")
         embed.set_footer(text="Rules ending with * may result ban.")
         await ctx.send(embed=embed)
 
