@@ -29,6 +29,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		urls = list(url.split("+"))
 		db = self.Bot.db2['AbodeDB']
 		collections = collection.split("+")
+		dict_ = {"by" : ctx.author.name + f"{ctx.author.discriminator}" + " | " + f"{ctx.author.id}"}
 		for collection in collections:
 			added = []
 			collection = db [f'{collection}']
@@ -38,11 +39,12 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				continue
 			for url in urls:
 				try:
-					data = {"_id": url}
-					collection.insert_one(data)
+					collection.insert_one({"_id" : url , "info" : dict_})
 					added.append(collection.name)
 				except:
 					await ctx.send("It seems the image is already added.")
+					collection.update_one({"_id" : url }, {"$set" : {"info" : dict_}})
+
 			await ctx.send("Added image to " + ", ".join(added))
 	@commands.group(pass_context=True)
 	@commands.check(is_dev)
@@ -107,7 +109,7 @@ class danimeapi(commands.Cog, name="danimeapi"):
 		check = db.list_collection_names()
 		collection = db [f'{collection}']
 		collection2 = db[collection2]
-
+		dict_ = {"by" : ctx.author.name + f"{ctx.author.discriminator}" + " | " + f"{ctx.author.id}"}
 		if not collection.name in check or not collection2.name in check:
 			return await ctx.send("Check failed, wrong db given.")
 		moved_images = 0
@@ -119,9 +121,10 @@ class danimeapi(commands.Cog, name="danimeapi"):
 				if search != None:
 					collection.delete_one(query)
 				if search2 != None:
+					collection.update_one({"_id" : url }, {"$set" : {"info" : dict_}})
 					await ctx.send("Image already exists at the moved folder.")
 				
-				collection2.insert_one({"_id" : url})
+				collection2.insert_one({"_id" : url, "info" : dict_})
 				moved_images += 1				
 			except:
 				await ctx.send("This image is not in the databse, try contacting the owner in our support server.")
