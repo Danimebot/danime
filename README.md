@@ -8,7 +8,7 @@
   <p align="center">
     The best anime bot for your server.
     <br />
-    <a href="https:danimebot.xyz/"><strong>Explore website »</strong></a>
+    <a href="https://danimebot.xyz/"><strong>Explore website »</strong></a>
     <br />
     <br />
     <a href="https://discord.com/invite/aTzduKANKh">Discord Server</a>
