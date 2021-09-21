@@ -194,7 +194,7 @@ class sauce(commands.Cog, name="Sauce"):
         return True
 
     async def generic_error(self, ctx, url):
-        url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+        url =f"https://saucenao.com/search.php?url={url}"
         em = discord.Embed(description =f"Sorry, nothing found you can try [here]({url}) if you'd like.")
         em.set_footer(text="Also, make sure your url ends with an image format.")
         await ctx.send(embed = em)
