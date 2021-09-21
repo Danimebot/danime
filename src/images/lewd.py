@@ -15,83 +15,48 @@ import hmtai
 from cogs.autonsfw import DanimeAPI
 from pygicord import Paginator
 from owotext import OwO
+import pymongo
 #This cog also contains many sfw things :
+
+
+
 
 
 class vein3(commands.Cog, name="APIs"):
     def __init__(self, Bot):
         self.Bot = Bot
-        self.danime_api = DanimeAPI(self.Bot.api_url)
+        self.danime_api = DanimeAPI(Bot)
 
-    async def notnsfw(self, ctx):
-        embed = discord.Embed(color=random.choice(self.Bot.color_list))
-        embed.title = f"Non-NSFW channel detected!"
-        embed.add_field(name="Why should you care?", value=f"Discord forbids the use of NSFW content outside the NSFW-option enabled channels. [More here](https://discord.com/guidelines#:~:text=You%20must%20apply%20the%20NSFW,sexualize%20minors%20in%20any%20way.)", inline=False)
-        embed.add_field(name="How can I enable the NSFW channel option?", value=f"** **", inline=False)
-        embed.set_image(url=f"https://cdn.discordapp.com/attachments/802518639274229800/802936914054610954/nsfw.gif")
-        embed.set_footer(text=f"Pro tip: {self.Bot.DEFAULT_PREFIX}set_nsfw can do the work for you.")
-        return await ctx.send(embed=embed)
 
-    @commands.command(description='Get quick info about an API')
-    @commands.guild_only()
-    async def api(self, ctx, *, url=None):
-        if url == None:
-            return await ctx.send("Please pass in an URL")
-        else:
-            req = requests.get(f"{url}").json()
-            req_1 = json.dumps(req, indent=4)
-            embed = discord.Embed(color=self.Bot.color,
-                                  timestamp=datetime.datetime.utcnow())
-            embed.set_author(name="API response to ", url=f"{url}", icon_url=ctx.me.avatar_url)
-            embed.description = f"```json\n{req_1}```"
-
-            await ctx.send(embed=embed)
-
-    @commands.command(description=f"Gets a random waifu.\nThe categories are SFW and NSFW while the types can be seen through <https://waifu.pics/docs>.")
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def waifu(self, ctx, category=None, type_=None):
-
-        if category == None and type_ == None:
-            url = f"https://api.waifu.pics/sfw/waifu"
-            data = requests.get(f"{url}").json()
-            link = data['url']
-            await self.waifu_embed(ctx=ctx, link=link)
-        if category == "sfw" and type_ != None:
-            type_ = type_.lower()
-            category = category.lower()
-            url = f"https://api.waifu.pics/{category}/{type_}"
-            data = requests.get(f"{url}").json()
-            link = data['url']
-            await self.waifu_embed(ctx=ctx, link=link)
-        if category == "nsfw" and type_ != None:
-            type_ = type_.lower()
-            category = category.lower()
-            if not ctx.channel.is_nsfw():
-                await self.notnsfw(ctx=ctx)
-                return
-
-            url = f"https://api.waifu.pics/{category}/{type_}"
-            data = requests.get(f"{url}").json()
-            link = data['url']
-            await self.waifu_embed(ctx=ctx, link=link)
-
-    @commands.command(description=f"Sends blowjob images ig", aliases=['bj'])
-    @commands.guild_only()
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def blowjob(self, ctx, amount: int = 0):
-        if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
+    @commands.Cog.listener()
+    async def on_interaction(self, inter):
+        if inter.guild.id != 802529391808086066:
             return
-        if amount != 0:
-            return await self.send_image(ctx, "blowjob", amount)
-        
-        r = requests.get(f"{self.Bot.api_url}blowjob").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if inter.components[0].components[0].custom_id != "NUTT_BUTTON":
+            return
+        try:
+            url = inter.message.embeds[0].image.url
+            tag = inter.message.embeds[0].description.split(":")[-1].strip().replace("||", "")
+        except:
+            return
+        db = self.Bot.db2['AbodeDB']
+        collection = db[tag]
+        find = collection.find_one({"_id" : url})
+        new_nutt = 1
+        if not find:
+            return
 
+        try:
+            count = find['NUTT'] + 1
+            collection.update_one({"_id" : url}, {"$set" : {"NUTT" : count}})
+            new_nutt = count
+        except KeyError:
+            collection.update_one({"_id" : url}, {"$set" : {"NUTT" : 1}})
+
+
+        return await inter.respond(content = f"You sucessfully :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t: to this image. Total image :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t:'s : {new_nutt}")
+
+        
 
 
     @commands.command(description='Echos\' words from clyde')
@@ -265,7 +230,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -281,7 +246,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -298,7 +263,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -315,7 +280,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user != None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user == None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -332,7 +297,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -349,7 +314,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
 
@@ -367,7 +332,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
 
@@ -385,7 +350,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
 
@@ -403,7 +368,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
         elif user != None:
 
@@ -421,7 +386,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         link = data['url']
         if user == None:
-            await self.waifu_embed(ctx=ctx, link=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
     def hyper_replace(self, text, old: list, new: list):
         msg = str(text)
@@ -466,6 +431,48 @@ class vein3(commands.Cog, name="APIs"):
 
     #     await ctx.send(embed=embed)
 
+
+    @commands.command(description=f"Gets a random waifu.\nThe categories are SFW and NSFW while the types can be seen through <https://waifu.pics/docs>.")
+    @commands.guild_only()
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def waifu(self, ctx, category=None, type_=None):
+
+        if category == None and type_ == None:
+            url = f"https://api.waifu.pics/sfw/waifu"
+            data = requests.get(f"{url}").json()
+            link = data['url']
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
+        if category == "sfw" and type_ != None:
+            type_ = type_.lower()
+            category = category.lower()
+            url = f"https://api.waifu.pics/{category}/{type_}"
+            data = requests.get(f"{url}").json()
+            link = data['url']
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
+        if category == "nsfw" and type_ != None:
+            type_ = type_.lower()
+            category = category.lower()
+            if not ctx.channel.is_nsfw():
+                await self.notnsfw(ctx=ctx)
+                return
+
+            url = f"https://api.waifu.pics/{category}/{type_}"
+            data = requests.get(f"{url}").json()
+            link = data['url']
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link)
+
+    @commands.command(description=f"Sends blowjob images ig", aliases=['bj'])
+    @commands.guild_only()
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def blowjob(self, ctx, amount: int = 0) -> None:
+        if not ctx.channel.is_nsfw():
+            return await self.danime_api.not_nsfw(ctx)
+
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "blowjob", amount)
+        
+        await self.danime_api.image_embed(ctx, "blowjob")
+
     @commands.command(description=f"Returns ecchi gifs that won't be nsfw :)")
     @commands.guild_only()
     async def ecchi(self, ctx):
@@ -480,17 +487,13 @@ class vein3(commands.Cog, name="APIs"):
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cum(self, ctx, amount:int=0):
-
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "cum", amount)
-        r = requests.get(f"{self.Bot.api_url}cum").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "cum", amount)
+        
+        await self.danime_api.image_embed(ctx, "cum")
         
     # @commands.command(description=f"Sends a futanari picture.")
     # @commands.guild_only()
@@ -501,7 +504,7 @@ class vein3(commands.Cog, name="APIs"):
     #         await self.notnsfw(ctx=ctx)
     #         return
     #     if amount != 0:
-    #         return await self.send_image(ctx, "futanari", amount)
+    #         return await self.danime_api.send_images(ctx, "", amount)
     #     r = requests.get(f"{self.Bot.api_url}futanari").json()['url']
     #     em = discord.Embed()
     #     em.description = f"Bad image? [Report it]({self.Bot.support})"
@@ -515,96 +518,74 @@ class vein3(commands.Cog, name="APIs"):
         return await ctx.send("Femdom not available rightnow.")
 
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "femdom", amount)
-        r = requests.get(f"{self.Bot.api_url}femdom").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "femdom", amount)
+        
+        await self.danime_api.image_embed(ctx, "femdom")
 
     @commands.command(description=f"Sends a yuri picture.", usage="dh yuri 9")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def yuri(self, ctx, amount: int = 0):
-
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "yuri", amount)
+            return await self.danime_api.not_nsfw(ctx)
 
-        r = requests.get(f"{self.Bot.api_url}yuri").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "yuri", amount)
+        
+        await self.danime_api.image_embed(ctx, "yuri")
 
     @commands.command(description=f"Sends a ass picture.", usage="dh ass 10")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ass(self, ctx, amount: int = 0):
-
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "ass", amount)
-        r = requests.get(f"{self.Bot.api_url}ass").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "ass", amount)
+        
+        await self.danime_api.image_embed(ctx, "ass")
 
     @commands.command(description=f"Sends a creampie picture.", usage="dh creampie 5")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def creampie(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "creampie", amount)
-        r = requests.get(f"{self.Bot.api_url}creampie").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "creampie", amount)
+        
+        await self.danime_api.image_embed(ctx, "creampie")
 
     @commands.command(description=f"Weird fetish ok!", usage= "dh cuckold 2", aliases=['netorare'])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cuckold(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "cuckold", amount)
-        r = requests.get(f"{self.Bot.api_url}cuckold").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "cuckold", amount)
+        
+        await self.danime_api.image_embed(ctx, "cuckold")
 
     @commands.command(description=f"5vs1", usage= "dh gangbang 4")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def gangbang(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        # no = random.randint(0,1)
-        if amount != 0:
-            return await self.send_image(ctx, "gangbang", amount)
-        r = requests.get(f"{self.Bot.api_url}gangbang").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.not_nsfw(ctx)
 
-    @commands.command(description=f"OwO")
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "gangbang", amount)
+        
+        await self.danime_api.image_embed(ctx, "gangbang")
+
+    @commands.command(description=f"Boobjob, occupation done by boob to earn a living :chad:")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def boobjob(self, ctx, amount: int = 0):
@@ -612,7 +593,7 @@ class vein3(commands.Cog, name="APIs"):
             await self.notnsfw(ctx=ctx)
             return
         if amount != 0:
-            return await self.send_image(ctx, "boobjob", amount)
+            return await self.danime_api.send_images(ctx, "", amount)
 
         r = requests.get(f"{self.Bot.api_url}boobjob").json()['url']
         em = discord.Embed()
@@ -620,62 +601,52 @@ class vein3(commands.Cog, name="APIs"):
         em.set_image(url=r)
         await ctx.send(embed=em)
 
-    @commands.command(description=f"Owo")
+    @commands.command(description=f"Her beautiful face, cheris it!")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ahegao(self, ctx):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
 
-        await ctx.send((hmtai.useHM("v2-4", "ahegao")))
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "ahegao", amount)
+        
+        await self.danime_api.image_embed(ctx, "ahegao")
 
-    @commands.command(description=f"OwO")
+    @commands.command(description=f"Things you shouldn't do in public.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def public(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "public", amount)
-        r = requests.get(f"{self.Bot.api_url}public").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.not_nsfw(ctx)
 
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "public", amount)
+        
+        await self.danime_api.image_embed(ctx, "public")
     @commands.command(name="1girl")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def _1girl(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "1girl", amount)
+            return await self.danime_api.not_nsfw(ctx)
 
-        r = requests.get(f"{self.Bot.api_url}1girl").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "1girl", amount)
+        
+        await self.danime_api.image_embed(ctx, "1girl")
 
     @commands.command(aliases= ["erofeet"])
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def feet(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
 
         if amount != 0:
-            return await self.send_image(ctx, "feet", amount)
-        r = requests.get(f"{self.Bot.api_url}feet").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "feet", amount)
+        
+        await self.danime_api.image_embed(ctx, "feet")
 
     # @commands.command(description=f"Sends a trap picture.")
     # @commands.guild_only()
@@ -685,7 +656,7 @@ class vein3(commands.Cog, name="APIs"):
     #         await self.notnsfw(ctx=ctx)
     #         return
     #     if amount != 0:
-    #         return await self.send_image(ctx, "trap", amount)
+    #         return await self.danime_api.send_images(ctx, "", amount)
 
     #     r = requests.get(f"{self.Bot.api_url}trap").json()['url']
     #     em = discord.Embed()
@@ -698,15 +669,12 @@ class vein3(commands.Cog, name="APIs"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def glasses(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "glasses", amount)
-        r = requests.get(f"{self.Bot.api_url}glasses").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "glasses", amount)
+        
+        await self.danime_api.image_embed(ctx, "glasses")
 
 
     @commands.command(description=f"Sends a cat pic :kek:")
@@ -714,105 +682,64 @@ class vein3(commands.Cog, name="APIs"):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pussy(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "pussy", amount)
-        r = requests.get(f"{self.Bot.api_url}pussy").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "pussy", amount)
+        
+        await self.danime_api.image_embed(ctx, "pussy")
 
     @commands.command(description=f"Sends a NSFW picture where the lead is in a formal uniform.")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def uniform(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
+            return await self.danime_api.not_nsfw(ctx)
 
-            return await self.send_image(ctx, "uniform", amount)
-        r = requests.get(f"{self.Bot.api_url}uniform").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "uniform", amount)
+        
+        await self.danime_api.image_embed(ctx, "uniform")
 
     @commands.command(description=f"Thicc")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def thighs(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "thighs", amount)
+            return await self.danime_api.not_nsfw(ctx)
 
-        r = requests.get(f"{self.Bot.api_url}thighs").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "thighs", amount)
+        
+        await self.danime_api.image_embed(ctx, "thighs")
 
     @commands.command(description=f"Returns anal images and gifs.")
     @commands.guild_only()
     async def anal(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
+
         if amount != 0:
-            return await self.send_image(ctx, "anal", amount)
+            return await self.danime_api.send_images(ctx, "anal", amount)
+        
+        await self.danime_api.image_embed(ctx, "anal")
 
-        r = requests.get(f"{self.Bot.api_url}anal").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
-
-    async def send_image(self, ctx, tag: str, amount: int):
-        if amount > 10:
-            return await ctx.send("Can't go higher than 10.")
-        urls = requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
-        a = 0 
-        b = 5
-        while len(urls) >= a:
-            try:
-                await ctx.send(content = f"```py\nImages powered by https://danimebot.xyz/```" + f"\n".join(urls[a:b]))
-            except Exception:
-                break
-            a += 5
-            b += 5
 
 
 
     @commands.command(usage=f"dh nsfw 10 ",
-                      description="From a collection of more than 40,000+ images and gifs sends a random one(s).")
+                      description="From a collection of more than 90,000+ images and gifs sends a random one(s).")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def nsfw(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
+            return await self.danime_api.not_nsfw(ctx)
 
         if amount != 0:
-            return await self.send_image(ctx, "nsfw", amount)
+            return await self.danime_api.send_images(ctx, "nsfw", amount)
+        
+        await self.danime_api.image_embed(ctx, "nsfw")
 
-        r = requests.get(f"{self.Bot.api_url}nsfw").json()['url']
-        em = discord.Embed()
-        em.description = f"Bad image? [Report it]({self.Bot.support})"
-        em.set_image(url=r)
-        await ctx.send(embed=em)
-
-    async def waifu_embed(self, ctx, link, dl=None):
-        embed = discord.Embed(color=random.choice(self.Bot.color_list))
-        if dl != None:
-            embed.description = f"[Link]({dl})"
-
-        embed.set_image(url=f"{link}")
-        await ctx.send(embed=embed)
-        return
 
     @commands.command()
     @commands.guild_only()
@@ -821,37 +748,31 @@ class vein3(commands.Cog, name="APIs"):
         url = f"https://api.waifu.pics/sfw/megumin"
         data = requests.get(f"{url}").json()
         link = data['url']
-        await self.waifu_embed(ctx=ctx, link=link)
+        await self.danime_api.normal_image_embed(ctx=ctx, link=link)
 
     @commands.command(aliases=['tits' , 'boobs'])
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def oppai(self, ctx, amount: int = 0):
         if not ctx.channel.is_nsfw():
-            await self.notnsfw(ctx=ctx)
-            return
-        if amount != 0:
-            return await self.send_image(ctx, "oppai", amount)
+            return await self.danime_api.not_nsfw(ctx)
 
-        r = requests.get(f"{self.Bot.api_url}oppai").json()['url']
-        em = discord.Embed()
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+        if amount != 0:
+            return await self.danime_api.send_images(ctx, "oppai", amount)
+        
+        await self.danime_api.image_embed(ctx, "oppai")
 
     @commands.command(description="Kemo = animal ears")
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def kemo(self, ctx, amount:int = 0):
         if not ctx.channel.is_nsfw():
-            return await self.notnsfw(ctx=ctx)
+            return await self.danime_api.not_nsfw(ctx)
 
         if amount != 0:
-            return await self.send_image(ctx, "kemo", amount)
-
-        r = requests.get(f"{self.Bot.api_url}kemo").json()['url']
-        em = discord.Embed()
-        em.set_image(url=r)
-        await ctx.send(embed=em)
+            return await self.danime_api.send_images(ctx, "kemo", amount)
+        
+        await self.danime_api.image_embed(ctx, "kemo")
 
 
     @commands.command(description="Sends a SFW anime wallpaper.")
@@ -862,7 +783,7 @@ class vein3(commands.Cog, name="APIs"):
         data = requests.get(f"{url}").json()
         if data["nsfw"] == False:
             link = (data['image'])
-            await self.waifu_embed(ctx=ctx, link=link, dl=link)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=link, dl=link)
         else:
             return await ctx.send("Try re running the command, got nsfw :(")
 
@@ -878,7 +799,7 @@ class vein3(commands.Cog, name="APIs"):
         url = nekos.img(target="tickle")
         if user is None:
 
-            await self.waifu_embed(ctx=ctx, link=url)
+            await self.danime_api.normal_image_embed(ctx=ctx, link=url)
 
         else:
             embed = discord.Embed(color=random.choice(self.Bot.color_list))
@@ -926,13 +847,13 @@ class vein3(commands.Cog, name="APIs"):
             data = requests.get(f"{url}").json()
             if data["nsfw"] == False:
                 link = (data['image'])
-                await self.waifu_embed(ctx=ctx, link=link, dl=link)
+                await self.danime_api.normal_image_embed(ctx=ctx, link=link, dl=link)
 
             else:
                 if not ctx.channel.is_nsfw():
                     return await ctx.send("Non nsfw channel bruv")
                 link = data['image']
-                await self.waifu_embed(ctx=ctx, link=link, dl=link)
+                await self.danime_api.normal_image_embed(ctx=ctx, link=link, dl=link)
                 
 def setup(Bot):
     Bot.add_cog(vein3(Bot))
