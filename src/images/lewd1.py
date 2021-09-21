@@ -471,7 +471,7 @@ class api2(commands.Cog, name="api2"):
 
 
 	@commands.command(usage = "dh darkskin", aliases=['dark_skin'],
-		, description="Darkskin girls, dem good!!!")
+		description="Darkskin girls, dem good!!!")
 	@commands.cooldown(1, 5, commands.BucketType.user)
 	async def darkskin(self, ctx, amount:int=0):
 		if not ctx.channel.is_nsfw():
