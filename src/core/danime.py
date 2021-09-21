@@ -67,6 +67,7 @@ class Danime(commands.AutoShardedBot):
 		self.support = "https://discord.com/invite/aTzduKANKh"
 		self.starttime = datetime.datetime.utcnow()
 		self.pfp = "https://cdn.discordapp.com/avatars/797456198932103189/3cfde6cfddfd2eb7c2933473d6661bb1.png?size=1024"
+		self.patreon = "https://www.patreon.com/danimebot"
 		self.api_url = api_url
 		self.premium_guilds = []
 		self.gelbooru_token = gelbooru_token
