@@ -470,6 +470,17 @@ class api2(commands.Cog, name="api2"):
 		await self.danime_api.image_embed(ctx, "wet")
 
 
+	@commands.command(usage = "dh darkskin", aliases=['dark_skin'],
+		, description="Darkskin girls, dem good!!!")
+	@commands.cooldown(1, 5, commands.BucketType.user)
+	async def darkskin(self, ctx, amount:int=0):
+		if not ctx.channel.is_nsfw():
+			return await self.danime_api.not_nsfw(ctx)
+
+		if amount != 0:
+			return await self.danime_api.send_images(ctx, "darkskin", amount)
+
+		await self.danime_api.image_embed(ctx, "darkskin")
 
 def setup (Bot):
 	Bot.add_cog(api2(Bot))
