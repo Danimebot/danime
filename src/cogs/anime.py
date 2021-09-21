@@ -35,7 +35,7 @@ class anime(commands.Cog, name='anime'):
             em.set_author(name = f"{result['first_name']} {result['last_name']} | {result['native_name']} ")
         except:
             em.set_author(name=name)
-        em.description= result['desc'].replace("!", "")
+        em.description= result['desc'][:2000].replace("!", "")
         em.set_image(url = result['image'])
         await ctx.send(embed=em)
 
