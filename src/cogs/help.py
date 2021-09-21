@@ -8,6 +8,8 @@ from misc import emoji
 import datetime
 import sys
 from core import danime
+from dislash import *
+
 
 ban = 'https://cdn.discordapp.com/attachments/782161513825042462/793136610619293726/ban_and_unban.gif'
 slowmode = 'https://cdn.discordapp.com/attachments/782161513825042462/793136512699072522/slowmode.gif'
@@ -318,10 +320,15 @@ class vein9(commands.Cog, name='Help'):
         embed.add_field(name=f"Bot", inline=True, value=f"```asciidoc\nDiscord.py: {discord.__version__}\nPython: 3.8.7\nDanime: {danime_version}\n```")
         embed.add_field(name=f"System", inline=False, value=f"```asciidoc\nOS: {sys.platform}\nCPU Usage: {cpu}%\n```")
         embed.add_field(name=f"Creator", inline=False, value=f"```asciidoc\nUsername: Vein#8177 [427436602403323905]```")
-        embed.add_field(name=f"Links", inline=False, value=f'[Invite]({self.Bot.invite}) |  [Support Server]({self.Bot.support}) |  [Github]({self.Bot.github}) |  [Website]({self.Bot.website_link}) |  [Vote]({vote})')
         embed.set_footer(text=f"Last restart")
-
-        await ctx.send(embed=embed)
+        row = ActionRow(
+            Button(style=ButtonStyle.link, label="Invite", url=f"{self.Bot.invite}") ,
+            Button(style=ButtonStyle.link, label="Support", url=f"{self.Bot.support}"),
+            Button(style=ButtonStyle.link, label="Website", url=f"{self.Bot.website_link}"),
+            Button(style=ButtonStyle.link, label="Patreon", url=f"{self.Bot.patreon}"),
+            Button(style=ButtonStyle.link, label="GitHub", url=f"{self.Bot.github}"),
+        )
+        await ctx.send(embed=embed, components = [row])
 
 def setup(Bot: danime.Danime) -> None: 
     Bot.add_cog(vein9(Bot))
