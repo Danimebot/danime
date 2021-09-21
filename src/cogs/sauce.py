@@ -19,7 +19,7 @@ class sauce(commands.Cog, name="Sauce"):
         embeds = []
         google_url  = f"https://www.google.com/searchbyimage?image_url={url}&safe=off"
         yandex_url  = f"https://yandex.com/images/search?url={url}&rpt=imageview"
-        saucenao_url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+        saucenao_url = f"https://saucenao.com/search.php?url={url}"
         for sauce in results:
             try:
                 embed = discord.Embed()
@@ -109,7 +109,7 @@ class sauce(commands.Cog, name="Sauce"):
             else:
                 return await ctx.send("If you are getting a video sauce, please use a discord url. Just download the video from this link and upload it to discord while using `dh sauce`.")
 
-        saucenao_url = "https://saucenao.com/search.php?url={}".format(parse.quote_plus(url))
+        saucenao_url = f"https://saucenao.com/search.php?url={url}"
         try:
             sauce = SauceNao(api_key = random.choice(self.saucenao_keys), results_limit = 3, priority=[21, 22, 5, 37, 25])
             results = await sauce.from_url(url)
