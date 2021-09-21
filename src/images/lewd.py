@@ -30,8 +30,6 @@ class vein3(commands.Cog, name="APIs"):
 
     @commands.Cog.listener()
     async def on_interaction(self, inter):
-        if inter.guild.id != 802529391808086066:
-            return
         if inter.components[0].components[0].custom_id != "NUTT_BUTTON":
             return
         try:
