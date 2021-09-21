@@ -4,20 +4,21 @@ import pymongo
 from pymongo import MongoClient
 import requests
 from core import danime
+from dislash import *
+
 
 class DanimeAPI:
-	def __init__(self, api_url):
-		self.api_url = api_url
-
+	def __init__(self, Bot):
+		self.Bot = Bot
 
 	def get_image(self, tag):
-		return requests.get(f"{self.api_url}{tag}").json()['url']
+		return requests.get(f"{self.Bot.api_url}{tag}").json()['url']
 
 	def get_many_images(self, tag, amount):
-		return requests.get(f"{self.api_url}{tag}/{amount}").json()['urls']
+		return requests.get(f"{self.Bot.api_url}{tag}/{amount}").json()['urls']
 
 	def get_hentai(self, id):
-		return requests.get(f"{self.api_url}doujin/{id}").json()['url']
+		return requests.get(f"{self.Bot.api_url}doujin/{id}").json()['url']
 
 	def tag_dict(self, tag:str):
 		dict = {
@@ -30,10 +31,9 @@ class DanimeAPI:
 		return dict[tag]
 
 	def available_paths(self, mongo_url):
-		availablePaths = mongo_url['AbodeDB']['1avialablepaths'].find_one({"_id" : 1})['available_paths']
-		return availablePaths
+		return mongo_url['AbodeDB']['1avialablepaths'].find_one({"_id" : 1})['available_paths'] 
 
-	async def is_nsfw(self, ctx):
+	async def not_nsfw(self, ctx):
 		embed = discord.Embed()
 		embed.title= f"Non-NSFW channel detected!"
 		embed.add_field(name="Why should you care?", value=f"Discord forbids the use of NSFW content outside the NSFW-option enabled channels. [More here](https://discord.com/guidelines#:~:text=You%20must%20apply%20the%20NSFW,sexualize%20minors%20in%20any%20way.)", inline=False)
@@ -42,11 +42,41 @@ class DanimeAPI:
 		embed.set_footer(text=f"Pro tip: dh set_nsfw can do the work for you.")
 		return await ctx.send(embed=embed) 
 
+	async def send_images(self, ctx, tag: str, amount: int):
+	    if amount > 10:
+	        return await ctx.send("Can't go higher than 10.")
+	    urls = self.get_many_images(tag, amount)
+	    a = 0 
+	    b = 5
+	    while len(urls) >= a:
+	        try:
+	            await ctx.send(content =f"\n".join(urls[a:b]), components = [ActionRow(Button(style=ButtonStyle.link, label="Danime", url=f"{self.Bot.website_link}"))])
+	        except discord.HTTPException:
+	            break
+	        a += 5
+	        b += 5
+
+
+	async def image_embed(self, ctx, tag):
+	    link = self.get_image(tag)
+	    embed = discord.Embed(color=0x7fcbff)
+	    embed.description = f"[Image]({link}) Powered by **[Danime]({self.Bot.invite})** ||Tag : {tag}||"
+	    embed.set_image(url=link)
+	    return await ctx.send(embed=embed, components = [ActionRow(Button (style=ButtonStyle.primary, label="NUTT", custom_id="NUTT_BUTTON"),Button(style=ButtonStyle.link, label="Sauce", url=f"https://saucenao.com/search.php?url={link}"))])
+	    
+	async def normal_image_embed(self, ctx, link, dl=None):
+		embed = discord.Embed(color =0x7fcbff)
+		embed.description = f"Bad image? [Report it]({self.Bot.support})"
+		if dl:
+			embed.description=f"[Link]({dl})"
+		embed.set_image(url=f"{link}")
+		await ctx.send(embed=embed)
+
 
 class auto(commands.Cog, name="auto"):
 	def __init__(self, Bot: danime.Danime):
 		self.Bot = Bot
-		self.danime_api = DanimeAPI(self.Bot.api_url)
+		self.danime_api = DanimeAPI(Bot)
 	
 
 	@commands.group(pass_context=True)
@@ -64,8 +94,8 @@ class auto(commands.Cog, name="auto"):
 	@commands.has_permissions(manage_webhooks=True)
 	@commands.bot_has_permissions(manage_webhooks=True)
 	async def enable(self, ctx, tag:str="nsfw", time:int=1):
-		if not ctx.channel.is_nsfw():
-			return await self.danime_api.is_nsfw(ctx)	
+		if not ctx.channel.not_nsfw():
+			return await self.danime_api.not_nsfw(ctx)	
 		try:
 
 			if  time > 60:
