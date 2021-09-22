@@ -53,8 +53,8 @@ class auto(commands.Cog, name="auto"):
 	async def auto_send(self):
 		await self.Bot.wait_until_ready()
 		try:
-			if self.Bot.DEFAULT_PREFIX == "&&":
-				return 
+			# if self.Bot.DEFAULT_PREFIX == "&&":
+			# 	return 
 			self.Bot.counter += 1
 			db = self.Bot.db1['AbodeDB']
 			collection= db['autonsfw']
