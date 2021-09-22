@@ -94,7 +94,7 @@ class auto(commands.Cog, name="auto"):
 	@commands.has_permissions(manage_webhooks=True)
 	@commands.bot_has_permissions(manage_webhooks=True)
 	async def enable(self, ctx, tag:str="nsfw", time:int=1):
-		if not ctx.channel.not_nsfw():
+		if not ctx.channel.is_nsfw():
 			return await self.danime_api.not_nsfw(ctx)	
 		try:
 
