@@ -53,7 +53,7 @@ class auto(commands.Cog, name="auto"):
 	async def auto_send(self):
 		await self.Bot.wait_until_ready()
 		try:
-			if self.Bot.DEFAULT_PREFIX == "&":
+			if self.Bot.DEFAULT_PREFIX == "&&":
 				return 
 			self.Bot.counter += 1
 			db = self.Bot.db1['AbodeDB']
@@ -65,30 +65,42 @@ class auto(commands.Cog, name="auto"):
 				if specificSearch.count() == 0:
 					continue
 				specificLength =  specificSearch.count()
-				image_list = self.danime_api.get_many_images(path, specificLength)
+				try:
+					image_list = self.danime_api.get_many_images(path, specificLength)
+				except:
+					print(path, specificLength)
+					continue
 				for key, item in enumerate(specificSearch):
 					webhook_url =item["_id"]
 					setTime = item["time"]
 					setTag = item["tag"]
+					setChannel = item["channel_id"]
 					if self.Bot.counter % setTime == 0:
 						image = image_list[key]
 						embed =  discord.Embed(color =  color)
 						embed.set_image(url=f"{image}")
-						embed.description = f"[Image]({image}) powered by [Danime Bot]({self.Bot.invite})"
+						embed.description = f"[Images]({image}) powered by [Danime Bot]({self.Bot.invite})"
 						try:
-							self.Bot.loop.create_task(self.sendwebhook(image = image, tag = setTag , collection = collection, webhook_url = webhook_url, embed = embed))
+							await self.sendwebhook(image = image, tag = setTag , collection = collection, webhook_url = webhook_url, embed = embed)
 							
 						except:
 							print("Failed sending the webhook.")
 							continue
-		except ValueError:	
+		except ValueError:
 			self.Bot.counter += 1
 			print("Couldn't send it")
-			pass
-		except:
+			try:
+				print("Channel id ", setChannel, setTag, setTime)
+			except:
+				pass
+		except Exception as e:
 			self.Bot.counter += 1
 			print("Failed, no clue what went wrong.")
-			pass
+			try:
+				print("Channel id ", setChannel, setTag, setTime, e)
+			except:
+				pass
+			
 
 			
 	async def sendwebhook(self, collection, webhook_url, embed:discord.Embed, image, tag):
