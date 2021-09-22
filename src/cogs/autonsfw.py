@@ -112,6 +112,9 @@ class auto(commands.Cog, name="auto"):
 			except:
 				tag = tag
 
+			if tag == "videos":
+				return await ctx.send("Sorry you can't have videos on auto.")
+				
 			if tag not in self.danime_api.available_paths(self.Bot.db2):
 				return await ctx.send("Please provide a valid tag, you can see the tags from the help command.")
 			
