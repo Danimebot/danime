@@ -30,6 +30,10 @@ class vein3(commands.Cog, name="APIs"):
 
     @commands.Cog.listener()
     async def on_interaction(self, inter):
+
+        if self.Bot.DEFAULT_PREFIX == "&":
+            return
+
         if inter.components[0].components[0].custom_id != "NUTT_BUTTON":
             return
         try:
@@ -51,9 +55,10 @@ class vein3(commands.Cog, name="APIs"):
         except KeyError:
             collection.update_one({"_id" : url}, {"$set" : {"NUTT" : 1}})
 
-
-        return await inter.channel.send(delete_after = 5, content = f"You sucessfully :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t: to this image. Total image :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t:'s : {new_nutt}")
-
+        try:
+            return await inter.channel.send(delete_after = 5, content = f"You sucessfully :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t: to this image. Total image :regional_indicator_n: :regional_indicator_u: :regional_indicator_t: :regional_indicator_t:'s : {new_nutt}")
+        except:
+            pass
         
 
 
