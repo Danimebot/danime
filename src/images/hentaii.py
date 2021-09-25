@@ -203,7 +203,7 @@ class hentaii(commands.Cog, name="hentaii"):
 						time = int(res.content)
 					except:
 						return await ctx.send("Time should be a number between 60 and 300.")
-					if not time > 300 and time >= 30:
+					if not time > 300 and time >= 60:
 						pass
 					else:
 						return await ctx.send("Time should be a number between 60 and 300.")
