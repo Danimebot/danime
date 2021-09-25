@@ -51,7 +51,7 @@ class api2(commands.Cog, name="api2"):
 			return await self.danime_api.not_nsfw(ctx)
 
 		if  amount != 0:
-			return await self.danimeapi.send_images(ctx, "zerotwo", amount)
+			return await self.danime_api.send_images(ctx, "zerotwo", amount)
 
 		random1 = random.randint(0,1)
 		pages = ['ZeroTwoHentai']
