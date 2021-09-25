@@ -217,7 +217,7 @@ class fetch():
                 if len(description) > 1023:
                     description = description[:1020] + '...'
 
-            genres = ', '.join(entry['genres']).capitalize()
+            genres = ', '.join(entry['genres'])
             
            
             status = entry['status'].lower()
