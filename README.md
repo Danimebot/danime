@@ -1,3 +1,6 @@
+## Danime has been discontinued!
+
+
 <p align="center">
   <a href="https://discord.com/oauth2/authorize?client_id=861117247174082610&permissions=2684446736&scope=applications.commands%20bot">
     <img src="https://media.discordapp.net/attachments/856616125857005658/861454332939862029/danime.png?width=656&height=656" alt="Logo" width="120" height="120" style="border-radius: 50%">
